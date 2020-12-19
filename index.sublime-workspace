@@ -1,0 +1,380 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"is",
+				"isset"
+			],
+			[
+				"all",
+				"all_methods"
+			],
+			[
+				"user",
+				"user_id"
+			],
+			[
+				"S",
+				"Success"
+			],
+			[
+				"res",
+				"result_arr"
+			],
+			[
+				"wher",
+				"where_clause"
+			],
+			[
+				"resul",
+				"result_array"
+			],
+			[
+				"sen",
+				"send_arr"
+			],
+			[
+				"app",
+				"app_section"
+			],
+			[
+				"ou",
+				"output_response"
+			],
+			[
+				"sect",
+				"section_id"
+			],
+			[
+				"val",
+				"value_arr"
+			],
+			[
+				"for",
+				"foreach\tforeach …"
+			],
+			[
+				"em",
+				"email_arr"
+			],
+			[
+				"con",
+				"controller"
+			],
+			[
+				"Ad",
+				"admin_approval_flag"
+			],
+			[
+				"inp",
+				"input_params"
+			],
+			[
+				"PRINT",
+				"print_r"
+			],
+			[
+				"ex",
+				"exit"
+			],
+			[
+				"print",
+				"print_r"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/xampp/apache/conf/extra/httpd-vhosts.conf",
+		"/C/Users/Admin/Desktop/hosts",
+		"/C/AppineersDocs/WidsConnect/WidsConnect_DB_changes.txt",
+		"/C/Users/Admin/Documents/fern.sql",
+		"/D/xampp/htdocs/Widsconnect/application/language/en/webservice_lang.php",
+		"/D/xampp/htdocs/Widsconnect/application/webservice/basic_appineers_master/models/Users_model.php",
+		"/D/xampp/htdocs/Widsconnect/application/webservice/subscription/controllers/Cit_Subscription_purchase.php",
+		"/D/xampp/htdocs/Widsconnect/application/notification/master/controllers/Check_subscription_status_v1.php",
+		"/D/xampp/htdocs/Widsconnect/application/webservice/subscription/controllers/Subscription_purchase.php",
+		"/D/xampp/htdocs/Widsconnect/application/webservice/subscription/models/Subscription_purchase_model.php",
+		"/D/xampp/htdocs/fern/application/webservice/basic_appineers_master/models/Fern_user_model.php",
+		"/D/xampp/htdocs/fern/application/language/en/webservice_lang.php",
+		"/D/xampp/htdocs/fern/application/webservice/basic_appineers_master/models/Connections_model.php",
+		"/D/xampp/htdocs/Widsconnect/application/v1/basic_appineers_master/controllers/User_sign_up_email.php",
+		"/D/xampp/htdocs/Widsconnect/application/webservice/basic_appineers_master/controllers/Connections.php",
+		"/D/xampp/htdocs/Widsconnect/application/webservice/basic_appineers_master/models/Connections_model.php",
+		"/D/xampp/htdocs/Widsconnect/application/webservice/basic_appineers_master/models/Wids_user_model.php",
+		"/D/xampp/htdocs/Widsconnect/application/webservice/basic_appineers_master/controllers/User_profiles.php",
+		"/D/xampp/htdocs/Widsconnect/application/webservice/basic_appineers_master/controllers/Cit_User_profiles.php",
+		"/D/xampp/htdocs/Widsconnect/application/config/cit_webservices.php",
+		"/D/xampp/htdocs/Widsconnect/application/webservice/wsengine/controllers/Wscontroller.php",
+		"/D/xampp/htdocs/Widsconnect/application/webservice/basic_appineers_master/controllers/Cit_Connections.php",
+		"/D/xampp/htdocs/fern/application/webservice/basic_appineers_master/controllers/Connections.php",
+		"/D/xampp/htdocs/fern/application/language/en/general_lang.php",
+		"/C/xampp/php/php.ini",
+		"/D/xampp/apache/conf/extra/httpd-vhosts.conf",
+		"/C/Windows/System32/drivers/etc/hosts",
+		"/D/xampp/htdocs/fern/application/webservice/basic_appineers_master/controllers/Cit_Connections.php",
+		"/D/xampp/htdocs/Widsconnect/application/webservice/basic_appineers_master/controllers/Connections_old.php",
+		"/D/xampp/htdocs/Widsconnect/application/config/cit_notifications.php",
+		"/D/xampp/htdocs/Widsconnect/application/webservice/basic_appineers_master/controllers/Cit_Connections_old.php",
+		"/C/Users/Admin/Downloads/users_connections.sql",
+		"/D/xampp/htdocs/service_expired_crone/test_api.php",
+		"/C/Users/Admin/Desktop/Add_Subscription_into_project",
+		"/C/Users/Admin/Downloads/airlertapp (1).sql",
+		"/D/xampp/htdocs/fern/application/notification/users/models/Users_model.php",
+		"/D/xampp/htdocs/fern/application/notification/master/controllers/Check_subscription_status_v1.php",
+		"/D/Server_downloads/database.php",
+		"/D/database.php",
+		"/D/xampp/htdocs/fern/application/config/cit_notifications.php",
+		"/D/xampp/htdocs/fern/application/webservice/wsengine/controllers/Wscontroller.php",
+		"/D/xampp/htdocs/fern/application/config/autoload.php",
+		"/D/xampp/htdocs/fern/application/config/config.php",
+		"/D/xampp/htdocs/Widsconnect/application/language/en/general_lang.php",
+		"/D/xampp/htdocs/Widsconnect/application/language/en/front_lang.php",
+		"/D/xampp/htdocs/Widsconnect/application/webservice/basic_appineers_master/controllers/Edit_profile.php",
+		"/D/xampp/htdocs/service_expired_crone/date_diff.php",
+		"/D/xampp/htdocs/service_expired_crone/index.php",
+		"/D/xampp/htdocs/fern/application/config/cit_webservices.php",
+		"/D/xampp/htdocs/fern/application/webservice/subscription/controllers/Subscription_purchase.php",
+		"/D/xampp/htdocs/fern/application/webservice/subscription/models/Subscription_purchase_model.php",
+		"/D/xampp/htdocs/fern/application/webservice/subscription/controllers/Cit_Subscription_purchase.php",
+		"/D/xampp/htdocs/fern/application/config/config_custom.php",
+		"/D/xampp/htdocs/fern/application/config/config_front.php",
+		"/D/xampp/htdocs/fern/application/webservice/basic_appineers_master/controllers/Change_mobile_number.php",
+		"/D/xampp/htdocs/Widsconnect/application/libraries/Wsresponse.php",
+		"/D/xampp/htdocs/Widsconnect/application/webservice/basic_appineers_master/controllers/Post_section.php",
+		"/D/xampp/htdocs/Widsconnect/application/webservice/basic_appineers_master/controllers/User_login_email.php",
+		"/D/xampp/htdocs/Widsconnect/application/webservice/basic_appineers_master/controllers/Get_user_details.php",
+		"/D/xampp/htdocs/Widsconnect/application/webservice/basic_appineers_master/controllers/Post_a_feedback.php",
+		"/D/LocalBkup/GoldenOpportunity/v1/user/controllers/Post_listing.php",
+		"/C/Users/Admin/Desktop/golden_dev_to_stag_chngs",
+		"/D/Server_downloads/Post_listing.php",
+		"/D/xampp/htdocs/GoldenOpportunity_Web/application/v1/user/controllers/Post_listing.php",
+		"/D/xampp/htdocs/GoldenOpportunity_Web/application/v1/user/controllers/Cit_Add_post_v1.php",
+		"/D/xampp/htdocs/Widsconnect/application/webservice/basic_appineers_master/controllers/Logout.php",
+		"/C/Users/Admin/Documents/fern_users_connections.sql",
+		"/C/Users/Admin/Downloads/Cancel_job_and_remider_model.php",
+		"/D/LocalBkup/SideJob/application/notification/master/model/Expired_services_and_offer_model.php",
+		"/C/Users/Admin/Downloads/Cancel_job_and_remider.php",
+		"/D/LocalBkup/SideJob/application/notification/master/controller/Cit_Expired_services_and_offer.php",
+		"/D/xampp/htdocs/Widsconnect/application/config/config.php",
+		"/D/xampp/htdocs/Widsconnect/application/webservice/basic_appineers_master/controllers/Social_login.php",
+		"/D/xampp/htdocs/Widsconnect/application/webservice/basic_appineers_master/controllers/User_login_phone.php",
+		"/D/xampp/htdocs/GoldenOpportunity_Web/application/v1/user/models/Users_model.php",
+		"/D/xampp/htdocs/GoldenOpportunity_Web/application/v1/basic_appineers_master/models/Users_model.php",
+		"/D/xampp/htdocs/GoldenOpportunity_Web/application/v1/user/controllers/Add_post_v1.php",
+		"/D/LocalBkup/GoldenOpportunity/webservice_lang.php",
+		"/D/xampp/htdocs/GoldenOpportunity_Web/application/language/en/webservice_lang.php",
+		"/C/Users/Admin/Desktop/DB_Changes",
+		"/D/xampp/htdocs/GoldenOpportunity_Web/application/admin/basic_appineers_master/views/users_management_add.tpl",
+		"/D/xampp/htdocs/GoldenOpportunity_Web/application/admin/basic_appineers_master/controllers/Users_management.php",
+		"/D/xampp/htdocs/GoldenOpportunity_Web/application/admin/basic_appineers_master/models/Users_management_model.php",
+		"/D/Server_downloads/general_lang.php",
+		"/D/LocalBkup/GoldenOpportunity/admin/basic_appineers_master/models/Users_management_model.php",
+		"/D/LocalBkup/GoldenOpportunity/admin/basic_appineers_master/controllers/Users_management.php",
+		"/D/LocalBkup/GoldenOpportunity/cit_webservices.php",
+		"/D/LocalBkup/GoldenOpportunity/cit_webservices_v1.php",
+		"/D/LocalBkup/GoldenOpportunity/general_lang.php",
+		"/D/LocalBkup/GoldenOpportunity/routes_front.php",
+		"/D/LocalBkup/GoldenOpportunity/routes_custom.php",
+		"/D/LocalBkup/GoldenOpportunity/routes.php",
+		"/D/xampp/htdocs/fern/application/webservice/basic_appineers_master/controllers/Cit_Fern_user.php",
+		"/D/xampp/htdocs/fern/application/webservice/basic_appineers_master/controllers/Fern_user.php",
+		"/D/xampp/htdocs/GoldenOpportunity_Web/application/v1/post/models/Posts_model.php",
+		"/D/xampp/htdocs/fern/application/webservice/basic_appineers_master/models/Users_model.php",
+		"/D/xampp/htdocs/GoldenOpportunity_Web/application/v1/user/models/Add_post_model.php",
+		"/D/xampp/htdocs/GoldenOpportunity_Web/application/v1/user/models/Add_post_v1_model.php",
+		"/D/xampp/htdocs/GoldenOpportunity_Web/application/v1/user/models/Post_listing_model.php",
+		"/D/xampp/htdocs/Widsconnect/application/v1/basic_appineers_master/controllers/Edit_profile.php",
+		"/D/xampp/htdocs/Widsconnect/application/v1/basic_appineers_master/controllers/Social_sign_up.php",
+		"/C/Users/Admin/Desktop/permissions_in_staging",
+		"/D/LocalBkup/SideJob/application/notification/master/controller/Expired_services_and_offer.php",
+		"/D/LocalBkup/SideJob/application/routes.php",
+		"/D/LocalBkup/GoldenOpportunity/Database/golden_opportunity.sql",
+		"/D/xampp/htdocs/GoldenOpportunity_Web/application/v1/basic_appineers_master/controllers/User_sign_up_email.php",
+		"/D/LocalBkup/SideJob/application/notification/master/controller/Service_reminder_before_three_days.php",
+		"/D/LocalBkup/SideJob/notification/master/controller/Expired_services_and_offer.php",
+		"/D/LocalBkup/SideJob/notification/master/controller/Cit_Expired_services_and_offer.php",
+		"/D/LocalBkup/SideJob/notification/master/controller/Cit_Service_reminder_before_three_days.php",
+		"/C/Users/Admin/Downloads/Cit_Cancel_job_and_remider.php",
+		"/D/LocalBkup/SideJob/application/cit_notifications.php",
+		"/D/LocalBkup/SideJob/application/notification/nsengine/controllers/Notifycontroller.php",
+		"/D/LocalBkup/SideJob/application/notification/master/model/Service_reminder_before_three_days_model.php",
+		"/D/LocalBkup/SideJob/application/notification/master/controller/Cit_Service_reminder_before_three_days.php",
+		"/D/xampp/htdocs/Widsconnect/application/front/user/controllers/Verified.php",
+		"/D/xampp/htdocs/date_diff.php",
+		"/D/LocalBkup/SideJob/application/notification/model/Expired_services_and_offer_model.php",
+		"/D/LocalBkup/SideJob/application/notification/controller/Expired_services_and_offer.php",
+		"/D/LocalBkup/SideJob/application/cit_webservices.php",
+		"/D/LocalBkup/SideJob/application/config.php",
+		"/C/Users/Admin/Downloads/cit_notifications.php",
+		"/D/xampp/htdocs/Widsconnect/application/webservice/basic_appineers_master/controllers/User.php",
+		"/D/xampp/htdocs/Widsconnect/application/webservice/basic_appineers_master/controllers/User_sign_up_email.php",
+		"/D/xampp/htdocs/fern/application/webservice/basic_appineers_master/controllers/User.php",
+		"/D/xampp/htdocs/Widsconnect/application/webservice/basic_appineers_master/controllers/Social_sign_up.php",
+		"/D/xampp/htdocs/Widsconnect/application/webservice/basic_appineers_master/controllers/User_sign_up_phone.php",
+		"/D/xampp/htdocs/fern/application/webservice/basic_appineers_master/controllers/Edit_profile.php"
+	],
+	"find":
+	{
+		"height": 28.0
+	},
+	"find_in_files":
+	{
+		"height": 104.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": true,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 28.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "index.sublime-project",
+	"replace":
+	{
+		"height": 52.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"users_model",
+				"application\\webservice\\user\\models\\Users_model.php"
+			],
+			[
+				"send",
+				"application\\webservice\\user\\controllers\\Send_notification.php"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 284.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

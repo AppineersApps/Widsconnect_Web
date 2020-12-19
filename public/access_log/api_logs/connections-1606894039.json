@@ -1,0 +1,1 @@
+{"input_params":{"method":"POST","post":{"connection_user_id":"187","user_id":"183","user_access_token":"52e9a620d95a38cff280120d0695b42d2e95a31b055a8f20778699126fa49f3a","connection_type":"Like"}},"output_response":{"settings":{"success":"1","message":"connection added successfully","fields":["connection_type_by_logged_user","connection_type_by_receiver_user"]},"data":[]}}

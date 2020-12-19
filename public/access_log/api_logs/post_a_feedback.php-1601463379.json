@@ -1,0 +1,1 @@
+{"input_params":{"method":"POST","post":{"access_token":"e4743ad848267f0b3ba1168f2febabb90871301fadceb5d07b69d508e6f71dda","feedback":"test","device_type":"ios","device_model":"Simulator iPhone 11","device_os":"13.2.2","images_count":"2"}},"output_response":{"settings":{"success":"401","message":"Your session is expired."},"data":""}}

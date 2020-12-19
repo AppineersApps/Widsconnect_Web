@@ -1,0 +1,118 @@
+::1~~subscription_purchase~~Webservice~~2020-11-27 05:37:06~~http://widsconnect.localhost/WS/subscription_purchase/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:2:{s:6:"method";s:4:"POST";s:4:"post";a:8:{s:15:"subscription_id";s:0:"";s:12:"receipt_type";s:7:"android";s:7:"user_id";s:3:"213";s:14:"transaction_id";s:0:"";s:11:"expiry_date";s:10:"2020-03-26";s:15:"receipt_data_v1";s:0:"";s:10:"product_id";s:0:"";s:17:"user_access_token";s:64:"631f12ee06abc46d1419c285c27895bd113f4968afd4bf9bd3027533bab5a12f";}}
+::1~~subscription_purchase~~Webservice~~2020-11-27 05:37:12~~http://widsconnect.localhost/WS/subscription_purchase/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:2:{s:6:"method";s:4:"POST";s:4:"post";a:8:{s:15:"subscription_id";s:1:"1";s:12:"receipt_type";s:7:"android";s:7:"user_id";s:3:"213";s:14:"transaction_id";s:0:"";s:11:"expiry_date";s:10:"2020-03-26";s:15:"receipt_data_v1";s:0:"";s:10:"product_id";s:0:"";s:17:"user_access_token";s:64:"631f12ee06abc46d1419c285c27895bd113f4968afd4bf9bd3027533bab5a12f";}}
+::1~~subscription_purchase~~Webservice~~2020-11-27 05:37:48~~http://widsconnect.localhost/WS/subscription_purchase/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:2:{s:6:"method";s:4:"POST";s:4:"post";a:5:{s:15:"subscription_id";s:1:"2";s:12:"receipt_type";s:7:"android";s:7:"user_id";s:3:"213";s:11:"expiry_date";s:10:"2020-03-26";s:17:"user_access_token";s:64:"631f12ee06abc46d1419c285c27895bd113f4968afd4bf9bd3027533bab5a12f";}}
+::1~~subscription_purchase~~Webservice~~2020-11-27 05:38:01~~http://widsconnect.localhost/WS/subscription_purchase/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:2:{s:6:"method";s:3:"GET";s:6:"stream";a:1:{s:90:"----------------------------250006110572679818599449
+Content-Disposition:_form-data;_name";s:607:""subscription_id"
+
+2
+----------------------------250006110572679818599449
+Content-Disposition: form-data; name="receipt_type"
+
+android
+----------------------------250006110572679818599449
+Content-Disposition: form-data; name="user_id"
+
+213
+----------------------------250006110572679818599449
+Content-Disposition: form-data; name="expiry_date"
+
+2020-03-26
+----------------------------250006110572679818599449
+Content-Disposition: form-data; name="user_access_token"
+
+631f12ee06abc46d1419c285c27895bd113f4968afd4bf9bd3027533bab5a12f
+----------------------------250006110572679818599449--
+";}}
+::1~~subscription_purchase~~Webservice~~2020-11-27 05:38:06~~http://widsconnect.localhost/WS/subscription_purchase/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:2:{s:6:"method";s:3:"GET";s:6:"stream";a:1:{s:90:"----------------------------106531634213337623681250
+Content-Disposition:_form-data;_name";s:607:""subscription_id"
+
+2
+----------------------------106531634213337623681250
+Content-Disposition: form-data; name="receipt_type"
+
+android
+----------------------------106531634213337623681250
+Content-Disposition: form-data; name="user_id"
+
+213
+----------------------------106531634213337623681250
+Content-Disposition: form-data; name="expiry_date"
+
+2020-03-26
+----------------------------106531634213337623681250
+Content-Disposition: form-data; name="user_access_token"
+
+631f12ee06abc46d1419c285c27895bd113f4968afd4bf9bd3027533bab5a12f
+----------------------------106531634213337623681250--
+";}}
+::1~~subscription_purchase~~Webservice~~2020-11-27 05:38:13~~http://widsconnect.localhost/WS/subscription_purchase/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:2:{s:6:"method";s:4:"POST";s:4:"post";a:5:{s:15:"subscription_id";s:1:"2";s:12:"receipt_type";s:7:"android";s:7:"user_id";s:3:"213";s:11:"expiry_date";s:10:"2020-03-26";s:17:"user_access_token";s:64:"631f12ee06abc46d1419c285c27895bd113f4968afd4bf9bd3027533bab5a12f";}}
+::1~~subscription_purchase~~Webservice~~2020-11-27 05:38:19~~http://widsconnect.localhost/WS/subscription_purchase/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:2:{s:6:"method";s:3:"GET";s:6:"stream";a:1:{s:90:"----------------------------045859427445218068263776
+Content-Disposition:_form-data;_name";s:607:""subscription_id"
+
+2
+----------------------------045859427445218068263776
+Content-Disposition: form-data; name="receipt_type"
+
+android
+----------------------------045859427445218068263776
+Content-Disposition: form-data; name="user_id"
+
+213
+----------------------------045859427445218068263776
+Content-Disposition: form-data; name="expiry_date"
+
+2020-03-26
+----------------------------045859427445218068263776
+Content-Disposition: form-data; name="user_access_token"
+
+631f12ee06abc46d1419c285c27895bd113f4968afd4bf9bd3027533bab5a12f
+----------------------------045859427445218068263776--
+";}}
+::1~~subscription_purchase~~Webservice~~2020-11-27 05:39:16~~http://widsconnect.localhost/WS/subscription_purchase/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:2:{s:6:"method";s:4:"POST";s:4:"post";a:5:{s:15:"subscription_id";s:1:"2";s:12:"receipt_type";s:7:"android";s:7:"user_id";s:3:"213";s:11:"expiry_date";s:10:"2020-03-26";s:17:"user_access_token";s:64:"631f12ee06abc46d1419c285c27895bd113f4968afd4bf9bd3027533bab5a12f";}}
+::1~~subscription_purchase~~Webservice~~2020-11-27 06:06:51~~http://widsconnect.localhost/WS/subscription_purchase/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:2:{s:6:"method";s:4:"POST";s:4:"post";a:2:{s:12:"receipt_type";s:3:"ios";s:17:"user_access_token";s:64:"631f12ee06abc46d1419c285c27895bd113f4968afd4bf9bd3027533bab5a12f";}}
+::1~~connections~~Webservice~~2020-11-27 10:59:09~~http://widsconnect.localhost/WS/connections/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:2:{s:6:"method";s:4:"POST";s:4:"post";a:5:{s:7:"user_id";s:3:"213";s:17:"user_access_token";s:64:"631f12ee06abc46d1419c285c27895bd113f4968afd4bf9bd3027533bab5a12f";s:18:"connection_user_id";s:3:"215";s:15:"connection_type";s:4:"Like";s:11:"app_section";s:1:"1";}}
+::1~~connections~~Webservice~~2020-11-27 11:02:05~~http://widsconnect.localhost/WS/connections/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:2:{s:6:"method";s:4:"POST";s:4:"post";a:5:{s:7:"user_id";s:3:"213";s:17:"user_access_token";s:64:"631f12ee06abc46d1419c285c27895bd113f4968afd4bf9bd3027533bab5a12f";s:18:"connection_user_id";s:3:"215";s:15:"connection_type";s:4:"Like";s:11:"app_section";s:1:"1";}}
+::1~~connections~~Webservice~~2020-11-27 11:02:16~~http://widsconnect.localhost/WS/connections/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:2:{s:6:"method";s:3:"GET";s:6:"stream";a:1:{s:90:"----------------------------907603015637753008874034
+Content-Disposition:_form-data;_name";s:603:""user_id"
+
+213
+----------------------------907603015637753008874034
+Content-Disposition: form-data; name="user_access_token"
+
+631f12ee06abc46d1419c285c27895bd113f4968afd4bf9bd3027533bab5a12f
+----------------------------907603015637753008874034
+Content-Disposition: form-data; name="connection_user_id"
+
+215
+----------------------------907603015637753008874034
+Content-Disposition: form-data; name="connection_type"
+
+Like
+----------------------------907603015637753008874034
+Content-Disposition: form-data; name="app_section"
+
+1
+----------------------------907603015637753008874034--
+";}}
+::1~~connections~~Webservice~~2020-11-27 11:02:22~~http://widsconnect.localhost/WS/connections/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:2:{s:6:"method";s:4:"POST";s:4:"post";a:5:{s:7:"user_id";s:3:"213";s:17:"user_access_token";s:64:"631f12ee06abc46d1419c285c27895bd113f4968afd4bf9bd3027533bab5a12f";s:18:"connection_user_id";s:3:"215";s:15:"connection_type";s:4:"Like";s:11:"app_section";s:1:"1";}}
+::1~~connections~~Webservice~~2020-11-27 11:03:23~~http://widsconnect.localhost/WS/connections/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:2:{s:6:"method";s:4:"POST";s:4:"post";a:5:{s:7:"user_id";s:3:"213";s:17:"user_access_token";s:64:"631f12ee06abc46d1419c285c27895bd113f4968afd4bf9bd3027533bab5a12f";s:18:"connection_user_id";s:3:"215";s:15:"connection_type";s:4:"Like";s:11:"app_section";s:1:"1";}}
+::1~~connections~~Webservice~~2020-11-27 11:05:31~~http://widsconnect.localhost/WS/connections/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:2:{s:6:"method";s:4:"POST";s:4:"post";a:5:{s:7:"user_id";s:0:"";s:17:"user_access_token";s:64:"631f12ee06abc46d1419c285c27895bd113f4968afd4bf9bd3027533bab5a12f";s:18:"connection_user_id";s:3:"215";s:15:"connection_type";s:4:"Like";s:11:"app_section";s:1:"1";}}
+::1~~connections~~Webservice~~2020-11-27 11:05:38~~http://widsconnect.localhost/WS/connections/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:2:{s:6:"method";s:4:"POST";s:4:"post";a:5:{s:7:"user_id";s:3:"213";s:17:"user_access_token";s:0:"";s:18:"connection_user_id";s:3:"215";s:15:"connection_type";s:4:"Like";s:11:"app_section";s:1:"1";}}
+::1~~connections~~Webservice~~2020-11-27 11:05:40~~http://widsconnect.localhost/WS/connections/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:2:{s:6:"method";s:4:"POST";s:4:"post";a:5:{s:7:"user_id";s:3:"213";s:17:"user_access_token";s:0:"";s:18:"connection_user_id";s:3:"215";s:15:"connection_type";s:4:"Like";s:11:"app_section";s:1:"1";}}
+::1~~connections~~Webservice~~2020-11-27 11:05:42~~http://widsconnect.localhost/WS/connections/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:2:{s:6:"method";s:4:"POST";s:4:"post";a:5:{s:7:"user_id";s:3:"213";s:17:"user_access_token";s:0:"";s:18:"connection_user_id";s:3:"215";s:15:"connection_type";s:4:"Like";s:11:"app_section";s:1:"1";}}
+::1~~connections~~Webservice~~2020-11-27 11:05:53~~http://widsconnect.localhost/WS/connections/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:2:{s:6:"method";s:4:"POST";s:4:"post";a:3:{s:7:"user_id";s:3:"213";s:17:"user_access_token";s:64:"631f12ee06abc46d1419c285c27895bd113f4968afd4bf9bd3027533bab5a12f";s:18:"connection_user_id";s:3:"215";}}
+::1~~connections~~Webservice~~2020-11-27 11:05:55~~http://widsconnect.localhost/WS/connections/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:2:{s:6:"method";s:4:"POST";s:4:"post";a:3:{s:7:"user_id";s:3:"213";s:17:"user_access_token";s:64:"631f12ee06abc46d1419c285c27895bd113f4968afd4bf9bd3027533bab5a12f";s:18:"connection_user_id";s:3:"215";}}
+::1~~connections~~Webservice~~2020-11-27 11:05:57~~http://widsconnect.localhost/WS/connections/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:2:{s:6:"method";s:4:"POST";s:4:"post";a:3:{s:7:"user_id";s:3:"213";s:17:"user_access_token";s:64:"631f12ee06abc46d1419c285c27895bd113f4968afd4bf9bd3027533bab5a12f";s:18:"connection_user_id";s:3:"215";}}
+::1~~connections~~Webservice~~2020-11-27 11:06:53~~http://widsconnect.localhost/WS/connections/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:2:{s:6:"method";s:4:"POST";s:4:"post";a:4:{s:7:"user_id";s:3:"213";s:17:"user_access_token";s:64:"631f12ee06abc46d1419c285c27895bd113f4968afd4bf9bd3027533bab5a12f";s:18:"connection_user_id";s:3:"215";s:15:"connection_type";s:4:"Like";}}
+::1~~connections~~Webservice~~2020-11-27 11:07:20~~http://widsconnect.localhost/WS/connections/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:2:{s:6:"method";s:4:"POST";s:4:"post";a:2:{s:18:"connection_user_id";s:3:"215";s:15:"connection_type";s:4:"Like";}}
+::1~~connections~~Webservice~~2020-11-27 11:11:05~~http://widsconnect.localhost/WS/connections/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:2:{s:6:"method";s:4:"POST";s:4:"post";a:2:{s:18:"connection_user_id";s:3:"215";s:15:"connection_type";s:4:"Like";}}
+127.0.0.1~~connections~~Webservice~~2020-11-27 11:11:13~~http://widsconnect.localhost/WS/connections/~~Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0~~Unknown OS Platform~~Firefox~~a:4:{s:6:"method";s:4:"POST";s:3:"get";a:1:{s:8:"ws_debug";s:1:"1";}s:4:"post";a:2:{s:7:"api_key";s:0:"";s:9:"api_token";s:4:"null";}s:6:"stream";a:2:{s:7:"api_key";s:0:"";s:9:"api_token";s:4:"null";}}
+::1~~connections~~Webservice~~2020-11-27 11:13:34~~http://widsconnect.localhost/WS/connections/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:2:{s:6:"method";s:4:"POST";s:4:"post";a:2:{s:18:"connection_user_id";s:3:"215";s:15:"connection_type";s:4:"Like";}}
+::1~~connections~~Webservice~~2020-11-27 11:15:40~~http://widsconnect.localhost/WS/connections/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:2:{s:6:"method";s:4:"POST";s:4:"post";a:2:{s:18:"connection_user_id";s:3:"215";s:15:"connection_type";s:4:"Like";}}
+::1~~connections~~Webservice~~2020-11-27 11:18:25~~http://widsconnect.localhost/WS/connections/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:2:{s:6:"method";s:4:"POST";s:4:"post";a:4:{s:7:"user_id";s:3:"213";s:17:"user_access_token";s:64:"631f12ee06abc46d1419c285c27895bd113f4968afd4bf9bd3027533bab5a12f";s:18:"connection_user_id";s:3:"215";s:15:"connection_type";s:4:"Like";}}
+::1~~connections~~Webservice~~2020-11-27 11:21:44~~http://widsconnect.localhost/WS/connections/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:2:{s:6:"method";s:4:"POST";s:4:"post";a:4:{s:7:"user_id";s:3:"213";s:17:"user_access_token";s:64:"631f12ee06abc46d1419c285c27895bd113f4968afd4bf9bd3027533bab5a12f";s:18:"connection_user_id";s:3:"215";s:15:"connection_type";s:4:"Like";}}
+::1~~connections~~Webservice~~2020-11-27 11:22:01~~http://widsconnect.localhost/WS/connections/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:2:{s:6:"method";s:4:"POST";s:4:"post";a:4:{s:7:"user_id";s:3:"213";s:17:"user_access_token";s:64:"631f12ee06abc46d1419c285c27895bd113f4968afd4bf9bd3027533bab5a12f";s:18:"connection_user_id";s:3:"215";s:15:"connection_type";s:4:"Like";}}
+::1~~subscription_purchase~~Webservice~~2020-11-27 11:22:17~~http://widsconnect.localhost/WS/subscription_purchase/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:2:{s:6:"method";s:4:"POST";s:4:"post";a:2:{s:12:"receipt_type";s:3:"ios";s:17:"user_access_token";s:64:"631f12ee06abc46d1419c285c27895bd113f4968afd4bf9bd3027533bab5a12f";}}
+::1~~connections~~Webservice~~2020-11-27 11:22:35~~http://widsconnect.localhost/WS/connections/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:2:{s:6:"method";s:4:"POST";s:4:"post";a:4:{s:7:"user_id";s:3:"213";s:17:"user_access_token";s:64:"631f12ee06abc46d1419c285c27895bd113f4968afd4bf9bd3027533bab5a12f";s:18:"connection_user_id";s:3:"215";s:15:"connection_type";s:4:"Like";}}
+::1~~connections~~Webservice~~2020-11-27 11:22:51~~http://widsconnect.localhost/WS/connections/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:2:{s:6:"method";s:4:"POST";s:4:"post";a:4:{s:7:"user_id";s:3:"213";s:17:"user_access_token";s:64:"631f12ee06abc46d1419c285c27895bd113f4968afd4bf9bd3027533bab5a12f";s:18:"connection_user_id";s:3:"220";s:15:"connection_type";s:4:"Like";}}
+::1~~connections~~Webservice~~2020-11-27 11:23:13~~http://widsconnect.localhost/WS/connections/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:2:{s:6:"method";s:4:"POST";s:4:"post";a:4:{s:7:"user_id";s:3:"213";s:17:"user_access_token";s:64:"631f12ee06abc46d1419c285c27895bd113f4968afd4bf9bd3027533bab5a12f";s:18:"connection_user_id";s:3:"220";s:15:"connection_type";s:4:"Like";}}

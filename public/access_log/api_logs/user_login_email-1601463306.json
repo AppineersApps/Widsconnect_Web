@@ -1,0 +1,1 @@
+{"input_params":{"method":"POST","post":{"device_type":"iOS","device_model":"Simulator iPhone 11","device_os":"13.2.2","email":"akashp@theappineers.com","password":"Today@123"}},"output_response":{"settings":{"success":"3","message":"Your account is not yet active. Please activate your account through verification email.","fields":[]},"data":[]}}

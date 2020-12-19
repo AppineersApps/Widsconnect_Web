@@ -1,0 +1,1 @@
+{"input_params":{"method":"POST","post":{"receiver_id":"210","message":"which flavour u like?","firebase_id":"191","app_section":"1"}},"output_response":{"settings":{"success":"1","message":"Message sent successfully.","fields":[]},"data":[]}}

@@ -1,0 +1,1 @@
+{"input_params":{"method":"POST","post":{"user_id":"221","receiver_id":"183","message":"when u coming?","user_access_token":"44d8a620d95a38cff280120d0695b42d2e95a31b055a8f19208699126fa54f3a","firebase_id":"1200"}},"output_response":{"settings":{"success":"1","message":"Message sent successfully.","fields":[]},"data":[]}}
