@@ -18,16 +18,18 @@ class AccessLogHook
 
     public function http_request_log($params = array())
     {
-
         $this->params = $params;
 
         if ($this->CI->config->item("is_admin") == 1) {
+
+
             if (!$this->params['admin']) {
                 return FALSE;
             }
             if (!$this->CI->uri->segments[2]) {
                 return FALSE;
             }
+
             if (is_array($this->params['admin_system_calls'])) {
                 $system_calls = $this->params['admin_system_calls'];
                 $ctrl_arr = $system_calls[$this->CI->uri->segments[2]][$this->CI->uri->segments[3]];
@@ -38,10 +40,15 @@ class AccessLogHook
             $type = "Admin";
             $request_func = '';
             if ($this->CI->uri->segments[2]) {
-                $request_func = $this->CI->uri->segments[2] . "/" . $this->CI->uri->segments[3] . "/" . $this->CI->uri->segments[4];
+             //   $request_func = $this->CI->uri->segments[2] . "/" . $this->CI->uri->segments[3] . "/" . $this->CI->uri->segments[4];
+
+                $request_func = $this->CI->uri->segments[3];
             }
             $file_suffix = "admin";
         } elseif ($this->CI->uri->segments[1] && in_array($this->CI->uri->segments[1], array("PS"))) {
+
+           
+
             if (!$this->params['parseapi']) {
                 return FALSE;
             }
@@ -87,6 +94,7 @@ class AccessLogHook
         $this->params['type'] = $type;
         $this->params['function'] = $request_func;
 
+
         $access_log_folder = $this->CI->config->item('admin_access_log_path');
         if (!is_dir($access_log_folder)) {
             $this->CI->general->createFolder($access_log_folder);
@@ -126,19 +134,22 @@ class AccessLogHook
         $log_file_path = $log_folder_path . $log_file_name . "-" . $file_suffix . "." . $log_file_ext;
         $exe_file_path = $log_folder_path . $exe_file_name . "-" . $file_suffix . "." . $exe_file_ext;
 
+
         list($log_data, $exe_data) = $this->get_logging_data();
 
         $fp = fopen($log_file_path, 'a+');
         fwrite($fp, $log_data);
         fclose($fp);
 
-        if (in_array($type, array("Webservice", "Notification"))) {
+        if (in_array($type, array("Webservice", "Notification","Admin"))) {
             $exe_data['path'] = $exe_file_path;
             if (!is_file($exe_file_path)) {
                 $fp = fopen($exe_file_path, 'a+');
                 fclose($fp);
             }
-            if ($type == "Webservice") {
+            if ($type == "Admin") {
+                $this->CI->config->set_item("_ADMIN_EXEC_DATA", $exe_data);
+            } elseif ($type == "Webservice") {
                 $this->CI->config->set_item("_WS_EXEC_DATA", $exe_data);
             } elseif ($type == "Notification") {
                 $this->CI->config->set_item("_NS_EXEC_DATA", $exe_data);
@@ -162,6 +173,8 @@ class AccessLogHook
         $plat_form = $this->get_platform($user_agent);
         $bowser = $this->get_browser($user_agent);
         $input_params_arr = $this->get_http_request_params();
+        $RequestMethod = $_SERVER['REQUEST_METHOD'];
+
         $input_params_str = (is_array($input_params_arr) && count($input_params_arr) > 0) ? serialize($input_params_arr) : "";
 
         $log_str = <<<EOD
@@ -198,7 +211,7 @@ EOD;
         }
 
         $log_folder_path = $access_log_folder . "api_logs" . DS;
-        //echo $log_folder_path;die;
+       // echo $log_folder_path;die;
         if (!is_dir($log_folder_path)) {
             $this->CI->general->createFolder($log_folder_path);
         }
@@ -214,6 +227,7 @@ EOD;
         fwrite($fp, json_encode($fileContents));
         fclose($fp);
 
+
         if(file_exists($log_file_path)){
             $data_array = array();
             $data_array['vIPAddress']  = $ip_addr;
@@ -223,6 +237,8 @@ EOD;
             $data_array['vPlatform']   = $plat_form;
             $data_array['vBrowser']    = $bowser;
             $data_array['vFileName']   = $file_name;
+            $data_array['vRequest_method']   = $RequestMethod;
+            
             $result = $this->CI->db->insert('api_accesslogs', $data_array);
             if($result > 0){
                 $exe_arr['api_log_id']  = $result;
@@ -272,7 +288,8 @@ EOD;
             '/ipad/i' => 'iPad',
             '/android/i' => 'Android',
             '/blackberry/i' => 'BlackBerry',
-            '/webos/i' => 'Mobile'
+            '/webos/i' => 'Mobile',
+            '/Postman/i' => 'Postman'
         );
 
         foreach ($os_array as $regex => $value) {
@@ -298,7 +315,8 @@ EOD;
             '/netscape/i' => 'Netscape',
             '/maxthon/i' => 'Maxthon',
             '/konqueror/i' => 'Konqueror',
-            '/mobile/i' => 'Handheld Browser'
+            '/mobile/i' => 'Handheld Browser',
+            '/Postman/i' => 'Postman'
         );
 
         foreach ($browser_array as $regex => $value) {

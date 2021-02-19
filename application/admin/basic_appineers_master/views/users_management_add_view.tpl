@@ -160,6 +160,8 @@
                                             <span class="frm-data-label"><strong><%$this->general->dateSystemFormat($data['u_deleted_at'])%></strong></span>
                                         </div>
                                     </div>
+
+                                   
                                     <div class="form-row row-fluid " id="cc_sh_u_status">
                                         <label class="form-label span3">
                                             <%$form_config['u_status']['label_lang']%>

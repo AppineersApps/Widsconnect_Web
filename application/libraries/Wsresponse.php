@@ -694,6 +694,10 @@ class Wsresponse
                 $input_params = json_decode($json_data, true);
                 
                 $fileContents['input_params'] = $input_params['input_params'];
+                if(empty($arr['queries']))
+                {
+                    $arr['queries'] = $this->CI->general->getDBQueriesList();    
+                }
                 $fileContents['output_response'] = $arr;
 
                 $fp = fopen($log_file_path, 'w');
@@ -705,7 +709,14 @@ class Wsresponse
                 if($this->CI->session->userdata('iUserId')){
                     $updateArr['iPerformedBy'] = $this->CI->session->userdata('iUserId');
                 }else{
-                    $updateArr['iPerformedBy'] = NULL;
+                    $this->CI->db->select('iUserId,eStatus');
+                    $this->CI->db->from('users');
+                    $this->CI->db->where('vEmail',$this->CI->input->get_post("email", true));
+                    //$this->db->where('eStatus','Active');
+                    $result = $this->CI->db->get()->result_array();
+                    $userid = $result[0]['iUserId'];
+
+                    $updateArr['iPerformedBy'] = (false == empty($userid)) ? $userid : NULL;
                 }
                 $updateArr['dtExecutedDate'] = date('Y-m-d H:i:s');
                 $this->CI->db->where('iAccessLogId', $exec_data['api_log_id']);

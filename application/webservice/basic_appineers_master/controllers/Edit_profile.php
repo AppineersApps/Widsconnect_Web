@@ -453,6 +453,30 @@ class Edit_profile extends Cit_Controller
                     }
                 }
 
+                 if (!empty($_FILES["image5"]["name"]) && !empty($_FILES["image5"]["tmp_name"]))
+                {
+
+                    list($file_name, $ext) = $this->general->get_file_attributes($_FILES["image5"]["name"]);
+                    $images_arr["image5"]["ext"] = implode(',', $this->config->item('IMAGE_EXTENSION_ARR'));
+                    $images_arr["image5"]["size"] = $size;
+                    if ($this->general->validateFileFormat($images_arr["image5"]["ext"], $_FILES["image5"]["name"]))
+                    {
+                        if ($this->general->validateFileSize($images_arr["image5"]["size"], $_FILES["image5"]["size"]))
+                        {
+
+                            $folder_name =$path;  
+                            $images_arr["image5"]["name"] = $file_name;           
+                             $temp_file = $_FILES["image5"]["tmp_name"];
+                            $res = $this->general->uploadAWSData($temp_file, $folder_name, $images_arr["image5"]["name"]);
+                            if (!$res)
+                                {
+                                    
+
+                                }
+                        }
+                    }
+                }
+
             if (isset($input_params["first_name"]))
             {
                 $params_arr["first_name"] = $input_params["first_name"];
@@ -487,6 +511,11 @@ class Edit_profile extends Cit_Controller
              if (isset($images_arr["image4"]["name"]))
             {
                 $params_arr["image4"] = $images_arr["image4"]["name"];
+            }
+
+            if (isset($images_arr["image5"]["name"]))
+            {
+                $params_arr["image5"] = $images_arr["image5"]["name"];
             }
 
             if (isset($input_params["dob"]))
@@ -601,6 +630,11 @@ class Edit_profile extends Cit_Controller
             if (isset($input_params["travaled_places"]))
             {
                 $params_arr["travaled_places"] = $input_params["travaled_places"];
+            }
+
+             if (isset($input_params["places_want_to_travel"]))
+            {
+                $params_arr["places_want_to_travel"] = $input_params["places_want_to_travel"];
             }
 
             if (isset($input_params["triggers"]))
@@ -740,7 +774,40 @@ class Edit_profile extends Cit_Controller
                     //print_r($data); exit;
                     $result_arr[$data_key]["u_profile_image"] = (false == empty($data)) ? $data : "";
 
-                      $data = $data_arr["u_image1"];
+                     $data = $data_arr["u_UploadDoc"];
+                    $image_arr = array();
+                    $image_arr["image_name"] = $data;
+                    $image_arr["ext"] = implode(",", $this->config->item("IMAGE_EXTENSION_ARR"));
+                    $image_arr["color"] = "FFFFFF";
+                    $image_arr["no_img"] = FALSE;
+                    $image_arr["path"] = "widsconnect/upload_doc";
+                    //$image_arr["path"] = $this->general->getImageNestedFolders($dest_path);
+                    $data = $this->general->get_image_aws($image_arr);
+                    //print_r($data); exit;
+                    $result_arr[$data_key]["u_UploadDoc"] = (false == empty($data)) ? $data : "";
+                    
+
+                     //****************************
+
+                    foreach ($data_arr["u_images"] as $key => $value) {
+
+                       $data1 = $value["image_url"];
+                        $image_arr = array();
+                        $image_arr["image_name"] = $data1;
+                         $image_arr["ext"] = implode(",", $this->config->item("IMAGE_EXTENSION_ARR"));
+                            $image_arr["color"] = "FFFFFF";
+                            $image_arr["no_img"] = FALSE;
+                        $image_arr["path"] ="widsconnect/personal_images";
+                        $data1 = $this->general->get_image_aws($image_arr);
+
+
+                        $result_arr[$data_key]["u_images"][$key]["image_url"] = (false == empty($data1))?$data1:"";
+                    }
+                    
+
+
+                    /*
+                     $data = $data_arr["u_Image2"];
                     $image_arr = array();
                     $image_arr["image_name"] = $data;
                     $image_arr["ext"] = implode(",", $this->config->item("IMAGE_EXTENSION_ARR"));
@@ -748,9 +815,10 @@ class Edit_profile extends Cit_Controller
                     $image_arr["no_img"] = FALSE;
                     $image_arr["path"] = "widsconnect/personal_images";
                     $data = $this->general->get_image_aws($image_arr);
-                    $result_arr[$data_key]["u_image1"] = $data;
+                    $result_arr[$data_key]["u_Image2"] = $data;
 
-                     $data = $data_arr["u_image2"];
+
+                     $data = $data_arr["u_Image3"];
                     $image_arr = array();
                     $image_arr["image_name"] = $data;
                     $image_arr["ext"] = implode(",", $this->config->item("IMAGE_EXTENSION_ARR"));
@@ -758,10 +826,9 @@ class Edit_profile extends Cit_Controller
                     $image_arr["no_img"] = FALSE;
                     $image_arr["path"] = "widsconnect/personal_images";
                     $data = $this->general->get_image_aws($image_arr);
-                    $result_arr[$data_key]["u_image2"] = $data;
+                    $result_arr[$data_key]["u_Image3"] = $data;
 
-
-                     $data = $data_arr["u_image3"];
+                     $data = $data_arr["u_Image4"];
                     $image_arr = array();
                     $image_arr["image_name"] = $data;
                     $image_arr["ext"] = implode(",", $this->config->item("IMAGE_EXTENSION_ARR"));
@@ -769,9 +836,9 @@ class Edit_profile extends Cit_Controller
                     $image_arr["no_img"] = FALSE;
                     $image_arr["path"] = "widsconnect/personal_images";
                     $data = $this->general->get_image_aws($image_arr);
-                    $result_arr[$data_key]["u_image3"] = $data;
+                    $result_arr[$data_key]["u_Image4"] = $data; 
 
-                     $data = $data_arr["u_image4"];
+                    $data = $data_arr["u_Image5"];
                     $image_arr = array();
                     $image_arr["image_name"] = $data;
                     $image_arr["ext"] = implode(",", $this->config->item("IMAGE_EXTENSION_ARR"));
@@ -779,10 +846,11 @@ class Edit_profile extends Cit_Controller
                     $image_arr["no_img"] = FALSE;
                     $image_arr["path"] = "widsconnect/personal_images";
                     $data = $this->general->get_image_aws($image_arr);
-                    $result_arr[$data_key]["u_image4"] = $data;
-
+                    $result_arr[$data_key]["u_Image5"] = $data;
+                    */
                     $i++;
                 }
+
                 $this->block_result["data"] = $result_arr;
             }
         }
@@ -894,17 +962,20 @@ class Edit_profile extends Cit_Controller
             "u_Education",
             "u_Profession",
             "u_Income",
-            "u_Image1",
+            /*"u_Image1",
             "u_Image2",
             "u_Image3",
             "u_Image4",
+            "u_Image5",*/
             "u_Intrest",
             "u_MarriageStatus",
             "u_Tatoos",
             "u_TravaledPlaces",
+            "u_tTravalToPlaces",
             "u_Triggers",
             "u_AboutYou",
             "u_AboutLatePerson",
+            "u_images",
         );
         $output_keys = array(
             'get_updated_details',
@@ -945,31 +1016,34 @@ class Edit_profile extends Cit_Controller
             "u_privacy_policy_version" => "privacy_policy_version",
 
 
-            "u_Smoke" => "Smoke",
-            "u_UploadDoc" => "UploadDoc",
-            "u_Drink" =>"Drink",
-            "u_420Friendly"=> "420Friendly",
-            "u_Height"=>"Height",
-            "u_Kids"=> "Kids",
-            "u_BodyType"=>"BodyType",
-            "u_Gender"=>"Gender",
-            "u_Sign"=> "Sign",
-            "u_Religion"=>"Religion",
-            "u_SexualPrefrence"=>"SexualPrefrence",
-            "u_Education"=>"Education",
-            "u_Profession"=>"Profession",
-            "u_Income"=>"Income",
-            "u_Image1"=>"Image1",
-            "u_Image2"=>"Image2",
-            "u_Image3"=>"Image3",
-            "u_Image4"=>"Image4",
-            "u_Intrest"=>"Intrest",
-            "u_MarriageStatus"=>"MarriageStatus",
-            "u_Tatoos"=>"Tatoos",
-            "u_TravaledPlaces"=>"TravaledPlaces",
-            "u_Triggers"=>"Triggers",
-            "u_AboutYou"=>"AboutYou",
-            "u_AboutLatePerson"=>"AboutLatePerson",
+            "u_Smoke" => "smoke",
+            "u_UploadDoc" => "upload_doc",
+            "u_Drink" =>"drink",
+            "u_420Friendly"=> "420friendly",
+            "u_Height"=>"height",
+            "u_Kids"=> "kids",
+            "u_BodyType"=>"body_type",
+            "u_Gender"=>"gender",
+            "u_Sign"=> "sign",
+            "u_Religion"=>"religion",
+            "u_SexualPrefrence"=>"sexual_preference",
+            "u_Education"=>"education",
+            "u_Profession"=>"profession",
+            "u_Income"=>"income",
+            /*"u_Image1"=>"image1",
+            "u_Image2"=>"image2",
+            "u_Image3"=>"image3",
+            "u_Image4"=>"image4",
+            "u_Image5"=>"image5",*/
+            "u_Intrest"=>"interest",
+            "u_MarriageStatus"=>"marriage_status",
+            "u_Tatoos"=>"tattoos",
+            "u_TravaledPlaces"=>"traveled_places",
+            "u_tTravalToPlaces"=>"places_want_to_travel",
+            "u_Triggers"=>"triggers",
+            "u_AboutYou"=>"about_you",
+            "u_AboutLatePerson"=>"about_late_person",
+            "u_images" => "user_images"
         );
 
         $output_array["settings"] = $setting_fields;

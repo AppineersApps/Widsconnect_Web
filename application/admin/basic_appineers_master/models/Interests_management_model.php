@@ -52,6 +52,7 @@ class Interests_management_model extends CI_Model
     public $listing_data;
     public $rec_per_page;
     public $message;
+    protected $CI;
 
     /**
      * __construct method is used to set model preferences while model object initialization.
@@ -61,6 +62,7 @@ class Interests_management_model extends CI_Model
     public function __construct()
     {
         parent::__construct();
+         $this->CI = & get_instance();
         $this->load->library('listing');
         $this->load->library('filter');
         $this->load->library('dropdown');
@@ -105,9 +107,26 @@ class Interests_management_model extends CI_Model
      */
     public function insert($data = array())
     {
+
         $this->db->insert($this->table_name, $data);
         $insert_id = $this->db->insert_id();
         $this->insert_id = $insert_id;
+
+        if($insert_id > 0)
+        {
+
+            $logArray['iPrimaryKey'] = $insert_id; 
+            $logArray['vCondition'] = $this->primary_key; 
+            $logArray['vTableName'] = $this->table_name;
+            $logArray['eOperation'] = "Added";
+            $logArray['tFieldData'] = json_encode($data);
+            $logArray['eSource'] = "Admin";
+            $logArray['iLoggedById'] = $this->CI->session->userdata('iAdminId');
+            $logArray['vLoggedName'] = $this->CI->session->userdata('vEmail');
+            $logArray['vEntityName'] = "Interest- ".$data['vInterestsName'];
+            
+            $this->db->insert("mod_db_changelog",$logArray);
+        }
         return $insert_id;
     }
 

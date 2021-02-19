@@ -411,7 +411,8 @@ class User_sign_up_email extends Cit_Controller
                 }
             }
 
-            /*******upload doc *******************
+            
+             //*******upload doc *******************
              if (isset($_FILES["upload_doc"]["name"]) && isset($_FILES["upload_doc"]["tmp_name"]))
             {
                 $sent_file2 = $_FILES["upload_doc"]["name"];
@@ -433,7 +434,7 @@ class User_sign_up_email extends Cit_Controller
                     }
                 }
             }
-            //*******upload doc *******************/
+            //*******upload doc *******************
             
             if (isset($input_params["first_name"]))
             {
@@ -459,10 +460,11 @@ class User_sign_up_email extends Cit_Controller
             {
                 $params_arr["user_profile"] = $images_arr["user_profile"]["name"];
             } 
-            /*if (isset($images_arr["upload_doc"]["name"]))
+            if (isset($images_arr["upload_doc"]["name"]))
             {
                 $params_arr["upload_doc"] = $images_arr["upload_doc"]["name"];
-            }*/
+            }
+
             if (isset($input_params["dob"]))
             {
                 $params_arr["dob"] = $input_params["dob"];
@@ -568,7 +570,7 @@ class User_sign_up_email extends Cit_Controller
             }
 
             //***** doc upload *********
-            /* if (!empty($images_arr["upload_doc"]["name"]))
+             if (!empty($images_arr["upload_doc"]["name"]))
             {
 
                 $folder_name = "widsconnect/upload_doc";             
@@ -580,7 +582,7 @@ class User_sign_up_email extends Cit_Controller
                     //file upload failed
 
                 }
-            }*/
+            }
             //***** doc upload *********
         }
         catch(Exception $e)
@@ -669,6 +671,18 @@ class User_sign_up_email extends Cit_Controller
 
                     $result_arr[$data_key]["u_profile_image"] = (false == empty($data))?$data:"";
 
+                     $data = $data_arr["u_UploadDoc"];
+                    $image_arr = array();
+                    $image_arr["image_name"] = $data;
+                    $image_arr["ext"] = implode(",", $this->config->item("IMAGE_EXTENSION_ARR"));
+                    $image_arr["color"] = "FFFFFF";
+                    $image_arr["no_img"] = FALSE;
+                    $image_arr["path"] = "widsconnect/upload_doc";
+                    //$image_arr["path"] = $this->general->getImageNestedFolders($dest_path);
+                    $data = $this->general->get_image_aws($image_arr);
+                    //print_r($data); exit;
+                    $result_arr[$data_key]["u_UploadDoc"] = (false == empty($data)) ? $data : "";
+
                     $i++;
                 }
                 $this->block_result["data"] = $result_arr;
@@ -702,9 +716,12 @@ class User_sign_up_email extends Cit_Controller
             $email_arr["vEmail"] = $input_params["email"];
 
             $email_arr["vUsername"] = $input_params["email_user_name"];
-            $email_arr["email_confirmation_link"] = $input_params["email_confirmation_link"];
+            //$email_arr["email_confirmation_link"] = $input_params["email_confirmation_link"];
 
-            $success = $this->general->sendMail($email_arr, "SIGNUP_EMAIL_CONFIRMATION", $input_params);
+            //$success = $this->general->sendMail($email_arr, "SIGNUP_EMAIL_CONFIRMATION", $input_params);
+
+            $success = $this->general->sendMail($email_arr, "WELCOME", $input_params);
+
 
             $log_arr = array();
             $log_arr['eEntityType'] = 'General';

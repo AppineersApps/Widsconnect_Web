@@ -328,11 +328,23 @@ class Social_sign_up extends Cit_Controller
                     $dest_path = "user_profile";
                    /* $image_arr["path"] = $this->general->getImageNestedFolders($dest_path);
                     $data = $this->general->get_image($image_arr);*/
-                    $image_arr["path"] ="fern/user_profile";
+                    $image_arr["path"] ="widsconnect/user_profile";
                     $data = $this->general->get_image_aws($image_arr);
 
 
                     $result_arr[$data_key]["u_profile_image"] = $data;
+
+                    $data = $data_arr["u_UploadDoc"];
+                    $image_arr = array();
+                    $image_arr["image_name"] = $data;
+                    $image_arr["ext"] = implode(",", $this->config->item("IMAGE_EXTENSION_ARR"));
+                    $image_arr["color"] = "FFFFFF";
+                    $image_arr["no_img"] = FALSE;
+                    $image_arr["path"] = "widsconnect/upload_doc";
+                    //$image_arr["path"] = $this->general->getImageNestedFolders($dest_path);
+                    $data = $this->general->get_image_aws($image_arr);
+                    //print_r($data); exit;
+                    $result_arr[$data_key]["u_UploadDoc"] = (false == empty($data)) ? $data : "";
 
                     $i++;
                 }
@@ -415,12 +427,58 @@ class Social_sign_up extends Cit_Controller
 
             $params_arr["_eemailverified"] = "Yes";
 
+            //*******upload doc *******************
+             if (isset($_FILES["upload_doc"]["name"]) && isset($_FILES["upload_doc"]["tmp_name"]))
+            {
+                $sent_file2 = $_FILES["upload_doc"]["name"];
+            }
+            else
+            {
+                $sent_file2 = "";
+            }
+            if (!empty($sent_file2))
+            {
+                list($file_name, $ext) = $this->general->get_file_attributes($sent_file2);
+                $images_arr["upload_doc"]["ext"] = implode(',', $this->config->item('IMAGE_EXTENSION_ARR'));
+                $images_arr["upload_doc"]["size"] = "102400";
+                if ($this->general->validateFileFormat($images_arr["upload_doc"]["ext"], $_FILES["upload_doc"]["name"]))
+                {
+                    if ($this->general->validateFileSize($images_arr["upload_doc"]["size"], $_FILES["upload_doc"]["size"]))
+                    {
+                        $images_arr["upload_doc"]["name"] = $file_name;
+                    }
+                }
+            }
+
+            if (isset($images_arr["upload_doc"]["name"]))
+            {
+                $params_arr["upload_doc"] = $images_arr["upload_doc"]["name"];
+            }
+            //*******upload doc *******************
+
+
             $this->block_result = $this->social_sign_up_model->update_social_info($params_arr, $where_arr);
             if (!$this->block_result["success"])
             {
                 throw new Exception("updation failed.");
             }
             $data_arr = $this->block_result["array"];
+
+             //***** doc upload *********
+             if (!empty($images_arr["upload_doc"]["name"]))
+            {
+
+                $folder_name = "widsconnect/upload_doc";             
+                
+                $temp_file = $_FILES["upload_doc"]["tmp_name"];
+                $res = $this->general->uploadAWSData($temp_file, $folder_name, $images_arr["upload_doc"]["name"]);
+                if ($upload_arr[0] == "")
+                {
+                    //file upload failed
+
+                }
+            }
+            //***** doc upload *********
 
         }
         catch(Exception $e)
@@ -703,7 +761,8 @@ class Social_sign_up extends Cit_Controller
             {
                 $params_arr["zipcode"] = $input_params["zipcode"];
             }
-            $params_arr["status"] = "Active";
+           // $params_arr["status"] = "Active";
+            $params_arr["status"] = "Inactive";
             $params_arr["_dtaddedat"] = "NOW()";
             $params_arr["_dtupdatedat"] = "''";
             if (isset($input_params["device_type"]))
@@ -752,6 +811,36 @@ class Social_sign_up extends Cit_Controller
             {
                 $params_arr["_vprivacypolicyversion"] = $this->getPrivacyPolicyVersion($params_arr["_vprivacypolicyversion"], $input_params);
             }
+
+             //*******upload doc *******************
+             if (isset($_FILES["upload_doc"]["name"]) && isset($_FILES["upload_doc"]["tmp_name"]))
+            {
+                $sent_file2 = $_FILES["upload_doc"]["name"];
+            }
+            else
+            {
+                $sent_file2 = "";
+            }
+            if (!empty($sent_file2))
+            {
+                list($file_name, $ext) = $this->general->get_file_attributes($sent_file2);
+                $images_arr["upload_doc"]["ext"] = implode(',', $this->config->item('IMAGE_EXTENSION_ARR'));
+                $images_arr["upload_doc"]["size"] = "102400";
+                if ($this->general->validateFileFormat($images_arr["upload_doc"]["ext"], $_FILES["upload_doc"]["name"]))
+                {
+                    if ($this->general->validateFileSize($images_arr["upload_doc"]["size"], $_FILES["upload_doc"]["size"]))
+                    {
+                        $images_arr["upload_doc"]["name"] = $file_name;
+                    }
+                }
+            }
+
+            if (isset($images_arr["upload_doc"]["name"]))
+            {
+                $params_arr["upload_doc"] = $images_arr["upload_doc"]["name"];
+            }
+            //*******upload doc *******************
+
             $this->block_result = $this->users_model->create_user_social($params_arr);
             if (!$this->block_result["success"])
             {
@@ -772,6 +861,22 @@ class Social_sign_up extends Cit_Controller
 
                 }
             }
+
+            //***** doc upload *********
+             if (!empty($images_arr["upload_doc"]["name"]))
+            {
+
+                $folder_name = "widsconnect/upload_doc";             
+                
+                $temp_file = $_FILES["upload_doc"]["tmp_name"];
+                $res = $this->general->uploadAWSData($temp_file, $folder_name, $images_arr["upload_doc"]["name"]);
+                if ($upload_arr[0] == "")
+                {
+                    //file upload failed
+
+                }
+            }
+            //***** doc upload *********
         }
         catch(Exception $e)
         {
@@ -855,11 +960,24 @@ class Social_sign_up extends Cit_Controller
                     $dest_path = "user_profile";
                    /* $image_arr["path"] = $this->general->getImageNestedFolders($dest_path);
                     $data = $this->general->get_image($image_arr);*/
-                    $image_arr["path"] ="fern/user_profile";
+                    $image_arr["path"] ="widsconnect/user_profile";
                     $data = $this->general->get_image_aws($image_arr);
 
 
                     $result_arr[$data_key]["u_profile_image"] = $data;
+
+                    $data = $data_arr["u_UploadDoc"];
+                    $image_arr = array();
+                    $image_arr["image_name"] = $data;
+                    $image_arr["ext"] = implode(",", $this->config->item("IMAGE_EXTENSION_ARR"));
+                    $image_arr["color"] = "FFFFFF";
+                    $image_arr["no_img"] = FALSE;
+                    $image_arr["path"] = "widsconnect/upload_doc";
+                    //$image_arr["path"] = $this->general->getImageNestedFolders($dest_path);
+                    $data = $this->general->get_image_aws($image_arr);
+                    //print_r($data); exit;
+                    $result_arr[$data_key]["u_UploadDoc"] = (false == empty($data)) ? $data : "";
+
 
                     $i++;
                 }
@@ -944,6 +1062,7 @@ class Social_sign_up extends Cit_Controller
             "message" => "users_finish_success",
         );
         $output_fields = array(
+            'u_user_id',
             'u_first_name',
             'u_last_name',
             'u_user_name',
@@ -975,12 +1094,14 @@ class Social_sign_up extends Cit_Controller
             'terms_conditions_version',
             'privacy_policy_version',
             'u_log_status_updated',
+            'u_UploadDoc'
         );
         $output_keys = array(
             'get_user_details_v1_v1',
         );
         $ouput_aliases = array(
             "get_user_details_v1_v1" => "get_user_details",
+            "u_user_id" => "user_id",
             "u_first_name" => "first_name",
             "u_last_name" => "last_name",
             "u_user_name" => "user_name",
@@ -1010,6 +1131,7 @@ class Social_sign_up extends Cit_Controller
             "t_one_time_transaction" => "purchase_receipt_data",
             "u_push_notify" => "push_notify",
             "u_log_status_updated" => "log_status_updated",
+            "u_UploadDoc" => "upload_doc",
         );
 
         $output_array["settings"] = $setting_fields;
@@ -1130,6 +1252,7 @@ class Social_sign_up extends Cit_Controller
             'terms_conditions_version',
             'privacy_policy_version',
             'u_log_status_updated',
+            'u_UploadDoc',
 
         );
         $output_keys = array(
@@ -1166,6 +1289,7 @@ class Social_sign_up extends Cit_Controller
             "t_one_time_transaction" => "purchase_receipt_data",
             "u_push_notify" => "push_notify",
             "u_log_status_updated" => "log_status_updated",
+            "u_UploadDoc" => "upload_doc",
         );
 
         $output_array["settings"] = $setting_fields;

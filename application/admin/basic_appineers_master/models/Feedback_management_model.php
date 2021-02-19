@@ -52,6 +52,7 @@ class Feedback_management_model extends CI_Model
     public $listing_data;
     public $rec_per_page;
     public $message;
+    protected $CI;
 
     /**
      * __construct method is used to set model preferences while model object initialization.
@@ -61,6 +62,7 @@ class Feedback_management_model extends CI_Model
     public function __construct()
     {
         parent::__construct();
+         $this->CI = & get_instance();
         $this->load->library('listing');
         $this->load->library('filter');
         $this->load->library('dropdown');
@@ -131,6 +133,23 @@ class Feedback_management_model extends CI_Model
         $this->db->insert($this->table_name, $data);
         $insert_id = $this->db->insert_id();
         $this->insert_id = $insert_id;
+
+         if($insert_id > 0)
+        {
+
+            $logArray['iPrimaryKey'] = $insert_id; 
+            $logArray['vCondition'] = $this->primary_key; 
+            $logArray['vTableName'] = $this->table_name;
+            $logArray['eOperation'] = "Added";
+            $logArray['tFieldData'] = json_encode($data);
+            $logArray['eSource'] = "Admin";
+            $logArray['iLoggedById'] = $this->CI->session->userdata('iAdminId');
+            $logArray['vLoggedName'] = $this->CI->session->userdata('vEmail');
+            $logArray['vEntityName'] = "Interest- ".$data['vInterestsName'];
+            
+            $this->db->insert("mod_db_changelog",$logArray);
+        }
+        
         return $insert_id;
     }
 
@@ -144,6 +163,7 @@ class Feedback_management_model extends CI_Model
      */
     public function update($data = array(), $where = '', $alias = "No", $join = "No")
     {
+
         if ($alias == "Yes")
         {
             if ($join == "Yes")
@@ -205,6 +225,96 @@ class Feedback_management_model extends CI_Model
             }
             $res = $this->db->update($this->table_name, $data);
         }
+        // adding backend log 
+        if($this->db->affected_rows() == 1)
+        {
+             if (is_numeric($where)) {
+               
+                $logArray['iPrimaryKey'] = $where; 
+                $logArray['vCondition'] = $this->primary_key; 
+
+            } else if($where){
+
+                $logArray['iPrimaryKey'] = ""; 
+                $logArray['vCondition'] = $where; 
+            } 
+
+            $logArray['vTableName'] = $this->table_name;
+            $logArray['eOperation'] = "Modified";
+            $logArray['tFieldData'] = json_encode($data);
+            $logArray['eSource'] = "Admin";
+            $logArray['iLoggedById'] = $this->CI->session->userdata('iAdminId');
+            $logArray['vLoggedName'] = $this->CI->session->userdata('vEmail');
+           // $logArray['dDateAdded'] = CURRENT_TIMESTAMP();
+            $updatedEntity = "";
+            if($where != "")
+            {
+                $this->db->select("tFeedback");
+                $this->db->from($this->table_name . " AS " . $this->table_alias);
+                 if (is_numeric($where)) {
+                        $this->db->where($this->table_alias . "." . $this->primary_key, $where);
+                    } elseif($where){
+                        $this->db->where($where, FALSE, FALSE);
+                    } 
+
+                $data_obj = $this->db->get();
+                $data_arr12 = is_object($data_obj) ? $data_obj->result_array() : array();
+                $updatedEntity = $data_arr12[0]['tFeedback'];
+
+            }
+            
+            $logArray['vEntityName'] = "feedback- ".$updatedEntity;
+            $this->db->insert("mod_db_changelog",$logArray);
+
+          //  echo $this->db->last_query(); exit();
+        }
+   
+        if($this->db->affected_rows() > 1)
+        { 
+         
+            if (substr_count($where,"IN") > 0) 
+            {
+            
+                preg_match_all('!\d+!', $where, $matches);
+                $where_values = $matches[0];
+
+                foreach ($where_values as $key => $whereV) 
+                {
+        
+                    $logArray['iPrimaryKey'] = $whereV; 
+                    $logArray['vCondition'] = $this->primary_key; 
+
+                    $logArray['vTableName'] = $this->table_name;
+                    $logArray['eOperation'] = "Modified";
+                    $logArray['tFieldData'] = json_encode($data);
+                    $logArray['eSource'] = "Admin";
+                    $logArray['iLoggedById'] = $this->CI->session->userdata('iAdminId');
+                    $logArray['vLoggedName'] = $this->CI->session->userdata('vEmail');
+                   // $logArray['dDateAdded'] = CURRENT_TIMESTAMP();
+                    $updatedEntity = "";
+                    if($whereV != "")
+                    {
+                        $this->db->select("tFeedback");
+                        $this->db->from($this->table_name . " AS " . $this->table_alias);
+                         if (is_numeric($whereV)) {
+                                $this->db->where($this->table_alias . "." . $this->primary_key, $whereV);
+                            } 
+
+                        $data_obj = $this->db->get();
+                        $data_arr12 = is_object($data_obj) ? $data_obj->result_array() : array();
+                        $updatedEntity = $data_arr12[0]['tFeedback'];
+
+                    }
+                    
+                    $logArray['vEntityName'] = "feedback- ".$updatedEntity;
+                    $this->db->insert("mod_db_changelog",$logArray);
+
+                  //  echo $this->db->last_query(); exit();
+                }
+            }
+
+            
+        }
         return $res;
     }
 
@@ -217,6 +327,90 @@ class Feedback_management_model extends CI_Model
      */
     public function delete($where = "", $alias = "No", $join = "No")
     {
+
+      if (substr_count($where,"IN") > 0 && !is_numeric($where)) 
+        {
+        
+            preg_match_all('!\d+!', $where, $matches);
+            $where_values = $matches[0];
+
+            foreach ($where_values as $key => $whereV) 
+            {
+    
+                $logArray['iPrimaryKey'] = $whereV; 
+                $logArray['vCondition'] = $this->primary_key; 
+
+                $logArray['vTableName'] = $this->table_name;
+                $logArray['eOperation'] = "Deleted";
+                $logArray['tFieldData'] = json_encode($data);
+                $logArray['eSource'] = "Admin";
+                $logArray['iLoggedById'] = $this->CI->session->userdata('iAdminId');
+                $logArray['vLoggedName'] = $this->CI->session->userdata('vEmail');
+               // $logArray['dDateAdded'] = CURRENT_TIMESTAMP();
+                $updatedEntity = "";
+                if($whereV != "")
+                {
+                    $this->db->select("tFeedback");
+                    $this->db->from($this->table_name . " AS " . $this->table_alias);
+                     if (is_numeric($whereV)) {
+                            $this->db->where($this->table_alias . "." . $this->primary_key, $whereV);
+                        } 
+
+                    $data_obj = $this->db->get();
+                    $data_arr12 = is_object($data_obj) ? $data_obj->result_array() : array();
+                    $updatedEntity = $data_arr12[0]['tFeedback'];
+
+                }
+                
+                $logArray['vEntityName'] = "feedback- ".$updatedEntity;
+                $this->db->insert("mod_db_changelog",$logArray);
+
+              //  echo $this->db->last_query(); exit();
+            }
+        }
+        else {
+             if (is_numeric($where)) {
+               
+                $logArray['iPrimaryKey'] = $where; 
+                $logArray['vCondition'] = $this->primary_key; 
+
+            } else if($where){
+
+                $logArray['iPrimaryKey'] = ""; 
+                $logArray['vCondition'] = $where; 
+            } 
+
+            $logArray['vTableName'] = $this->table_name;
+            $logArray['eOperation'] = "Deleted";
+            $logArray['tFieldData'] = json_encode($data);
+            $logArray['eSource'] = "Admin";
+            $logArray['iLoggedById'] = $this->CI->session->userdata('iAdminId');
+            $logArray['vLoggedName'] = $this->CI->session->userdata('vEmail');
+           // $logArray['dDateAdded'] = CURRENT_TIMESTAMP();
+            $updatedEntity = "";
+            if($where != "")
+            {
+                $this->db->select("tFeedback");
+                $this->db->from($this->table_name . " AS " . $this->table_alias);
+                 if (is_numeric($where)) {
+                        $this->db->where($this->table_alias . "." . $this->primary_key, $where);
+                    } elseif($where){
+                        $this->db->where($where, FALSE, FALSE);
+                    } 
+
+                $data_obj = $this->db->get();
+                $data_arr12 = is_object($data_obj) ? $data_obj->result_array() : array();
+                $updatedEntity = $data_arr12[0]['tFeedback'];
+
+            }
+            
+            $logArray['vEntityName'] = "feedback- ".$updatedEntity;
+            $this->db->insert("mod_db_changelog",$logArray);
+
+          //  echo $this->db->last_query(); exit();
+        }
+   
+
         if ($this->config->item('PHYSICAL_RECORD_DELETE') && $this->physical_data_remove == 'No')
         {
             if ($alias == "Yes")
@@ -340,6 +534,7 @@ class Feedback_management_model extends CI_Model
                 $res = $this->db->delete($this->table_name);
             }
         }
+
         return $res;
     }
 

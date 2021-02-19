@@ -98,6 +98,11 @@ class Social_sign_up_model extends CI_Model
                 $this->db->set("vProfession", $params_arr["profession"]);
             }
 
+            if (isset($params_arr["upload_doc"]) && $params_arr["upload_doc"] != "")
+            {
+                $this->db->set("vUploadDoc", $params_arr["upload_doc"]);
+            }
+
             $this->db->set("eEmailVerified", $params_arr["_eemailverified"]);
 
 
@@ -177,6 +182,8 @@ class Social_sign_up_model extends CI_Model
             $this->db->select("u.vTermsConditionsVersion AS terms_conditions_version");
             $this->db->select("u.vPrivacyPolicyVersion AS privacy_policy_version");
             $this->db->select("u.eLogStatus AS u_log_status_updated");
+            $this->db->select("u.vUploadDoc AS u_UploadDoc");
+
             if (isset($email) && $email != "")
             {
                 $this->db->where("u.vEmail =", $email);

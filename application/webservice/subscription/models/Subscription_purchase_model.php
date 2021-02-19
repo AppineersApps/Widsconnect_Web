@@ -93,6 +93,7 @@ class Subscription_purchase_model extends CI_Model
         return $return_arr;
     }
 
+
     
     /**
      * subscription_purchase_android method is used to execute database queries for Subscription Purchase API.

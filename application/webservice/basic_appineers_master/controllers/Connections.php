@@ -211,7 +211,7 @@ class Connections extends Cit_Controller
                     $image_arr["ext"] = implode(",", $this->config->item("IMAGE_EXTENSION_ARR"));
                     $image_arr["color"] = "FFFFFF";
                     $image_arr["no_img"] = FALSE;
-                    $image_arr["path"] = "fern/user_profile";
+                    $image_arr["path"] = "widsconnect/user_profile";
                    // $image_arr["path"] = $this->general->getImageNestedFolders($dest_path);
                     $data = $this->general->get_image_aws($image_arr);
 
@@ -281,6 +281,7 @@ class Connections extends Cit_Controller
            // 'first_name',
            // 'last_name',
             'user_image',
+            'date_time'
            // 'age',
             //'connection_type'
         );
@@ -293,6 +294,7 @@ class Connections extends Cit_Controller
             // "first_name" => "first_name",
              // "last_name" => "last_name",
             "user_image" => "user_image",
+            "date_time" => "date",
             // "connection_type" => "connection_type",
             // "age" => "age",
         );
@@ -417,6 +419,7 @@ class Connections extends Cit_Controller
                     //check match user condition like and like or superlike and like or like and Superlike
                            if(($input_params['connection_type_by_logged_user']=='Like') && ($input_params['connection_type_by_receiver_user']=='Like'))
                             {
+                                 $input_params = $this->like_count_management($input_params);
 
                                 $input_params = $this->entry_for_match($input_params);
 
@@ -427,8 +430,11 @@ class Connections extends Cit_Controller
                                 }
                                 else{
 
-                                        $output_response = $this->connection_add_finish_success_2($input_params);
-                                    return $output_response;
+                                         $output_response = $this->connection_add_finish_success($input_params);
+                                   return $output_response;
+                                   
+                                        /*$output_response = $this->connection_add_finish_success_2($input_params);
+                                    return $output_response;*/
                                 }
 
                             }
@@ -437,6 +443,7 @@ class Connections extends Cit_Controller
  
                                if (($input_params["connection_type"]=='Like') )
                                 {
+                                     $input_params = $this->like_count_management($input_params);
 
                                         if ($input_params["u_device_token"]!=''){  
 
@@ -448,10 +455,18 @@ class Connections extends Cit_Controller
                                         
                                         $output_response = $this->connection_add_finish_success($input_params);
                                          return $output_response;
-                                        }else
+                                        }
+                                        else
                                         {
-                                             $output_response = $this->connection_add_finish_success_2($input_params);
-                                                        return $output_response;
+                                            /* $output_response = $this->connection_add_finish_success_2($input_params);
+                                                        return $output_response;*/
+
+                                            $input_params = $this->notification_entry($input_params);
+
+                                        
+                                            $output_response = $this->connection_add_finish_success($input_params);
+                                            
+                                             return $output_response;
                                         }
 
                                 }
@@ -486,6 +501,33 @@ class Connections extends Cit_Controller
         return $output_response;
     } 
 
+
+     public function like_count_management($input_params = array())
+    {
+
+        $this->block_result = array();
+        try
+        {
+
+            $params_arr = $where_arr = array();
+            if (isset($input_params["user_id"]))
+            {
+                $where_arr["u_users_id_1"] = $input_params["user_id"];
+            }
+            $params_arr["u_likes_per_day"] = "".$input_params["iLikesPerDay"]." +1";
+            $this->block_result = $this->connections_model->like_count_management($params_arr, $where_arr);
+        }
+        catch(Exception $e)
+        {
+            $success = 0;
+            $this->block_result["data"] = array();
+        }
+        $input_params["like_count_management"] = $this->block_result["data"];
+        $input_params = $this->wsresponse->assignSingleRecord($input_params, $this->block_result["data"]);
+
+        return $input_params;
+    }
+  
 
      /**
      * get_user_device_token method is used to process query block.
@@ -877,6 +919,12 @@ class Connections extends Cit_Controller
             {
                 $params_arr["liked_id"] = $input_params["connection_user_id"];
             }
+
+            if (isset($input_params["app_section"]))
+            {
+                $params_arr["app_section"] = $input_params["app_section"];
+            }
+            
             $params_arr["_enotificationtype"] = "Match";
             $params_arr["_dtaddedat"] = "NOW()";
             $params_arr["_estatus"] = "active";
@@ -1082,6 +1130,7 @@ class Connections extends Cit_Controller
             
             'connection_type_by_logged_user',
             'connection_type_by_receiver_user',
+            'app_section'
         );
         $output_keys = array(
             'get_users_list_details',

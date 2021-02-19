@@ -71,7 +71,7 @@ class Api_access_logs_model extends CI_Model
         $this->primary_key = "iAccessLogId";
         $this->primary_alias = "aa_access_log_id";
         $this->physical_data_remove = "Yes";
-        $this->grid_fields = array("u_email", "aa_api_url", "aa_request_uri", "aa_platform", "aa_browser", "aa_i_paddress", "aa_access_date", "sys_custom_field_1", "sys_custom_field_2", "aa_performed_by");
+        $this->grid_fields = array("u_email", "aa_api_url", "aa_request_uri", "aa_i_paddress", "aa_access_date", "sys_custom_field_1", "sys_custom_field_2", "aa_performed_by");
         $this->join_tables = array(
             array(
                 "table_name" => "users",
@@ -670,52 +670,7 @@ class Api_access_logs_model extends CI_Model
                 "editable" => "No",
                 "viewedit" => "No"
             ),
-                "aa_platform" => array(
-                "name" => "aa_platform",
-                "table_name" => "api_accesslogs",
-                "table_alias" => "aa",
-                "field_name" => "vPlatform",
-                "source_field" => "aa_platform",
-                "display_query" => "aa.vPlatform",
-                "entry_type" => "Table",
-                "data_type" => "varchar",
-                "show_in" => "Both",
-                "type" => "textbox",
-                "align" => "left",
-                "label" => "Platform",
-                "lang_code" => "API_ACCESS_LOGS_PLATFORM",
-                "label_lang" => $this->lang->line('API_ACCESS_LOGS_PLATFORM'),
-                "width" => 50,
-                "search" => "Yes",
-                "export" => "Yes",
-                "sortable" => "Yes",
-                "addable" => "No",
-                "editable" => "No",
-                "viewedit" => "No"
-            ),
-                "aa_browser" => array(
-                "name" => "aa_browser",
-                "table_name" => "api_accesslogs",
-                "table_alias" => "aa",
-                "field_name" => "vBrowser",
-                "source_field" => "aa_browser",
-                "display_query" => "aa.vBrowser",
-                "entry_type" => "Table",
-                "data_type" => "varchar",
-                "show_in" => "Both",
-                "type" => "textbox",
-                "align" => "left",
-                "label" => "Browser",
-                "lang_code" => "API_ACCESS_LOGS_BROWSER",
-                "label_lang" => $this->lang->line('API_ACCESS_LOGS_BROWSER'),
-                "width" => 50,
-                "search" => "Yes",
-                "export" => "Yes",
-                "sortable" => "Yes",
-                "addable" => "No",
-                "editable" => "No",
-                "viewedit" => "No"
-            ),
+               
                 "aa_i_paddress" => array(
                 "name" => "aa_i_paddress",
                 "table_name" => "api_accesslogs",
@@ -887,32 +842,7 @@ class Api_access_logs_model extends CI_Model
                 "label_lang" => $this->lang->line('API_ACCESS_LOGS_ACCESS_DATE'),
                 "format" => 'Y-m-d'
             ),
-                "aa_platform" => array(
-                "name" => "aa_platform",
-                "table_name" => "api_accesslogs",
-                "table_alias" => "aa",
-                "field_name" => "vPlatform",
-                "entry_type" => "Table",
-                "data_type" => "varchar",
-                "show_input" => "Both",
-                "type" => "textbox",
-                "label" => "Platform",
-                "lang_code" => "API_ACCESS_LOGS_PLATFORM",
-                "label_lang" => $this->lang->line('API_ACCESS_LOGS_PLATFORM')
-            ),
-                "aa_browser" => array(
-                "name" => "aa_browser",
-                "table_name" => "api_accesslogs",
-                "table_alias" => "aa",
-                "field_name" => "vBrowser",
-                "entry_type" => "Table",
-                "data_type" => "varchar",
-                "show_input" => "Both",
-                "type" => "textbox",
-                "label" => "Browser",
-                "lang_code" => "API_ACCESS_LOGS_BROWSER",
-                "label_lang" => $this->lang->line('API_ACCESS_LOGS_BROWSER')
-            ),
+               
                 "aa_i_paddress" => array(
                 "name" => "aa_i_paddress",
                 "table_name" => "api_accesslogs",

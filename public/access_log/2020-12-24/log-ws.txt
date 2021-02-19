@@ -1,0 +1,5 @@
+::1~~religion_list~~Webservice~~2020-12-24 06:07:53~~http://widsconnect.localhost/WS/religion_list/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:1:{s:6:"method";s:3:"GET";}
+::1~~religion_list~~Webservice~~2020-12-24 06:08:24~~http://widsconnect.localhost/WS/religion_list/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:1:{s:6:"method";s:3:"GET";}
+::1~~religion_list~~Webservice~~2020-12-24 06:31:40~~http://widsconnect.localhost/WS/religion_list/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:1:{s:6:"method";s:3:"GET";}
+::1~~religion_list~~Webservice~~2020-12-24 07:10:17~~http://widsconnect.localhost/WS/religion_list/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:1:{s:6:"method";s:3:"GET";}
+::1~~religion_list~~Webservice~~2020-12-24 07:12:34~~http://widsconnect.localhost/WS/religion_list/~~PostmanRuntime/7.26.8~~Unknown OS Platform~~Unknown Browser~~a:1:{s:6:"method";s:3:"GET";}

@@ -899,6 +899,8 @@ $lang["DB_CHANGE_LOG_API"] = "API" ;
 $lang["DB_CHANGE_LOG_NOTIFICATION"] = "Notification" ;
 $lang["DB_CHANGE_LOG_OTHER"] = "Other" ;
 $lang["ACTION_NO_DB_CHANGE_LOG_DATA_FOUND_C46_C46_C33"] = "No DB Change Log data found..!" ;
+
+$lang["DB_CHANGE_LOG_ENTITY"] = "Entity" ;
 $lang["DB_CHANGE_LOG_DONE_BY"] = "Done By" ;
 $lang["DB_CHANGE_LOG_DONE_AT"] = "Done At" ;
 $lang["GENERIC_CUSTOMERS"] = "Customers" ;
@@ -1071,6 +1073,7 @@ $lang["USERS_MANAGEMENT_FIRST_NAME"] = "First Name" ;
 $lang["USERS_MANAGEMENT_LAST_NAME"] = "Last Name" ;
 $lang["USERS_MANAGEMENT_EMAIL"] = "Email" ;
 $lang["USERS_MANAGEMENT_PASSWORD"] = "Password" ;
+$lang["USERS_MANAGEMENT_UPLOAD_DOC"] = "Uploaded Document" ;
 $lang["USERS_MANAGEMENT_PROFILE_IMAGE"] = "Profile Image" ;
 $lang["USERS_MANAGEMENT_ADDRESS"] = "Address" ;
 $lang["USERS_MANAGEMENT_CITY"] = "City" ;

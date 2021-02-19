@@ -54,18 +54,25 @@ public function helperPrepareWhere(&$input_params=array())
 
                     if (isset($input_params['radius']) && $input_params['radius'] != "")
                     {
-                        $where[]= "FLOOR(".$input_params['distance'].") <='".$input_params['radius']."'";
+                        $where[]= "FLOOR(".$input_params['distance'].") <='".$input_params['radius']."' ";
                     }
 
-                    if($input_params['age'] > 0 && $input_params['age'] != "")
+
+                    if ((isset($input_params['min_age']) && $input_params['min_age'] != "") && (isset($input_params['max_age']) && $input_params['max_age'] != ""))
                     {
-                        $age = $input_params['age'];
-                        $lastYear = date("Y", strtotime("-$age years"));
 
-                        // echo "last yr--".$lastYear;
+                          $min_age = $input_params['min_age'];
+                          $minlastYear = date("Y", strtotime("-$min_age years"));
 
-                        $where[]="YEAR(dDob) <='".$lastYear."'";
+                          $max_age = $input_params['max_age'];
+                          $maxlastYear = date("Y", strtotime("-$max_age years"));
+                          // echo "last yr--".$lastYear;
+
+                         // $where[]="YEAR(dDob) <='".$lastYear."'";
+
+                    $this->db->where('YEAR(dDob) BETWEEN "'. $maxlastYear. '" and "'. $minlastYear.'"');
                     }
+
 
                     if(isset($input_params['gender']) && $input_params['gender'] != ""){
 

@@ -800,7 +800,7 @@ $_ENV['access_log'] = TRUE;
 //general params
 $config["QUERY_LOG_TRUNCATE"] = 30; // before 30 days
 $config["IMAGE_MAXIMUM_SIZE"] = 1024 * 10; // 10MB
-$config["IMAGE_EXTENSION_ARR"] = array('jpg', 'jpeg', 'jpe', 'png', 'gif', 'bmp', 'ico', 'svg','doc','pdf');
+$config["IMAGE_EXTENSION_ARR"] = array('jpg', 'jpeg', 'jpe', 'png', 'gif', 'bmp', 'ico', 'svg','doc','pdf','docx');
 $config['PUSH_NOTIFY_SOUND_ARR'] = array("default" => "Default", "alarm.mp3" => "Alarm", "received.caf" => "Received", "received1.caf" => "Received1");
 
 $config['SYSTEM_PAGING_PARAM'] = "page_index";

@@ -69,6 +69,7 @@ class Connections_model extends CI_Model
              $this->db->select("(concat(u.vFirstName,' ',u.vLastName)) AS user_name", FALSE);
              $this->db->select("u.vProfileImage AS user_image"); 
              $this->db->select("us1.eConnectionType AS connection_type"); 
+             $this->db->select("us1.dtTimeStamp AS date_time"); 
            //  $this->db->select("u.iAge AS age");
            
 
@@ -116,11 +117,19 @@ class Connections_model extends CI_Model
                 $this->db->select("u.vProfileImage AS user_image"); 
               //  $this->db->select("u.iAge AS age");
                 $this->db->select("usc.eConnectionType AS connection_type");
+                $this->db->select("usc.dtTimeStamp AS date_time"); 
                 //$this->db->where("usc.eStatus", 'Active');
 
                 $strwher="(usc.eConnectionType = '".$params_arr['connection_type']."' OR usc.eConnectionType='Superlike') AND usc.iUserId = '".$params_arr['user_id']."'";
+
+                 $this->db->where($strwher);
+
+                if (isset($params_arr['app_section']) && $params_arr['app_section'] != "")
+                {
+                    $this->db->where("usc.app_section =", $params_arr['app_section']);
+                }
                 
-                $this->db->where($strwher);
+               
                 $this->db->order_by("usc.dtAddedAt","DESC");
                 $this->db->limit($end_offset,$start_offset);
                 $result_obj = $this->db->get();
@@ -139,9 +148,15 @@ class Connections_model extends CI_Model
                 $this->db->select("u.vProfileImage AS user_image");
               //  $this->db->select("u.iAge AS age");
                 $this->db->select("usc.eConnectionType AS connection_type");
+                $this->db->select("usc.dtTimeStamp AS date_time"); 
                 //$this->db->where("usc.eStatus", 'Active');
 
-                $strwher="usc.eConnectionType = 'Like' AND usc.iConnectionUserId = '".$params_arr['user_id']."'";
+              if (isset($params_arr['app_section']) && $params_arr['app_section'] != "")
+                {
+                    $this->db->where("usc.app_section =", $params_arr['app_section']);
+                }
+                
+                $strwher="usc.eConnectionType = 'Like' AND usc.iConnectionUserId = '".$params_arr['user_id']."' ";
                 
                 $this->db->where($strwher);
                 $this->db->order_by("usc.dtAddedAt","DESC");
@@ -159,6 +174,7 @@ class Connections_model extends CI_Model
                 $this->db->select("u.iUserId AS user_id");
                 $this->db->select("(concat(u.vFirstName,' ',u.vLastName)) AS user_name", FALSE);
                 $this->db->select("u.vProfileImage AS user_image");
+                $this->db->select("usb.dtAddedAt AS date_time");
                 $this->db->where("usb.eStatus", 'Active');
                 $this->db->where("usb.iUserId", $params_arr['user_id']);
                 $this->db->order_by("usb.dtAddedAt","DESC");
@@ -249,7 +265,7 @@ class Connections_model extends CI_Model
                                 
             $this->db->from("users AS u");
             
-            $this->db->select("u.eIsSubscribed AS u_is_subscribed,u.app_section,u.iUserId AS u_users_id_1");
+            $this->db->select("u.eIsSubscribed AS u_is_subscribed,u.app_section,u.iLikesPerDay,u.iUserId AS u_users_id_1");
 
             if(isset($user_id) && $user_id != ""){ 
                 $this->db->where("u.iUserId =", $user_id);
@@ -271,7 +287,7 @@ class Connections_model extends CI_Model
 
                 $LikesAllowed = $this->config->item("LIKES_WITHOUT_SUBSCRIPTION");
 
-                  $this->db->from("users_connections AS uc");
+                  /*$this->db->from("users_connections AS uc");
             
                   $this->db->select("count(uc.iConnectionId) as LikesCount");
   
@@ -284,10 +300,12 @@ class Connections_model extends CI_Model
                   $this->db->limit(1);
                   
                   $result_obj2 = $this->db->get();
+
                   $result_arr2 = is_object($result_obj2) ? $result_obj2->result_array() : array();
+                  */
               //echo  $LikesAllowed."---".$result_arr2[0]["LikesCount"];
 
-                  if($result_arr2[0]["LikesCount"] > $LikesAllowed)
+                  if($result_arr[0]["iLikesPerDay"] > $LikesAllowed)
                   {
                      $success = 0;
                      throw new Exception('Please buy subscription to continue with us!');
@@ -300,6 +318,42 @@ class Connections_model extends CI_Model
             $message = $e->getMessage();
         }
         
+        $this->db->_reset_all();
+        //echo $this->db->last_query();
+        $return_arr["success"] = $success;
+        $return_arr["message"] = $message;
+        $return_arr["data"] = $result_arr;
+        return $return_arr;
+    }
+
+     public function like_count_management($params_arr = array(), $where_arr = array())
+    {
+        try {
+            $result_arr = array();
+                        
+            
+            
+            if(isset($where_arr["u_users_id_1"]) && $where_arr["u_users_id_1"] != ""){ 
+                $this->db->where("iUserId =", $where_arr["u_users_id_1"]);
+            }
+           // $this->db->where("eIsSubscribed <>", "1");
+            
+            
+            $this->db->set($this->db->protect("iLikesPerDay"), $params_arr["u_likes_per_day"], FALSE);
+            $res = $this->db->update("users");
+            $affected_rows = $this->db->affected_rows();
+            if(!$res || $affected_rows == -1){
+                throw new Exception("Failure in updation.");
+            }
+            $result_param = "affected_rows2";
+            $result_arr[0][$result_param] = $affected_rows;
+            $success = 1;
+            
+        } catch (Exception $e) {
+            $success = 0;
+            $message = $e->getMessage();
+        }
+        $this->db->flush_cache();
         $this->db->_reset_all();
         //echo $this->db->last_query();
         $return_arr["success"] = $success;
@@ -424,6 +478,12 @@ class Connections_model extends CI_Model
             {
                 $this->db->set("iReceiverId", $params_arr["liked_id"]);
             }
+
+             if (isset($params_arr["app_section"]))
+            {
+                $this->db->set("app_section", $params_arr["app_section"]);
+            }
+
             $this->db->set("eNotificationType", $params_arr["_enotificationtype"]);
             $this->db->set($this->db->protect("dtAddedAt"), $params_arr["_dtaddedat"], FALSE);
             $this->db->set("eNotificationStatus", $params_arr["_estatus"]);
@@ -493,6 +553,9 @@ class Connections_model extends CI_Model
             }
             $this->db->insert("notification");
             $insert_id = $this->db->insert_id();
+
+          // echo $this->db->last_query(); exit();
+
             if (!$insert_id)
             {
                 throw new Exception("Failure in insertion.");

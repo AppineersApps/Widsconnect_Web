@@ -78,24 +78,16 @@ class Wscontroller extends Cit_Controller
         } else {
             $func_name = $func_arg;
         }
-
         if (empty($all_methods[$func_name])) {
             show_error('API code not found. Please save settings or update code.', 400);
         }
-
-       // print_r($all_methods);
-      
-       // echo " 1 func name--".$all_methods[$func_name]['folder'] . "/" . $func_name;
-
         $this->load->module($all_methods[$func_name]['folder'] . "/" . $func_name);
-         
-        // echo " 2 func name--". $func_name;
 
         //checking for webservice controller
         if (!is_object($this->$func_name)) {
             show_error('API code not found. Please save settings or update code.', 400);
         }
-       //echo "3 func name--".$func_name; die;
+
         //request params
         $request_arr = $this->WSRequestData($all_methods[$func_name]['method'], $id_arg);
         //HB-1153
@@ -108,7 +100,7 @@ class Wscontroller extends Cit_Controller
             $code = "503";
             $msg = "App maintenance mode";
         }
-        
+
         $api_allowed_without_access_token = array('social_login','user_login_phone','user_login_email','send_verification_link','check_unique_user','social_sign_up','user_sign_up_phone','user_sign_up_email','user_email_confirmation','static_pages','send_sms','reset_password_confirmation','reset_password_phone','get_template_message','forgot_password_phone','reset_password','forgot_password','states_list','get_config_paramaters','get_user_details');
 
             //JWT token verification
@@ -174,7 +166,8 @@ class Wscontroller extends Cit_Controller
         {
             $output_arr['settings']['success'] = $code;
             $output_arr['settings']['message'] = $msg;
-            $output_arr['data'] = "";
+            //$output_arr['data'] = "";
+            $output_arr['data'] = array();
             $this->wsresponse->sendWSResponse($output_arr, array(), $res_format);
         }
 
@@ -202,7 +195,6 @@ class Wscontroller extends Cit_Controller
         } else {
             //initiate webservice
             $start_method = "start_" . $func_name;
-            
             if (!method_exists($this->$func_name, $start_method)) {
                 show_error('API init method not found. Please save settings or update code.', 400);
             }

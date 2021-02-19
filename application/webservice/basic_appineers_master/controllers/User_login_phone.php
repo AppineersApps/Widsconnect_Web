@@ -335,7 +335,7 @@ class User_login_phone extends Cit_Controller
 
 
                     //****************************
-                    $data1 = $data_arr["u_Image1"];
+                    /*$data1 = $data_arr["u_Image1"];
                     $image_arr = array();
                     $image_arr["image_name"] = $data1;
                     $dest_path = "personal_images";
@@ -343,10 +343,10 @@ class User_login_phone extends Cit_Controller
                     $image_arr["path"] ="widsconnect/personal_images";
                     $data = $this->general->get_image_aws($image_arr);
                     
-                    $result_arr[$data_key]["u_Image1"] = (false == empty($data1))?$data1:"";
+                    $result_arr[$data_key]["u_Image1"] = (false == empty($data1))?$data1:"";*/
 
-                    //****************************
-                    $data1 = $data_arr["u_Image2"];
+                    
+                   /* $data1 = $data_arr["u_Image2"];
                     $image_arr = array();
                     $image_arr["image_name"] = $data2;
                     $dest_path = "personal_images";
@@ -355,7 +355,7 @@ class User_login_phone extends Cit_Controller
                     
                     $result_arr[$data_key]["u_Image2"] = (false == empty($data2))?$data2:"";
 
-                    //****************************
+                    
                     $data1 = $data_arr["u_Image3"];
                     $image_arr = array();
                     $image_arr["image_name"] = $data3;
@@ -365,7 +365,7 @@ class User_login_phone extends Cit_Controller
                     
                     $result_arr[$data_key]["u_Image3"] = (false == empty($data3))?$data3:"";
 
-                    //****************************
+          
                     $data1 = $data_arr["u_Image4"];
                     $image_arr = array();
                     $image_arr["image_name"] = $data4;
@@ -374,7 +374,7 @@ class User_login_phone extends Cit_Controller
                     $image_arr["path"] ="widsconnect/personal_images";
                     $data = $this->general->get_image_aws($image_arr);
                     
-                    $result_arr[$data_key]["u_Image4"] = (false == empty($data4))?$data4:"";
+                    $result_arr[$data_key]["u_Image4"] = (false == empty($data4))?$data4:"";*/
 
 
                     $i++;
@@ -616,10 +616,11 @@ class User_login_phone extends Cit_Controller
             'u_Triggers',
             'u_AboutYou',
             'u_AboutLatePerson',
-            'u_Image1',
+           /* 'u_Image1',
             'u_Image2',
             'u_Image3',
-            'u_Image4'
+            'u_Image4',*/
+            'app_section',
 
         );
         $output_keys = array(
@@ -682,10 +683,11 @@ class User_login_phone extends Cit_Controller
             'u_Triggers'=>'triggers',
             'u_AboutYou'=>'aboutyou',
             'u_AboutLatePerson'=>'aboutlateperson',
-            'u_Image1'=> 'image1',
+           /* 'u_Image1'=> 'image1',
             'u_Image2'=>'image2',
             'u_Image3'=> 'image3',
-            'u_Image4'=>'image4',
+            'u_Image4'=>'image4',*/
+            'app_section'=>'app_section',
         );
 
         $output_array["settings"] = $setting_fields;

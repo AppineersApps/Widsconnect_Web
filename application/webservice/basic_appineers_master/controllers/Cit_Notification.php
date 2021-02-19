@@ -34,7 +34,7 @@ Class Cit_Notification extends Notification {
             $this->db->select("iReceiverId AS receive_id");
              $this->db->where("iReceiverId", $input_params['user_id']);
             $arrNotification=$this->db->get()->result_array();
-            //print_r($arrNotification);exit;
+          //print_r($arrNotification);exit;
           if(true == empty($arrNotification)){
              $return_arr['message']="No notification available";
              $return_arr['status'] = "0";

@@ -134,14 +134,6 @@
         "label": "<%$list_config['aa_request_uri']['label_lang']%>"
     },
     {
-        "name": "aa_platform",
-        "label": "<%$list_config['aa_platform']['label_lang']%>"
-    },
-    {
-        "name": "aa_browser",
-        "label": "<%$list_config['aa_browser']['label_lang']%>"
-    },
-    {
         "name": "aa_i_paddress",
         "label": "<%$list_config['aa_i_paddress']['label_lang']%>"
     },
@@ -280,86 +272,6 @@
         },
         "ctrl_type": "textbox",
         "default_value": "<%$list_config['aa_request_uri']['default']%>",
-        "filterSopt": "bw"
-    },
-    {
-        "name": "aa_platform",
-        "index": "aa_platform",
-        "label": "<%$list_config['aa_platform']['label_lang']%>",
-        "labelClass": "header-align-left",
-        "resizable": true,
-        "width": "<%$list_config['aa_platform']['width']%>",
-        "search": <%if $list_config['aa_platform']['search'] eq 'No' %>false<%else%>true<%/if%>,
-        "export": <%if $list_config['aa_platform']['export'] eq 'No' %>false<%else%>true<%/if%>,
-        "sortable": <%if $list_config['aa_platform']['sortable'] eq 'No' %>false<%else%>true<%/if%>,
-        "hidden": <%if $list_config['aa_platform']['hidden'] eq 'Yes' %>true<%else%>false<%/if%>,
-        "hideme": <%if $list_config['aa_platform']['hideme'] eq 'Yes' %>true<%else%>false<%/if%>,
-        "addable": <%if $list_config['aa_platform']['addable'] eq 'Yes' %>true<%else%>false<%/if%>,
-        "editable": <%if $list_config['aa_platform']['editable'] eq 'Yes' %>true<%else%>false<%/if%>,
-        "align": "left",
-        "edittype": "text",
-        "editrules": {
-            "infoArr": []
-        },
-        "searchoptions": {
-            "attr": {
-                "aria-grid-id": el_tpl_settings.main_grid_id,
-                "aria-module-name": "api_access_logs",
-                "aria-unique-name": "aa_platform",
-                "autocomplete": "off"
-            },
-            "sopt": strSearchOpts,
-            "searchhidden": <%if $list_config['aa_platform']['search'] eq 'Yes' %>true<%else%>false<%/if%>
-        },
-        "editoptions": {
-            "aria-grid-id": el_tpl_settings.main_grid_id,
-            "aria-module-name": "api_access_logs",
-            "aria-unique-name": "aa_platform",
-            "placeholder": "",
-            "class": "inline-edit-row "
-        },
-        "ctrl_type": "textbox",
-        "default_value": "<%$list_config['aa_platform']['default']%>",
-        "filterSopt": "bw"
-    },
-    {
-        "name": "aa_browser",
-        "index": "aa_browser",
-        "label": "<%$list_config['aa_browser']['label_lang']%>",
-        "labelClass": "header-align-left",
-        "resizable": true,
-        "width": "<%$list_config['aa_browser']['width']%>",
-        "search": <%if $list_config['aa_browser']['search'] eq 'No' %>false<%else%>true<%/if%>,
-        "export": <%if $list_config['aa_browser']['export'] eq 'No' %>false<%else%>true<%/if%>,
-        "sortable": <%if $list_config['aa_browser']['sortable'] eq 'No' %>false<%else%>true<%/if%>,
-        "hidden": <%if $list_config['aa_browser']['hidden'] eq 'Yes' %>true<%else%>false<%/if%>,
-        "hideme": <%if $list_config['aa_browser']['hideme'] eq 'Yes' %>true<%else%>false<%/if%>,
-        "addable": <%if $list_config['aa_browser']['addable'] eq 'Yes' %>true<%else%>false<%/if%>,
-        "editable": <%if $list_config['aa_browser']['editable'] eq 'Yes' %>true<%else%>false<%/if%>,
-        "align": "left",
-        "edittype": "text",
-        "editrules": {
-            "infoArr": []
-        },
-        "searchoptions": {
-            "attr": {
-                "aria-grid-id": el_tpl_settings.main_grid_id,
-                "aria-module-name": "api_access_logs",
-                "aria-unique-name": "aa_browser",
-                "autocomplete": "off"
-            },
-            "sopt": strSearchOpts,
-            "searchhidden": <%if $list_config['aa_browser']['search'] eq 'Yes' %>true<%else%>false<%/if%>
-        },
-        "editoptions": {
-            "aria-grid-id": el_tpl_settings.main_grid_id,
-            "aria-module-name": "api_access_logs",
-            "aria-unique-name": "aa_browser",
-            "placeholder": "",
-            "class": "inline-edit-row "
-        },
-        "ctrl_type": "textbox",
-        "default_value": "<%$list_config['aa_browser']['default']%>",
         "filterSopt": "bw"
     },
     {

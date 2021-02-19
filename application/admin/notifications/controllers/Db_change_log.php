@@ -897,6 +897,7 @@ class Db_change_log extends Cit_Controller
             $mdc_operation = $params_arr["mdc_operation"];
             $mdc_primary_key = $params_arr["mdc_primary_key"];
             $mdc_field_data = $params_arr["mdc_field_data"];
+            $mdc_entity_name = $params_arr["mdc_entity_name"];
             $mdc_source = $params_arr["mdc_source"];
             $mdc_logged_by_id = $params_arr["mdc_logged_by_id"];
             $mdc_logged_name = $params_arr["mdc_logged_name"];
@@ -1436,9 +1437,10 @@ class Db_change_log extends Cit_Controller
     public function viewChanges()
     {
         $id=$this->input->get_post("id", TRUE);
-        $fields = "mdc.vTableName, mdc.eOperation, mdc.tFieldData";
+        $fields = "mdc.vTableName, mdc.eOperation, mdc.tFieldData, mdc.vEntityName, mdc.vLoggedName";
         $db_data = $this->db_change_log_model->getData($id, $fields);
         $db_data[0]['tFieldData'] = json_decode($db_data[0]['tFieldData'], true);
+
         $data_arr['db_log'] = $db_data[0];
         $this->smarty->assign($data_arr);
         $this->loadView("db_change_log_info");

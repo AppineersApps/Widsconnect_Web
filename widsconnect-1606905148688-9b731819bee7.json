@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "widsconnect-1606905148688",
+  "private_key_id": "9b731819bee70b726085869c9015324cf2566931",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCyIHq09d9DRg14\n4tchHb5iMa7RtIgAfaqF5FmpFfnKGHGQ/3yo78qRTZdddbszvMmHklMSMYag9W+j\nRZlMbC+U1nbCBhZMxQkIjXi2Rjwlolyp4jFfI/ArEHDHZNujo2ktpkAkoJZgpBfR\nf3HkbuHnkTCzEtPYxFT9HBPR3K7KuUAYPLuTsfnSuplrDRbvYJFFshclMgiVhH+B\nQxQefsh8AFCFw5+Kp0CUNwVD/joj6yw4cIYKUf0dfveR12jloMhb9FZXXCA9/LKM\nUovBhM67x0cYz73tjLKDN9dOIJrsfDihiTVtI1OnqbthDqpYYvKDask1VsuDtvnn\ncx+KwgyDAgMBAAECggEASZDNbNBA4X1ckgkJdUVd/BrtyvEG3EEKPJr3BrSrQbJ/\nsLU7jF/gZstHUNOPOYpmJwYhJdnrcq166lETw3LI4e0DBhXSfuk/VldrO8hdDeP0\n5jqjTlo+1eJH2anHZllWVoKbaiUihg4vQhgi9wduaB9YIBUOBi/rs881Rk6gp9tS\nxGnHNtr6e5vbTWuYQrFTjNMkrZHM3UOO0BFze0b135bngRxL1EcTAqxKhKXt/WhC\nZHkNs2BeeuH+DBW7OSyv63NkOB/kO3x5SwY73rHvV9ez+XfDe7bHWX1qmD07pRIM\nTUXThsNMvvFziHE5Y3piLHk97KlVqAuPga6VMwsHeQKBgQDg3fEX4VQIgd7Sd7ul\nE/GGBSwFSdaS4WlmPTEVZlfUmwrR5xS8ROzRPQM1OayedpzP4aa48TPFWJT9FxZ4\n+RClbMzPVH+ZInslL98H5qSeIywgTCzuiZgL2aBz4rqtieXPTiZgMbT5VJxUmhzy\nzoYPmfiQyDe+z1BAD+HTXgfv+QKBgQDKyeh7vBG5sjfF5eI+PvATMNXh9DCf0MUG\nFCq0O+VSJK6CkYnFCxaipOwUeIpNzMCQwkHngFWmHsWQqRw+Xc6GyHBpGq+A4CsN\n74ymtE/URHTFn9SOUEjurK+3/3VOsVp+ugBe0c2+R+169j80ab2B5VoA8gjkDMC7\n+jFx1zt3WwKBgE4VI1O8fbaaiiohQ3pWC4cTIq8PbcABH91NoE6jBBqiX8Z1bGDX\nujgJ7KQ9y7AW1erlm0QbFXQQh2O+8aG+MsaOmivgVpJxQ7us/NA8iasT4Y2xheSq\nyK5MuoejElmSSceLho3elM4DUGmcPjMd/bVLLOHxdFIAoQgtu6fuvejZAoGAJy7C\nK/5X0nCcFDHp+CsDCkI6YXFkX8zf9N+6rJ6SHcAWtAXY/+i3k++X6hCscIHqh03x\nnACRDAsQE3aJjYdkm2hpR/WvCZDG4OdzXtaiQhqEEZdjY6ghn3Rgc4X5rZ3ZJXld\nDvUs8uJFAahI6CCyTEH7lQkvLJlGOEwMd7mltNcCgYAwtu1UisrV2XUXRthOWX9P\nN4mPQw7tvFZwHRTol2dWhxrOShGoxQzXmVtJLb8OuVanPVmY/Y2qmDonbDP7qrLQ\n+dx9a7+8Gmy33j1H57dmM0VHcj572YI/6aWbIOAn/rMfJtbseyoSTfTBtky7tF6R\nI00NTI/kOk+E8SgBv1KCqQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "subscription-service-account@widsconnect-1606905148688.iam.gserviceaccount.com",
+  "client_id": "107098857412789974351",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/subscription-service-account%40widsconnect-1606905148688.iam.gserviceaccount.com"
+}

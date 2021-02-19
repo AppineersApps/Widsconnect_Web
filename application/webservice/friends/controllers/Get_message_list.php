@@ -132,7 +132,6 @@ class Get_message_list extends Cit_Controller
 
                 $input_params = $this->start_loop($input_params);
               
-
                 $output_response = $this->messages_finish_success_1($input_params);
                 return $output_response;
             }
@@ -243,6 +242,17 @@ class Get_message_list extends Cit_Controller
                     }
 
                      //print_r($result_arr);exit;
+                      //****************************
+                    $data1 = $data_arr["message_upload"];
+                    $image_arr = array();
+                    $image_arr["image_name"] = $data1;
+                     $image_arr["ext"] = implode(",", $this->config->item("IMAGE_EXTENSION_ARR"));
+                        $image_arr["color"] = "FFFFFF";
+                        $image_arr["no_img"] = FALSE;
+                    $image_arr["path"] ="widsconnect/chat_uploads";
+                    $data1 = $this->general->get_image_aws($image_arr);
+                    
+                    $result_arr[$data_key]["message_upload"] = (false == empty($data1))?$data1:"";
 
                     
                 }
@@ -370,18 +380,18 @@ class Get_message_list extends Cit_Controller
                 $i = 0;
                 foreach ($result_arr as $data_key => $data_arr)
                 {
-                    $data =array();
-                    $data = $data_arr["u_image"];
+                   
+                    $data1 = $data_arr["u_image"];
                     $image_arr = array();
-                    $image_arr["image_name"] = $data;
-                    $image_arr["ext"] = implode(",", $this->config->item("IMAGE_EXTENSION_ARR"));
-                    $image_arr["color"] = "FFFFFF";
-                    $image_arr["no_img"] = FALSE;
-                    $image_arr["path"] = "Widsconnect/user_profile";
-                    $data = $this->general->get_image_aws($image_arr);
-
-                    $result_arr[$data_key]["u_image"] = $data;
-
+                    $image_arr["image_name"] = $data1;
+                     $image_arr["ext"] = implode(",", $this->config->item("IMAGE_EXTENSION_ARR"));
+                        $image_arr["color"] = "FFFFFF";
+                        $image_arr["no_img"] = FALSE;
+                    $image_arr["path"] ="widsconnect/user_profile";
+                    $data1 = $this->general->get_image_aws($image_arr);
+                    
+                    $result_arr[$data_key]["u_image"] = (false == empty($data1))?$data1:"";
+              
                     $i++;
                 }
                 $this->block_result["data"] = $result_arr;
@@ -424,16 +434,17 @@ class Get_message_list extends Cit_Controller
                 $i = 0;
                 foreach ($result_arr as $data_key => $data_arr)
                 {
-                    $data =array();
-                    $data = $data_arr["ui_image"];
+      
+                   $data1 = $data_arr["ui_image"];
                     $image_arr = array();
-                    $image_arr["image_name"] = $data;
-                    $image_arr["ext"] = implode(",", $this->config->item("IMAGE_EXTENSION_ARR"));
-                    $image_arr["color"] = "FFFFFF";
-                    $image_arr["no_img"] = FALSE;
-                    $image_arr["path"] = "Widsconnect/user_profile";
-                    $data = $this->general->get_image_aws($image_arr);
-                    $result_arr[$data_key]["ui_image"] = $data;
+                    $image_arr["image_name"] = $data1;
+                     $image_arr["ext"] = implode(",", $this->config->item("IMAGE_EXTENSION_ARR"));
+                        $image_arr["color"] = "FFFFFF";
+                        $image_arr["no_img"] = FALSE;
+                    $image_arr["path"] ="widsconnect/user_profile";
+                    $data1 = $this->general->get_image_aws($image_arr);
+                    
+                    $result_arr[$data_key]["ui_image"] = (false == empty($data1))?$data1:"";
 
                     $i++;
                 }
@@ -600,9 +611,7 @@ class Get_message_list extends Cit_Controller
 
              //echo "getting receiver img";
 
-            $input_params = $this->get_receiver_images($input_params);
-
-            
+            $input_params = $this->get_receiver_images($input_params); 
 
             $input_params = $this->custom_function_1($input_params);
 
@@ -679,6 +688,7 @@ class Get_message_list extends Cit_Controller
             'updated_at',
             'sender_image',
             'receiver_image',
+            'message_upload',
             'message_date',
             'connection_type_by_logged_user',
             'connection_type_by_receiver_user',

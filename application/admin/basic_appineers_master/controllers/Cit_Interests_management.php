@@ -26,6 +26,7 @@ Class Cit_Interests_management extends Interests_management {
       $this->load->model('cit_api_model');
 }
 public function checkUniqueInterest($value = ''){
+
     $return_arr='1';
     if(false == empty($value)){
       $this->db->select('iInterestsId');

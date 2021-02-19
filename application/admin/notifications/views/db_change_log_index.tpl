@@ -19,9 +19,9 @@
                                     </div>
                                     <div class="inner-content">
                                         <h3 class="title">{%mdc_date_added%}</h3>
-                                        <div class="pk">#{%mdc_primary_key%}</div>
+                                      
                                         <p class="description">
-                                            {{description}} -- {%mdc_field_data%}
+                                            {%mdc_entity_name%} -- {%mdc_field_data%}
                                         </p>
                                     </div>
                                 </div>

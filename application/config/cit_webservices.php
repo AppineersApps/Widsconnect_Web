@@ -138,6 +138,47 @@ $config["edit_profile"] = array(
         "travaled_places",
         "triggers",
         "about_you",
+        "about_late_person",
+        "upload_doc"
+
+    ),
+    "token" => "",
+    "payload" => array(
+    ),
+    "target" => ""
+);
+
+$config["update_personal_info"] = array(
+    "title" => "Update personal information",
+    "folder" => "basic_appineers_master",
+    "method" => "GET_POST",
+    "params" => array(
+        "user_id",
+        "drink",
+        "smoke",
+        "420friendly",
+        "kids",
+        "height",
+        "body_type",
+        "sign",
+        "gender",
+        "religion",
+        "sexual_preference",
+        "education",
+        "profession",
+        "income",
+        "image1",
+        "image2",
+        "image3",
+        "image4",
+        "image5",
+        "interest",
+        "marriage_status",
+        "tattoos",
+        "traveled_places",
+        "places_want_to_travel",
+        "triggers",
+        "about_you",
         "about_late_person_passes",
         "upload_doc"
 
@@ -147,6 +188,8 @@ $config["edit_profile"] = array(
     ),
     "target" => ""
 );
+
+
 $config["forgot_password"] = array(
     "title" => "Forgot Password",
     "folder" => "basic_appineers_master",
@@ -720,6 +763,31 @@ $config["religion_list"] = array(
     "folder" => "basic_appineers_master",
     "method" => "GET_POST",
     "params" => array(
+    ),
+    "token" => "",
+    "payload" => array(
+    ),
+    "target" => ""
+);
+
+$config["body_type_list"] = array(
+    "title" => "body Type List",
+    "folder" => "basic_appineers_master",
+    "method" => "GET_POST",
+    "params" => array(
+    ),
+    "token" => "",
+    "payload" => array(
+    ),
+    "target" => ""
+);
+
+$config["delete_image"] = array(
+    "title" => "Delete user images",
+    "folder" => "basic_appineers_master",
+    "method" => $_SERVER['REQUEST_METHOD'],
+    "params" => array(
+        "image_id",
     ),
     "token" => "",
     "payload" => array(

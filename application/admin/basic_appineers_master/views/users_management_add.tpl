@@ -48,48 +48,49 @@
 <div class="title <%$rl_theme_arr['frm_stand_titles_bar']%>"><h4><%$this->lang->line('USERS_MANAGEMENT_USERS_MANAGEMENT')%></h4></div>
 <div class="content <%$rl_theme_arr['frm_stand_label_align']%>">
 <div class="form-row row-fluid " id="cc_sh_u_profile_image">
-<label class="form-label span3 ">
-<%$form_config['u_profile_image']['label_lang']%>
-</label> 
-<div class="form-right-div  <%if $mode eq 'Update'%>frm-elements-div<%/if%> ">
-<%if $mode eq "Add"%>
-<div  class='btn-uploadify frm-size-medium' >
-<input type="hidden" value="<%$data['u_profile_image']%>" name="old_u_profile_image" id="old_u_profile_image" />
-<input type="hidden" value="<%$data['u_profile_image']%>" name="u_profile_image" id="u_profile_image"  aria-extensions="gif,png,jpg,jpeg,jpe,bmp,ico" aria-valid-size="<%$this->lang->line('GENERIC_LESS_THAN')%> (<) 100 MB"/>
-<input type="hidden" value="<%$data['u_profile_image']%>" name="temp_u_profile_image" id="temp_u_profile_image"  />
-<div id="upload_drop_zone_u_profile_image" class="upload-drop-zone"></div>
-<div class="uploader upload-src-zone">
-<input type="file" name="uploadify_u_profile_image" id="uploadify_u_profile_image" title="<%$this->lang->line('USERS_MANAGEMENT_PROFILE_IMAGE')%>" />
-<span class="filename" id="preview_u_profile_image">
-    <%if $data['u_profile_image'] neq ''%>
-        <%$data['u_profile_image']%>
-    <%else%>
-        <%$this->lang->line('GENERIC_DROP_FILES_HERE_OR_CLICK_TO_UPLOAD')%>
+    <label class="form-label span3 ">
+    <%$form_config['u_profile_image']['label_lang']%>
+    </label> 
+    <div class="form-right-div  <%if $mode eq 'Update'%>frm-elements-div<%/if%> ">
+    <%if $mode eq "Add"%>
+    <div  class='btn-uploadify frm-size-medium' >
+    <input type="hidden" value="<%$data['u_profile_image']%>" name="old_u_profile_image" id="old_u_profile_image" />
+    <input type="hidden" value="<%$data['u_profile_image']%>" name="u_profile_image" id="u_profile_image"  aria-extensions="gif,png,jpg,jpeg,jpe,bmp,ico" aria-valid-size="<%$this->lang->line('GENERIC_LESS_THAN')%> (<) 100 MB"/>
+    <input type="hidden" value="<%$data['u_profile_image']%>" name="temp_u_profile_image" id="temp_u_profile_image"  />
+    <div id="upload_drop_zone_u_profile_image" class="upload-drop-zone"></div>
+    <div class="uploader upload-src-zone">
+    <input type="file" name="uploadify_u_profile_image" id="uploadify_u_profile_image" title="<%$this->lang->line('USERS_MANAGEMENT_PROFILE_IMAGE')%>" />
+    <span class="filename" id="preview_u_profile_image">
+        <%if $data['u_profile_image'] neq ''%>
+            <%$data['u_profile_image']%>
+        <%else%>
+            <%$this->lang->line('GENERIC_DROP_FILES_HERE_OR_CLICK_TO_UPLOAD')%>
+        <%/if%>
+    </span>
+    <span class="action">Choose File</span>
+    </div>
+    </div>
+    <%else%>    
+    <input type="hidden" value="<%$data['u_profile_image']%>" name="u_profile_image" id="u_profile_image"  />
     <%/if%>
-</span>
-<span class="action">Choose File</span>
+    <div class='upload-image-btn'>
+    <%$img_html['u_profile_image']%>
+    </div>
+    <span class="input-comment">
+    <a href="javascript://" style="text-decoration: none;" class="tipR" title="<%$this->lang->line('GENERIC_VALID_EXTENSIONS')%> : gif, png, jpg, jpeg, jpe, bmp, ico.<br><%$this->lang->line('GENERIC_VALID_SIZE')%> : <%$this->lang->line('GENERIC_LESS_THAN')%> (<) 100 MB."><span class="icomoon-icon-help"></span></a>
+    </span>
+    <div class='clear upload-progress' id='progress_u_profile_image'>
+    <div class='upload-progress-bar progress progress-striped active'>
+    <div class='bar' id='practive_u_profile_image'></div>
+    </div>
+    <div class='upload-cancel-div'><a class='upload-cancel' href='javascript://'>Cancel</a></div>
+    <div class='clear'></div>
+    </div>
+    <div class='clear'></div>
+    </div>
+    <div class="error-msg-form "><label class='error' id='u_profile_imageErr'></label></div>
 </div>
-</div>
-<%else%>    
-<input type="hidden" value="<%$data['u_profile_image']%>" name="u_profile_image" id="u_profile_image"  />
-<%/if%>
-<div class='upload-image-btn'>
-<%$img_html['u_profile_image']%>
-</div>
-<span class="input-comment">
-<a href="javascript://" style="text-decoration: none;" class="tipR" title="<%$this->lang->line('GENERIC_VALID_EXTENSIONS')%> : gif, png, jpg, jpeg, jpe, bmp, ico.<br><%$this->lang->line('GENERIC_VALID_SIZE')%> : <%$this->lang->line('GENERIC_LESS_THAN')%> (<) 100 MB."><span class="icomoon-icon-help"></span></a>
-</span>
-<div class='clear upload-progress' id='progress_u_profile_image'>
-<div class='upload-progress-bar progress progress-striped active'>
-<div class='bar' id='practive_u_profile_image'></div>
-</div>
-<div class='upload-cancel-div'><a class='upload-cancel' href='javascript://'>Cancel</a></div>
-<div class='clear'></div>
-</div>
-<div class='clear'></div>
-</div>
-<div class="error-msg-form "><label class='error' id='u_profile_imageErr'></label></div>
-</div>
+
 <div class="form-row row-fluid " id="cc_sh_u_first_name">
 <label class="form-label span3 ">
 <%$form_config['u_first_name']['label_lang']%>
@@ -385,11 +386,60 @@
                                 </div>
                                 <div class="error-msg-form "><label class='error' id='u_deleted_atErr'></label></div>
                             </div>
+
+
+
+                            <div class="form-row row-fluid " id="cc_sh_u_UploadDoc">
+                                <label class="form-label span3 ">
+                                <%$form_config['u_UploadDoc']['label_lang']%>
+                                </label> 
+                                <div class="form-right-div  <%if $mode eq 'Update'%>frm-elements-div<%/if%> ">
+                                <%if $mode eq "Add"%>
+                                <div  class='btn-uploadify frm-size-medium' >
+                                <input type="hidden" value="<%$data['u_UploadDoc']%>" name="old_u_UploadDoc" id="old_u_UploadDoc" />
+                                <input type="hidden" value="<%$data['u_UploadDoc']%>" name="u_UploadDoc" id="u_UploadDoc"  aria-extensions="gif,png,jpg,jpeg,jpe,bmp,ico,pdf,xlsx,doc,docx" aria-valid-size="<%$this->lang->line('GENERIC_LESS_THAN')%> (<) 100 MB"/>
+                                <input type="hidden" value="<%$data['u_UploadDoc']%>" name="temp_u_UploadDoc" id="temp_u_UploadDoc"  />
+                                <div id="upload_drop_zone_u_UploadDoc" class="upload-drop-zone"></div>
+                                <div class="uploader upload-src-zone">
+                                <input type="file" name="uploadify_u_UploadDoc" id="uploadify_u_UploadDoc" title="<%$this->lang->line('USERS_MANAGEMENT_UPLOAD_DOC')%>" />
+                                <span class="filename" id="preview_u_UploadDoc">
+                                    <%if $data['u_UploadDoc'] neq ''%>
+                                        <%$data['u_UploadDoc']%>
+                                    <%else%>
+                                        <%$this->lang->line('GENERIC_DROP_FILES_HERE_OR_CLICK_TO_UPLOAD')%>
+                                    <%/if%>
+                                </span>
+                                <span class="action">Choose File</span>
+                                </div>
+                                </div>
+                                <%else%>    
+                                <input type="hidden" value="<%$data['u_UploadDoc']%>" name="u_UploadDoc" id="u_UploadDoc"  />
+                                <%/if%>
+                                <div class=''>
+                                    <a href="<%$u_UploadDoc_path%>" target="_blank"><%$data['u_UploadDoc']%></a>  
+                                </div>
+
+                                <div class='clear upload-progress' id='progress_u_UploadDoc'>
+                                <div class='upload-progress-bar progress progress-striped active'>
+                                <div class='bar' id='practive_u_UploadDoc'></div>
+                                </div>
+                                <div class='upload-cancel-div'><a class='upload-cancel' href='javascript://'>Cancel</a></div>
+                                <div class='clear'></div>
+                                </div>
+                                <div class='clear'></div>
+                                </div>
+                                <div class="error-msg-form "><label class='error' id='u_UploadDocErr'></label></div>
+                            </div>
+
+
                             <div class="form-row row-fluid " id="cc_sh_u_status">
                                 <label class="form-label span3 ">
                                     <%$form_config['u_status']['label_lang']%> <em>*</em> 
                                 </label> 
                                 <div class="form-right-div  ">
+
+                                    <input type="hidden" value="<%$data['u_status']%>" name="current_status" id="current_status"  />
+
                                     <%assign var="opt_selected" value=$data['u_status']%>
                                     <%$this->dropdown->display("u_status","u_status","  title='<%$this->lang->line('USERS_MANAGEMENT_STATUS')%>'  aria-chosen-valid='Yes'  class='chosen-select frm-size-medium'  data-placeholder='<%$this->general->parseLabelMessage('GENERIC_PLEASE_SELECT__C35FIELD_C35' ,'#FIELD#', 'USERS_MANAGEMENT_STATUS')%>'  ", "|||", "", $opt_selected,"u_status")%>
                                 </div>

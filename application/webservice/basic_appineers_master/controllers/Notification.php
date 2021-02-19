@@ -307,7 +307,7 @@ class Notification extends Cit_Controller
             $input_params = $validation_res['input_params'];
             $output_array = $func_array = array();
 
-           
+          // print_r($input_params);
 
 	     if(isset($input_params["user_id"])){
 
@@ -315,25 +315,28 @@ class Notification extends Cit_Controller
 
             if (false == empty($arrCondition["checknotificationtatus"]["status"]))
             {
-               
+         
 		          $input_params = $this->delete_all_notification($request_arr);
-               if ($input_params["affected_rows"])
-                {
-                    $output_response = $this->delete_notification_finish_success($input_params);
-                    return $output_response;
-                }else{
+
+                 // print_r($input_params);
+
+                   if ($input_params["affected_rows"])
+                    {
+                        $output_response = $this->delete_notification_finish_success($input_params);
+                        return $output_response;
+                    }else{
 
 
-                    $output_response = $this->delete_notification_finish_success_1($input_params);
-                    return $output_response;
-                }
-		        }else
-		        {
+                        $output_response = $this->delete_notification_finish_success_1($input_params);
+                        return $output_response;
+                    }
+	        }else
+	        {
 
 
-		        	 $output_response = $this->delete_notification_finish_success_1($input_params);
-                    return $output_response;
-		        }
+	        	 $output_response = $this->delete_notification_finish_success_1($input_params);
+                return $output_response;
+	        }
         }
       }
         catch(Exception $e)
@@ -439,7 +442,7 @@ class Notification extends Cit_Controller
 
         $setting_fields = array(
             "success" => "0",
-            "message" => "notification_finish_success_3",
+            "message" => "notifications not found",
         );
         $output_fields = array();
 
@@ -530,7 +533,7 @@ class Notification extends Cit_Controller
     {
      $setting_fields = array(
             "success" => "0",
-            "message" => "Id not exists",
+            "message" => "Notification not recived yet.",
 
         );
         $output_fields = array();

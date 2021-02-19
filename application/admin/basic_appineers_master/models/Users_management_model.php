@@ -53,6 +53,7 @@ class Users_management_model extends CI_Model
     public $listing_data;
     public $rec_per_page;
     public $message;
+    protected $CI;
     
     /**
      * __construct method is used to set model preferences while model object initialization.
@@ -62,6 +63,8 @@ class Users_management_model extends CI_Model
     public function __construct() 
     {
         parent::__construct();
+
+        $this->CI = & get_instance();
         $this->load->library('listing');
         $this->load->library('filter');
         $this->load->library('dropdown');
@@ -106,7 +109,23 @@ class Users_management_model extends CI_Model
     {
         $this->db->insert($this->table_name, $data);
         $insert_id = $this->db->insert_id();
-        $this->insert_id = $insert_id;    
+        $this->insert_id = $insert_id;  
+
+         if($insert_id > 0)
+        {
+
+            $logArray['iPrimaryKey'] = $insert_id; 
+            $logArray['vCondition'] = $this->primary_key; 
+            $logArray['vTableName'] = $this->table_name;
+            $logArray['eOperation'] = "Added";
+            $logArray['tFieldData'] = json_encode($data);
+            $logArray['eSource'] = "Admin";
+            $logArray['iLoggedById'] = $this->CI->session->userdata('iAdminId');
+            $logArray['vLoggedName'] = $this->CI->session->userdata('vEmail');
+            $logArray['vEntityName'] = "Interest- ".$data['vInterestsName'];
+            
+            $this->db->insert("mod_db_changelog",$logArray);
+        }  
         return $insert_id;
     }
         
@@ -120,6 +139,7 @@ class Users_management_model extends CI_Model
      */
     public function update($data = array(), $where = '', $alias = "No", $join = "No")
     {
+  
         if($alias == "Yes"){
             if($join == "Yes"){
                 $join_tbls = $this->addJoinTables("NR");
@@ -158,6 +178,106 @@ class Users_management_model extends CI_Model
             }
             $res = $this->db->update($this->table_name, $data);
         }
+
+        // adding backend log 
+        if($this->db->affected_rows() == 1)
+        {
+             if (is_numeric($where)) {
+               
+                $logArray['iPrimaryKey'] = $where; 
+                $logArray['vCondition'] = $this->primary_key; 
+
+            } else if($where){
+
+                $logArray['iPrimaryKey'] = ""; 
+                $logArray['vCondition'] = $where; 
+            } 
+
+            $logArray['vTableName'] = $this->table_name;
+            $logArray['eOperation'] = "Modified";
+            $logArray['tFieldData'] = json_encode($data);
+            $logArray['eSource'] = "Admin";
+            $logArray['iLoggedById'] = $this->CI->session->userdata('iAdminId');
+            $logArray['vLoggedName'] = $this->CI->session->userdata('vEmail');
+           // $logArray['dDateAdded'] = CURRENT_TIMESTAMP();
+            $updatedEntity = "";
+            if($where != "")
+            {
+                $this->db->select("u.vEmail AS u_email");
+                $this->db->from($this->table_name . " AS " . $this->table_alias);
+                 if (is_numeric($where)) {
+                        $this->db->where($this->table_alias . "." . $this->primary_key, $where);
+                    } elseif($where){
+                        $this->db->where($where, FALSE, FALSE);
+                    } 
+
+                $data_obj = $this->db->get();
+                $data_arr12 = is_object($data_obj) ? $data_obj->result_array() : array();
+                $updatedEntity = $data_arr12[0]['u_email'];
+
+            }
+            
+            $logArray['vEntityName'] = "user- ".$updatedEntity;
+            $this->db->insert("mod_db_changelog",$logArray);
+
+          //  echo $this->db->last_query(); exit();
+        }
+
+          if($this->db->affected_rows() > 1)
+        { 
+         
+            if (substr_count($where,"IN") > 0) 
+            {
+            
+                preg_match_all('!\d+!', $where, $matches);
+                $where_values = $matches[0];
+
+                foreach ($where_values as $key => $whereV) 
+                {
+                    if (is_numeric($whereV)) {
+               
+                        $logArray['iPrimaryKey'] = $whereV; 
+                        $logArray['vCondition'] = $this->primary_key; 
+
+                    } else if($whereV){
+
+                        $logArray['iPrimaryKey'] = ""; 
+                        $logArray['vCondition'] = $whereV; 
+                    } 
+
+                    $logArray['vTableName'] = $this->table_name;
+                    $logArray['eOperation'] = "Modified";
+                    $logArray['tFieldData'] = json_encode($data);
+                    $logArray['eSource'] = "Admin";
+                    $logArray['iLoggedById'] = $this->CI->session->userdata('iAdminId');
+                    $logArray['vLoggedName'] = $this->CI->session->userdata('vEmail');
+                   // $logArray['dDateAdded'] = CURRENT_TIMESTAMP();
+                    $updatedEntity = "";
+                    if($whereV != "")
+                    {
+                        $this->db->select("u.vEmail AS u_email");
+                        $this->db->from($this->table_name . " AS " . $this->table_alias);
+                         if (is_numeric($whereV)) {
+                                $this->db->where($this->table_alias . "." . $this->primary_key, $whereV);
+                            } elseif($whereV){
+                                $this->db->where($whereV, FALSE, FALSE);
+                            } 
+
+                        $data_obj = $this->db->get();
+                        $data_arr12 = is_object($data_obj) ? $data_obj->result_array() : array();
+                        $updatedEntity = $data_arr12[0]['u_email'];
+
+                    }
+                    
+                    $logArray['vEntityName'] = "user- ".$updatedEntity;
+                    $this->db->insert("mod_db_changelog",$logArray);
+
+                  //  echo $this->db->last_query(); exit();
+
+                }
+            }
+        }
+
         return $res;
     }
     
@@ -170,6 +290,89 @@ class Users_management_model extends CI_Model
      */
     public function delete($where = "", $alias = "No", $join = "No")
     {
+ 
+        if (substr_count($where,"IN") > 0 && !is_numeric($where)) 
+        {
+        
+            preg_match_all('!\d+!', $where, $matches);
+            $where_values = $matches[0];
+
+            foreach ($where_values as $key => $whereV) 
+            {
+    
+                $logArray['iPrimaryKey'] = $whereV; 
+                $logArray['vCondition'] = $this->primary_key; 
+
+                $logArray['vTableName'] = $this->table_name;
+                $logArray['eOperation'] = "Deleted";
+                $logArray['tFieldData'] = json_encode($data);
+                $logArray['eSource'] = "Admin";
+                $logArray['iLoggedById'] = $this->CI->session->userdata('iAdminId');
+                $logArray['vLoggedName'] = $this->CI->session->userdata('vEmail');
+               // $logArray['dDateAdded'] = CURRENT_TIMESTAMP();
+                $updatedEntity = "";
+                if($whereV != "")
+                {
+                    $this->db->select("vEmail");
+                    $this->db->from($this->table_name . " AS " . $this->table_alias);
+                     if (is_numeric($whereV)) {
+                            $this->db->where($this->table_alias . "." . $this->primary_key, $whereV);
+                        } 
+
+                    $data_obj = $this->db->get();
+                    $data_arr12 = is_object($data_obj) ? $data_obj->result_array() : array();
+                    $updatedEntity = $data_arr12[0]['vEmail'];
+
+                }
+                
+                $logArray['vEntityName'] = "user- ".$updatedEntity;
+                $this->db->insert("mod_db_changelog",$logArray);
+
+              //  echo $this->db->last_query(); exit();
+            }
+        }
+        else {
+             if (is_numeric($where)) {
+               
+                $logArray['iPrimaryKey'] = $where; 
+                $logArray['vCondition'] = $this->primary_key; 
+
+            } else if($where){
+
+                $logArray['iPrimaryKey'] = ""; 
+                $logArray['vCondition'] = $where; 
+            } 
+
+            $logArray['vTableName'] = $this->table_name;
+            $logArray['eOperation'] = "Deleted";
+            $logArray['tFieldData'] = json_encode($data);
+            $logArray['eSource'] = "Admin";
+            $logArray['iLoggedById'] = $this->CI->session->userdata('iAdminId');
+            $logArray['vLoggedName'] = $this->CI->session->userdata('vEmail');
+           // $logArray['dDateAdded'] = CURRENT_TIMESTAMP();
+            $updatedEntity = "";
+            if($where != "")
+            {
+                $this->db->select("vEmail");
+                $this->db->from($this->table_name . " AS " . $this->table_alias);
+                 if (is_numeric($where)) {
+                        $this->db->where($this->table_alias . "." . $this->primary_key, $where);
+                    } elseif($where){
+                        $this->db->where($where, FALSE, FALSE);
+                    } 
+
+                $data_obj = $this->db->get();
+                $data_arr12 = is_object($data_obj) ? $data_obj->result_array() : array();
+                $updatedEntity = $data_arr12[0]['vEmail'];
+
+            }
+            
+            $logArray['vEntityName'] = "user- ".$updatedEntity;
+            $this->db->insert("mod_db_changelog",$logArray);
+
+          //  echo $this->db->last_query(); exit();
+        }
+
         if($this->config->item('PHYSICAL_RECORD_DELETE') && $this->physical_data_remove == 'No') {
             if($alias == "Yes"){
                 if(is_array($join['joins']) && count($join['joins'])){
@@ -281,6 +484,8 @@ class Users_management_model extends CI_Model
         $this->db->select("u.dtAddedAt AS u_added_at");
         $this->db->select("u.eStatus AS u_status");
         $this->db->select("u.dtUpdatedAt AS u_updated_at");
+        $this->db->select("u.vUploadDoc AS u_UploadDoc");
+        $this->db->select("(concat(u.vFirstName,' ',u.vLastName)) AS email_user_name", FALSE);
         
         } else {
             $this->db->select("u.iUserId AS iUserId");
@@ -319,7 +524,8 @@ class Users_management_model extends CI_Model
             $this->db->select("u.vDeviceModel AS u_device_model");
             $this->db->select("u.vDeviceOS AS u_device_os");
             $this->db->select("u.eLogStatus AS u_log_status_updated");
-            
+            $this->db->select("u.vUploadDoc AS u_UploadDoc");
+            $this->db->select("(concat(u.vFirstName,' ',u.vLastName)) AS email_user_name", FALSE);
         }
         
         $this->db->from($this->table_name . " AS " . $this->table_alias);
@@ -825,6 +1031,28 @@ class Users_management_model extends CI_Model
     public function getFormConfiguration($name = "")
     {
         $form_config = array(
+ 
+                "u_UploadDoc" => array(
+                "name" => "u_UploadDoc",
+                "table_name" => "users",
+                "table_alias" => "u",
+                "field_name" => "vUploadDoc",
+                "entry_type" => "Table",
+                "data_type" => "varchar",
+                "show_input" => "Both",
+                "type" => "file",
+                "label" => "Uploaded Document",
+                "lang_code" => "USERS_MANAGEMENT_UPLOAD_DOC",
+                "label_lang" => $this->lang->line('USERS_MANAGEMENT_UPLOAD_DOC'),
+                "file_upload" => "Yes",
+                "file_server" => "amazon",
+                "file_folder" => "widsconnect/upload_doc",
+                "file_width" => "80",
+                "file_height" => "80",
+                "file_format" => "gif,png,jpg,jpeg,jpe,bmp,ico,pdf,xlsx,doc,docx",
+                "file_size" => "102400",
+                "file_label" => "Yes"
+            ),
                 "u_profile_image" => array(
                 "name" => "u_profile_image",
                 "table_name" => "users",

@@ -406,30 +406,6 @@ class User_sign_up_phone extends Cit_Controller
 
             }
 
-             //*******upload doc *******************
-            /* if (isset($_FILES["upload_doc"]["name"]) && isset($_FILES["upload_doc"]["tmp_name"]))
-            {
-                $sent_file2 = $_FILES["upload_doc"]["name"];
-            }
-            else
-            {
-                $sent_file2 = "";
-            }
-            if (!empty($sent_file2))
-            {
-                list($file_name, $ext) = $this->general->get_file_attributes($sent_file2);
-                $images_arr["upload_doc"]["ext"] = implode(',', $this->config->item('IMAGE_EXTENSION_ARR'));
-                $images_arr["upload_doc"]["size"] = "102400";
-                if ($this->general->validateFileFormat($images_arr["upload_doc"]["ext"], $_FILES["upload_doc"]["name"]))
-                {
-                    if ($this->general->validateFileSize($images_arr["upload_doc"]["size"], $_FILES["upload_doc"]["size"]))
-                    {
-                        $images_arr["upload_doc"]["name"] = $file_name;
-                    }
-                }
-            }*/
-            //*******upload doc *******************
-
             if (isset($input_params["first_name"]))
             {
                 $params_arr["first_name"] = $input_params["first_name"];
@@ -454,10 +430,6 @@ class User_sign_up_phone extends Cit_Controller
             {
                 $params_arr["user_profile"] = $images_arr["user_profile"]["name"];
             }
-           /* if (isset($images_arr["upload_doc"]["name"]))
-            {
-                $params_arr["upload_doc"] = $images_arr["upload_doc"]["name"];
-            }*/
             if (isset($input_params["dob"]))
             {
                 $params_arr["dob"] = $input_params["dob"];
@@ -498,7 +470,7 @@ class User_sign_up_phone extends Cit_Controller
             {
                 $params_arr["zipcode"] = $input_params["zipcode"];
             }
-            $params_arr["status"] = "Inactive";
+            $params_arr["status"] = "Active";
             $params_arr["_dtaddedat"] = "NOW()";
             if (isset($input_params["device_type"]))
             {
@@ -552,22 +524,6 @@ class User_sign_up_phone extends Cit_Controller
 
                 }
             }
-
-            //***** doc upload *********
-             /*if (!empty($images_arr["upload_doc"]["name"]))
-            {
-
-                $folder_name = "widsconnect/upload_doc";             
-                
-                $temp_file = $_FILES["upload_doc"]["tmp_name"];
-                $res = $this->general->uploadAWSData($temp_file, $folder_name, $images_arr["upload_doc"]["name"]);
-                if ($upload_arr[0] == "")
-                {
-                    //file upload failed
-
-                }
-            }*/
-            //***** doc upload *********
         }
         catch(Exception $e)
         {

@@ -199,6 +199,7 @@ class Users_model extends CI_Model
             $this->db->limit(1);
 
             $result_obj = $this->db->get();
+
             $result_arr = is_object($result_obj) ? $result_obj->result_array() : array();
             if (!is_array($result_arr) || count($result_arr) == 0)
             {
@@ -589,10 +590,12 @@ class Users_model extends CI_Model
             {
                 $this->db->set("vProfileImage", $params_arr["user_profile"]);
             }
-           /* if (isset($params_arr["upload_doc"]) && !empty($params_arr["upload_doc"]))
+            
+            if (isset($params_arr["upload_doc"]) && !empty($params_arr["upload_doc"]))
             {
                 $this->db->set("vUploadDoc", $params_arr["upload_doc"]);
-            }*/
+            }
+
             if (isset($params_arr["dob"]))
             {
                 $this->db->set("dDob", $params_arr["dob"]);
@@ -726,6 +729,7 @@ class Users_model extends CI_Model
             $this->db->select("u.vMobileNo AS u_mobile_no");
             $this->db->select("u.vProfileImage AS u_profile_image");
             $this->db->select("u.dDob AS u_dob");
+            $this->db->select("YEAR(u.dDob) AS dob_year");
             $this->db->select("u.tAddress AS u_address");
             $this->db->select("u.vCity AS u_city");
             $this->db->select("u.dLatitude AS u_latitude");
@@ -738,21 +742,59 @@ class Users_model extends CI_Model
             $this->db->select("u.eLogStatus AS u_log_status_updated");
             $this->db->select("u.app_section AS u_app_section");
             $this->db->select("u.eGender AS u_gender");
-          
-            $this->db->where("".$where_clause."", FALSE, FALSE);
-
-            $strWhere = "u.iUserId not in (SELECT DISTINCT(uc.iConnectionUserId) AS user_id
-            FROM users_connections as uc WHERE uc.iUserId = '".$input_params['user_id']."' AND uc.eConnectionType in ('Like','Maybe'))";
-
-            if (isset($strWhere) && $strWhere != "")
+            $this->db->select("u.vImage1 AS u_images");
+            $this->db->select("'' AS connection_type_by_receiver_user");
+            
+         
+            if ((isset($input_params['other_user_id']) && $input_params['other_user_id'] != ""))
             {
+              
+                $this->db->where("u.eStatus =", 'Active');            
+                $this->db->where("u.iUserId =", $input_params['other_user_id']);
+                $this->db->limit(1);
+            }else
+            {
+              
+                $this->db->where("".$where_clause."", FALSE, FALSE);
+
+               /* $strWhere = "u.iUserId not in (SELECT DISTINCT(uc.iConnectionUserId) AS user_id
+                FROM users_connections as uc WHERE uc.iUserId = '".$input_params['user_id']."' AND uc.eConnectionType in ('Like','Maybe'))";
+
+                if (isset($strWhere) && $strWhere != "")
+                {
+                    $this->db->where($strWhere);
+                }*/
+
+                $strWhere = "u.iUserId not in (SELECT DISTINCT(u.iUserId) AS user_id
+                FROM users AS u
+                LEFT JOIN users_connections AS uc ON uc.iConnectionUserId = u.iUserId
+                LEFT JOIN users_connections AS ub ON ub.iUserId = u.iUserId
+                WHERE u.eStatus = 'Active' AND (uc.iUserId = '".$input_params['user_id']."'))";
+                if (isset($strWhere) && $strWhere != "")
+                {
                 $this->db->where($strWhere);
+                }
+
+                $strWhere1 = "u.iUserId not in (SELECT DISTINCT(u.iUserId) AS user_id
+                FROM users AS u
+                LEFT JOIN user_block AS uc ON uc.iBlockUserId = u.iUserId
+                LEFT JOIN user_block AS ub ON ub.iUserId = u.iUserId
+                WHERE u.eStatus = 'Active' AND (uc.iUserId = '".$input_params['user_id']."')) AND u.iUserId <> '".$input_params['user_id']."'";
+                if (isset($strWhere1) && $strWhere1 != "")
+                {
+                $this->db->where($strWhere1);
+                }
+
+                $this->db->where("u.eStatus =", 'Active');
+
+                $this->db->limit($end_offset,$start_offset);
+                $this->db->group_by('iUserId');
             }
 
-            $this->db->limit($end_offset,$start_offset);
+            
               
             $result_obj = $this->db->get();
-           // echo $this->db->last_query();
+            //echo $this->db->last_query(); exit;
            // var_dump($result_obj);
 
            $result_arr = is_object($result_obj) ? $result_obj->result_array() : array();
@@ -762,6 +804,53 @@ class Users_model extends CI_Model
                 throw new Exception('No records found.');
             }
             $success = 1;
+
+            foreach ($result_arr as $key => $val) {
+
+                $this->db->from("users_profile_images");
+                $this->db->select("Distinct(iImageId) AS image_id");
+                $this->db->select("vImage as image_url");
+                $this->db->where("iUserId =", $val["u_user_id"]);
+
+                $result_objjj = $this->db->get();
+             //   echo $this->db->last_query();
+                $imgArr = [];
+
+                foreach ($result_objjj->result_array() as $rowB)
+                {
+                    $imgArr[] = $rowB;
+                }   
+                //print_r($imgArr);
+                $result_arr[$key]["u_images"] = $imgArr;
+
+
+                  $this->db->reset_query();
+
+                $user_id = $input_params['user_id'];
+                $connection_id =  $val["u_user_id"];
+
+                $strSql=
+                    "SELECT '' AS connection_type,
+                    (SELECT eConnectionType
+                    FROM users_connections
+                    WHERE iUserId=".$connection_id." AND iConnectionUserId = ".$user_id." order by iConnectionId DESC LIMIT 1) AS connection_type_by_receiver_user
+                    FROM users_connections LIMIT 1";
+
+
+
+                    $result_objQ = $this->db->query($strSql);
+                    //echo $this->db->last_query();exit;
+                    $result_arrQ = is_object($result_objQ) ? $result_objQ->result_array() : array();
+
+
+                    if(isset($result_arrQ[0]['connection_type_by_receiver_user'])){
+
+                    $result_arr[$key]['connection_type_by_receiver_user'] = $result_arrQ[0]['connection_type_by_receiver_user'];
+                    }
+            }
+
+            //$this->db->reset_query();
+
         }
         catch(Exception $e)
         {
@@ -785,7 +874,7 @@ class Users_model extends CI_Model
      * @param string $insert_id insert_id is used to process query block.
      * @return array $return_arr returns response of query block.
      */
-    public function get_user_personal_details($insert_id = '')
+    public function get_user_personal_details($logged_user_id = '',$insert_id = '')
     {
         try
         {
@@ -794,6 +883,34 @@ class Users_model extends CI_Model
             $this->db->from("users AS u");
 
             $this->db->select("u.iUserId AS u_user_id");
+            $this->db->select("u.vFirstName AS u_first_name");
+            $this->db->select("u.vLastName AS u_last_name");
+            $this->db->select("u.vUserName AS u_user_name");
+            $this->db->select("u.vEmail AS u_email");
+            $this->db->select("u.vMobileNo AS u_mobile_no");
+            $this->db->select("u.vProfileImage AS u_profile_image");
+            $this->db->select("u.dDob AS u_dob");
+            $this->db->select("u.tAddress AS u_address");
+            $this->db->select("u.vCity AS u_city");
+            $this->db->select("u.dLatitude AS u_latitude");
+            $this->db->select("u.dLongitude AS u_longitude");
+            $this->db->select("u.iStateId AS u_state_id");
+            $this->db->select("u.vStateName AS u_state_name");
+            $this->db->select("u.vZipCode AS u_zip_code");
+            $this->db->select("u.eStatus AS u_status");
+            $this->db->select("(concat(u.vFirstName,' ',u.vLastName)) AS email_user_name", FALSE);
+
+            $this->db->select("u.vAccessToken AS u_access_token");
+            $this->db->select("u.vDeviceToken AS u_device_token");
+
+            $this->db->select("u.eOneTimeTransaction AS e_one_time_transaction");
+            $this->db->select("u.tOneTimeTransaction AS t_one_time_transaction");
+            $this->db->select("u.eSocialLoginType AS u_social_login_type");
+            $this->db->select("u.vSocialLoginId AS u_social_login_id");
+            $this->db->select("u.ePushNotify AS u_push_notify");
+            $this->db->select("u.vTermsConditionsVersion AS u_terms_conditions_version");
+            $this->db->select("u.vPrivacyPolicyVersion AS u_privacy_policy_version");
+            $this->db->select("u.eLogStatus AS u_log_status_updated");
             $this->db->select("u.app_section AS u_app_section");
             $this->db->select("u.eSmoke AS u_Smoke");
             $this->db->select("u.vUploadDoc AS u_UploadDoc");
@@ -809,17 +926,23 @@ class Users_model extends CI_Model
             $this->db->select("u.vEducation AS u_Education");
             $this->db->select("u.vProfession AS u_Profession");
             $this->db->select("u.iIncome AS u_Income");
-            $this->db->select("u.vImage1 AS u_Image1");
-            $this->db->select("u.vImage2 AS u_Image2");
+            $this->db->select("u.app_section AS u_app_section");
+            $this->db->select("u.vImage1 AS u_images");
+           /* $this->db->select("u.vImage2 AS u_Image2");
             $this->db->select("u.vImage3 AS u_Image3");
             $this->db->select("u.vImage4 AS u_Image4");
+            $this->db->select("u.vImage5 AS u_Image5");*/
             $this->db->select("u.tIntrest AS u_Intrest");
             $this->db->select("u.eMarriageStatus AS u_MarriageStatus");
             $this->db->select("u.vTatoos AS u_Tatoos");
             $this->db->select("u.tTravaledPlaces AS u_TravaledPlaces");
+            $this->db->select("u.tTravalToPlaces AS u_tTravalToPlaces");
             $this->db->select("u.vTriggers AS u_Triggers");
             $this->db->select("u.tAboutYou AS u_AboutYou");
             $this->db->select("u.tAboutLatePerson AS u_AboutLatePerson");
+            $this->db->select("'' AS connection_type_by_logged_user");
+            $this->db->select("'' AS connection_type_by_receiver_user");
+            $this->db->select("'' AS age");
 
 
 
@@ -836,7 +959,81 @@ class Users_model extends CI_Model
             {
                 throw new Exception('No records found.');
             }
+
+            if (isset($insert_id) && $insert_id != "")
+            {
+                $this->db->from("user_interest AS ui");
+                $this->db->select("Distinct(ui.iInterestsId) AS InterestsId");
+                $this->db->where("ui.iUserId =", $insert_id);
+
+                $result_objj = $this->db->get();
+
+                $interestArr = [];
+
+                foreach ($result_objj->result_array() as $rowA)
+                {
+                    $interestArr[] = $rowA['InterestsId'];
+                }   
+                
+                $result_arr[0]["u_Intrest"] = implode(",", $interestArr);
+
+                $this->db->reset_query();
+          
+                $this->db->from("users_profile_images");
+                $this->db->select("Distinct(iImageId) AS image_id");
+                $this->db->select("vImage as image_url");
+                $this->db->where("iUserId =", $insert_id);
+
+                $result_objjj = $this->db->get();
+
+                $imgArr = [];
+
+                foreach ($result_objjj->result_array() as $rowB)
+                {
+                    $imgArr[] = $rowB;
+                }   
+                
+                $result_arr[0]["u_images"] = $imgArr;
+                
+                $this->db->reset_query();
+
+                $user_id = $logged_user_id;
+                $connection_id = $insert_id;
+
+                $strSql=
+                    "SELECT '' AS connection_type,
+                    (SELECT eConnectionType
+                    FROM users_connections
+                    WHERE iUserId=".$user_id." AND iConnectionUserId = ".$connection_id." order by iConnectionId DESC LIMIT 1) AS connection_type_by_logged_user,
+                    (SELECT eConnectionType
+                    FROM users_connections
+                    WHERE iUserId=".$connection_id." AND iConnectionUserId = ".$user_id." order by iConnectionId DESC LIMIT 1) AS connection_type_by_receiver_user
+                    FROM users_connections LIMIT 1";
+
+
+
+                    $result_objQ = $this->db->query($strSql);
+                    //echo $this->db->last_query();exit;
+                    $result_arrQ = is_object($result_objQ) ? $result_objQ->result_array() : array();
+
+                    if(isset($result_arrQ[0]['connection_type_by_logged_user'])){
+
+                    $result_arr[0]['connection_type_by_logged_user'] = $result_arrQ[0]['connection_type_by_logged_user'];
+                    }
+                    
+                    if(isset($result_arrQ[0]['connection_type_by_receiver_user'])){
+
+                    $result_arr[0]['connection_type_by_receiver_user'] = $result_arrQ[0]['connection_type_by_receiver_user'];
+                    }
+                    //echo $result_arr[0]["u_dob"]."--";
+                    $currYr = date("Y");
+                    $birthYr = date("Y",strtotime($result_arr[0]["u_dob"]));
+                    
+                    $result_arr[0]["age"] = $currYr - $birthYr;
+
+            }
             $success = 1;
+
         }
         catch(Exception $e)
         {
@@ -888,7 +1085,7 @@ class Users_model extends CI_Model
             $this->db->select("u.eLogStatus AS u_log_status_updated");
             $this->db->select("u.app_section AS u_app_section");
             $this->db->select("u.eGender AS u_gender");
-
+            $this->db->select("u.vUploadDoc AS u_UploadDoc");
 
             if (isset($insert_id) && $insert_id != "")
             {
@@ -1169,10 +1366,10 @@ class Users_model extends CI_Model
                 $this->db->set("vProfileImage", $params_arr["user_profile"]);
             }
 
-           /* if (isset($params_arr["upload_doc"]) && !empty($params_arr["upload_doc"]))
+            if (isset($params_arr["upload_doc"]) && !empty($params_arr["upload_doc"]))
             {
                 $this->db->set("vUploadDoc", $params_arr["upload_doc"]);
-            }*/
+            }
 
             if (isset($params_arr["dob"]))
             {
@@ -1320,6 +1517,8 @@ class Users_model extends CI_Model
             $this->db->select("u.vTermsConditionsVersion AS terms_conditions_version");
             $this->db->select("u.vPrivacyPolicyVersion AS privacy_policy_version");
             $this->db->select("u.eLogStatus AS u_log_status_updated");
+            $this->db->select("u.vUploadDoc AS u_UploadDoc");
+
             if (isset($insert_id) && $insert_id != "")
             {
                 $this->db->where("u.iUserId =", $insert_id);
@@ -1516,6 +1715,7 @@ class Users_model extends CI_Model
             $this->db->select("u.vImage2 AS u_Image2");
             $this->db->select("u.vImage3 AS u_Image3");
             $this->db->select("u.vImage4 AS u_Image4");
+            $this->db->select("u.vImage5 AS u_Image5");
             $this->db->select("u.tIntrest AS u_Intrest");
             $this->db->select("u.eMarriageStatus AS u_MarriageStatus");
             $this->db->select("u.vTatoos AS u_Tatoos");
@@ -1523,7 +1723,8 @@ class Users_model extends CI_Model
             $this->db->select("u.vTriggers AS u_Triggers");
             $this->db->select("u.tAboutYou AS u_AboutYou");
             $this->db->select("u.tAboutLatePerson AS u_AboutLatePerson");
-
+            $this->db->select("u.app_section AS app_section");
+           
             
             $this->db->where("".$where_clause."", FALSE, FALSE);
 
@@ -1687,7 +1888,8 @@ class Users_model extends CI_Model
             $this->db->select("u.vTriggers AS u_Triggers");
             $this->db->select("u.tAboutYou AS u_AboutYou");
             $this->db->select("u.tAboutLatePerson AS u_AboutLatePerson");
-
+            $this->db->select("u.app_section AS app_section");
+           
             $this->db->where("".$where_clause."", FALSE, FALSE);
 
             $this->db->limit(1);
@@ -1849,6 +2051,8 @@ class Users_model extends CI_Model
             $this->db->select("u.vTriggers AS u_Triggers");
             $this->db->select("u.tAboutYou AS u_AboutYou");
             $this->db->select("u.tAboutLatePerson AS u_AboutLatePerson");
+            $this->db->select("u.app_section AS app_section");
+
             $this->db->where("".$where_clause."", FALSE, FALSE);
 
             $this->db->limit(1);
@@ -2288,7 +2492,62 @@ class Users_model extends CI_Model
         {
             $result_arr = array();
 
+            $imgArr = [];
+
+            if (isset($where_arr["user_id"]) && $where_arr["user_id"] != "")
+            {
+                $imgArr['iUserId'] = $where_arr["user_id"];
+               
+            }
+
+             if (isset($params_arr["_dtupdatedat"])  && $params_arr["_dtupdatedat"] != "")
+            {
+                $imgArr['dtAddedAt'] = date("Y-m-d h:i:sa");
+            }
+           
+            if (isset($params_arr["image1"]) && !empty($params_arr["image1"]))
+            {
+               // $this->db->set("vImage1", $params_arr["image1"]);
+
+                $imgArr['vImage'] = $params_arr["image1"];
+  
+                $this->db->insert("users_profile_images",$imgArr);
+            }
+            if (isset($params_arr["image2"]) && !empty($params_arr["image2"]))
+            {
+               // $this->db->set("vImage2", $params_arr["image2"]);
+
+                $imgArr['vImage'] = $params_arr["image2"];
+
+                $this->db->insert("users_profile_images",$imgArr);
+            }
+            if (isset($params_arr["image3"]) && !empty($params_arr["image3"]))
+            {
+              //  $this->db->set("vImage3", $params_arr["image3"]);
+
+                $imgArr['vImage'] = $params_arr["image3"];
+                 $this->db->insert("users_profile_images",$imgArr);
+            }
+            if (isset($params_arr["image4"]) && !empty($params_arr["image4"]))
+            {
+              //  $this->db->set("vImage4", $params_arr["image4"]);
+
+                $imgArr['vImage'] = $params_arr["image4"];
+                 $this->db->insert("users_profile_images",$imgArr);
+            }
+
+            if (isset($params_arr["image5"]) && !empty($params_arr["image5"]))
+            {
+                // $this->db->set("vImage5", $params_arr["image5"]);
+
+                $imgArr['vImage'] = $params_arr["image5"];
+                 $this->db->insert("users_profile_images",$imgArr);
+            }
+
+            $this->db->reset_query();
+
             $this->db->start_cache();
+
             if (isset($where_arr["user_id"]) && $where_arr["user_id"] != "")
             {
                 $this->db->where("iUserId =", $where_arr["user_id"]);
@@ -2313,22 +2572,6 @@ class Users_model extends CI_Model
                 $this->db->set("vUploadDoc", $params_arr["upload_doc"]);
             }
 
-            if (isset($params_arr["image1"]) && !empty($params_arr["image1"]))
-            {
-                $this->db->set("vImage1", $params_arr["image1"]);
-            }
-            if (isset($params_arr["image2"]) && !empty($params_arr["image2"]))
-            {
-                $this->db->set("vImage2", $params_arr["image2"]);
-            }
-            if (isset($params_arr["image3"]) && !empty($params_arr["image3"]))
-            {
-                $this->db->set("vImage3", $params_arr["image3"]);
-            }
-            if (isset($params_arr["image4"]) && !empty($params_arr["image4"]))
-            {
-                $this->db->set("vImage4", $params_arr["image4"]);
-            }
 
             if (isset($params_arr["dob"]) && $params_arr["dob"] != "")
             {
@@ -2363,7 +2606,7 @@ class Users_model extends CI_Model
                 $this->db->set("vZipCode", $params_arr["zipcode"]);
             }
 
-             if (isset($params_arr["_dtupdatedat"])  && $params_arr["_dtupdatedat"] != "")
+            if (isset($params_arr["_dtupdatedat"])  && $params_arr["_dtupdatedat"] != "")
             {
                  $this->db->set($this->db->protect("dtUpdatedAt"), $params_arr["_dtupdatedat"], FALSE);
             }
@@ -2443,6 +2686,11 @@ class Users_model extends CI_Model
             {
                 $this->db->set("tTravaledPlaces", $params_arr["travaled_places"]);
             }
+
+            if (isset($params_arr["places_want_to_travel"])  && $params_arr["places_want_to_travel"] != "")
+            {
+                $this->db->set("tTravalToPlaces", $params_arr["places_want_to_travel"]);
+            }
             if (isset($params_arr["triggers"])  && $params_arr["triggers"] != "")
             {
                 $this->db->set("vTriggers", $params_arr["triggers"]);
@@ -2475,6 +2723,10 @@ class Users_model extends CI_Model
             if (isset($params_arr["intrest"]) && isset($where_arr["user_id"]))
             {
                 //echo "in intrest ---".$params_arr["intrest"];
+
+                $this->db->query("delete from user_interest where iUserId = '".$where_arr["user_id"]."'");
+                
+               // echo $this->db->last_query();
 
                     $count=count(explode(",",$params_arr["intrest"]));
                    
@@ -2592,17 +2844,21 @@ class Users_model extends CI_Model
             $this->db->select("u.vEducation AS u_Education");
             $this->db->select("u.vProfession AS u_Profession");
             $this->db->select("u.iIncome AS u_Income");
-            $this->db->select("u.vImage1 AS u_Image1");
+           /* $this->db->select("u.vImage1 AS u_Image1");
             $this->db->select("u.vImage2 AS u_Image2");
             $this->db->select("u.vImage3 AS u_Image3");
             $this->db->select("u.vImage4 AS u_Image4");
+            $this->db->select("u.vImage5 AS u_Image5");*/
             $this->db->select("u.tIntrest AS u_Intrest");
             $this->db->select("u.eMarriageStatus AS u_MarriageStatus");
             $this->db->select("u.vTatoos AS u_Tatoos");
             $this->db->select("u.tTravaledPlaces AS u_TravaledPlaces");
+            $this->db->select("u.tTravalToPlaces AS u_tTravalToPlaces");
             $this->db->select("u.vTriggers AS u_Triggers");
             $this->db->select("u.tAboutYou AS u_AboutYou");
             $this->db->select("u.tAboutLatePerson AS u_AboutLatePerson");
+            $this->db->select("u.vImage1 AS u_images");
+
             if (isset($user_id) && $user_id != "")
             {
                 $this->db->where("u.iUserId =", $user_id);
@@ -2612,10 +2868,54 @@ class Users_model extends CI_Model
 
             $result_obj = $this->db->get();
             $result_arr = is_object($result_obj) ? $result_obj->result_array() : array();
+
+         
             if (!is_array($result_arr) || count($result_arr) == 0)
             {
                 throw new Exception('No records found.');
             }
+
+            $this->db->reset_query();
+            if (isset($user_id) && $user_id != "")
+            {
+                $this->db->from("user_interest AS ui");
+                $this->db->select("Distinct(ui.iInterestsId) AS InterestsId");
+                $this->db->where("ui.iUserId =", $user_id);
+
+                $result_objj = $this->db->get();
+
+                $interestArr = [];
+
+                foreach ($result_objj->result_array() as $rowA)
+                {
+                    $interestArr[] = $rowA['InterestsId'];
+                }   
+                
+                $result_arr[0][u_Intrest] = implode(",", $interestArr);
+                
+            }
+
+            $this->db->reset_query();
+            if (isset($user_id) && $user_id != "")
+            {
+                $this->db->from("users_profile_images");
+                $this->db->select("Distinct(iImageId) AS image_id");
+                $this->db->select("vImage as image_url");
+                $this->db->where("iUserId =", $user_id);
+
+                $result_objjj = $this->db->get();
+
+                $imgArr = [];
+
+                foreach ($result_objjj->result_array() as $rowB)
+                {
+                    $imgArr[] = $rowB;
+                }   
+                
+                $result_arr[0]["u_images"] = $imgArr;
+                
+            }
+
             $success = 1;
         }
         catch(Exception $e)
@@ -2745,6 +3045,7 @@ class Users_model extends CI_Model
             }
 
             $this->db->set("eStatus", $params_arr["_estatus"]);
+            $this->db->set("vDeviceToken", "");
             $this->db->set($this->db->protect("dtDeletedAt"), $params_arr["_dtdeletedat"], FALSE);
             $res = $this->db->update("users");
             $affected_rows = $this->db->affected_rows();
@@ -2769,4 +3070,55 @@ class Users_model extends CI_Model
         $return_arr["data"] = $result_arr;
         return $return_arr;
     }
+
+
+    public function delete_user_media_image($where_arr = array(), $params_arr = array())
+  {
+    try
+        {
+            $result_arr = array();
+            $affected_rows = 0;
+
+            if (isset($where_arr["user_id"]) && $where_arr["user_id"] != "")
+            {
+                $this->db->where("iUserId =", $where_arr["user_id"]);
+
+                if (isset($params_arr["image_id"]))
+                {
+                    $this->db->where("iImageId =", $params_arr["image_id"]);
+
+                    $res = $this->db->delete("users_profile_images");
+
+               // echo $this->db->last_query();
+
+                    $affected_rows = $this->db->affected_rows();
+                    if (!$res || $affected_rows == -1)
+                    {
+                        throw new Exception("Failure in updation.");
+                    }
+                }
+
+            }
+
+            
+            $result_param = "affected_rows";
+            $result_arr[0][$result_param] = $affected_rows;
+            $success = 1;
+        }
+        catch(Exception $e)
+        {
+            $success = 0;
+            $message = $e->getMessage();
+        }
+        $this->db->flush_cache();
+        $this->db->_reset_all();
+        //echo $this->db->last_query();
+        $return_arr["success"] = $success;
+        $return_arr["message"] = $message;
+        $return_arr["data"] = $result_arr;
+        //print_r($return_arr);exit;
+        return $return_arr;
+    }
+
+
 }

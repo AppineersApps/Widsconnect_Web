@@ -140,7 +140,6 @@ class Post_section extends Cit_Controller
                         return $output_response;
                     }
                 }
-
                 else
                 {
 
@@ -408,8 +407,8 @@ class Post_section extends Cit_Controller
     {
 
         $setting_fields = array(
-            "success" => "0",
-            "message" => "users_finish_success",
+            "success" => "1",
+            "message" => "users_finish_success_2",
         );
         $output_fields = array();
 

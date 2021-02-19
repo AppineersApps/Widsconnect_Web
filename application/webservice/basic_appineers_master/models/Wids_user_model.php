@@ -133,6 +133,7 @@ public function get_users_list_details($arrParams = '')
 	$this->db->select("u.vStateName AS state");
 	$this->db->select("u.vZipCode AS u_zip_code");
 	$this->db->select("u.eStatus AS u_status");
+	$this->db->select("u.app_section AS app_section");
 
 	$this->db->select("(".$this->db->escape("").") AS connection_type_by_logged_user", FALSE);
 	$this->db->select("(".$this->db->escape("").") AS connection_type_by_receiver_user", FALSE);
@@ -230,55 +231,55 @@ public function get_users_list_details($arrParams = '')
 */
 public function get_users_connection_details($user_id = '',$connection_id='',$other_user_id='')
 {
-try
-{
+	try
+	{
 
-$result_arr = array();
+		$result_arr = array();
 
-$strSql=
-"SELECT '' AS connection_type,
-(SELECT eConnectionType
-FROM users_connections
-WHERE iUserId=".$user_id." AND iConnectionUserId = ".$connection_id.") AS connection_type_by_logged_user,
-(SELECT eConnectionType
-FROM users_connections
-WHERE iUserId=".$connection_id." AND iConnectionUserId = ".$user_id.") AS connection_type_by_receiver_user
-FROM users_connections LIMIT 1";
+		$strSql=
+		"SELECT '' AS connection_type,
+		(SELECT eConnectionType
+		FROM users_connections
+		WHERE iUserId=".$user_id." AND iConnectionUserId = ".$connection_id.") AS connection_type_by_logged_user,
+		(SELECT eConnectionType
+		FROM users_connections
+		WHERE iUserId=".$connection_id." AND iConnectionUserId = ".$user_id.") AS connection_type_by_receiver_user
+		FROM users_connections LIMIT 1";
 
 
 
-$result_obj = $this->db->query($strSql);
-//echo $this->db->last_query();exit;
-$result_arr = is_object($result_obj) ? $result_obj->result_array() : array();
+		$result_obj = $this->db->query($strSql);
+		//echo $this->db->last_query();exit;
+		$result_arr = is_object($result_obj) ? $result_obj->result_array() : array();
 
-if(isset($result_arr[0]['connection_type_by_logged_user'])){
+		if(isset($result_arr[0]['connection_type_by_logged_user'])){
 
-$result_arr[0]['connection_type_by_logged_user'] = $result_arr[0]['connection_type_by_logged_user'];
-}
-else if(isset($result_arr[0]['connection_type_by_receiver_user'])){
+		$result_arr[0]['connection_type_by_logged_user'] = $result_arr[0]['connection_type_by_logged_user'];
+		}
+		else if(isset($result_arr[0]['connection_type_by_receiver_user'])){
 
-$result_arr[0]['connection_type_by_receiver_user'] = $result_arr[0]['connection_type_by_receiver_user'];
-}
-if (!is_array($result_arr) || count($result_arr) == 0)
-{
-throw new Exception('No records found.');
-}
-$success = 1;
+		$result_arr[0]['connection_type_by_receiver_user'] = $result_arr[0]['connection_type_by_receiver_user'];
+		}
+		if (!is_array($result_arr) || count($result_arr) == 0)
+		{
+		throw new Exception('No records found.');
+		}
+		$success = 1;
 
-}
-catch(Exception $e)
-{
-$success = 0;
-$message = $e->getMessage();
-}
+		}
+		catch(Exception $e)
+		{
+		$success = 0;
+		$message = $e->getMessage();
+		}
 
-$this->db->_reset_all();
-// echo $this->db->last_query();exit;
-$return_arr["success"] = $success;
-$return_arr["message"] = $message;
-$return_arr["data"] = $result_arr;
-return $return_arr;
-}
+		$this->db->_reset_all();
+		// echo $this->db->last_query();exit;
+		$return_arr["success"] = $success;
+		$return_arr["message"] = $message;
+		$return_arr["data"] = $result_arr;
+		return $return_arr;
+	}
 
 
 

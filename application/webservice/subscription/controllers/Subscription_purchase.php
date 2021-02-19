@@ -51,6 +51,7 @@ class Subscription_purchase extends Cit_Controller
 
         $this->load->library('wsresponse');
         $this->load->model('subscription_purchase_model');
+        #$this->config->item("PAGINATION_ROW_COUNT");
         // $this->load->model("users/users_model");
     }
 
@@ -127,7 +128,9 @@ class Subscription_purchase extends Cit_Controller
 
                         $input_params = $this->subscription_purchase($input_params);
 
-                       
+                        // $input_params = $this->get_user_influencer_deatils($input_params);
+
+                        // $input_params = $this->add_user_influencer_revenue($input_params);      
 
                         $output_response = $this->users_finish_success($input_params);
                         return $output_response;
@@ -189,6 +192,8 @@ class Subscription_purchase extends Cit_Controller
         return $output_response;
     }
 
+
+     
     /**
      * check_receipt_type method is used to process conditions.
      * @created CIT Dev Team

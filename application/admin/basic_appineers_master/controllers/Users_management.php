@@ -643,6 +643,26 @@ class Users_management extends Cit_Controller
                 $ctrl_flow = $this->ci_local->read($this->general->getMD5EncryptString("FlowEdit", "users_management"), $this->session->userdata('iAdminId'));
                 $data_arr = $this->users_management_model->getData(intval($id));
                 $data = $orgi = $data_arr[0];
+                $result_arr44 = [];
+
+                if (is_array($data_arr) && count($data_arr) > 0)
+                {
+                    $i = 0;
+                    foreach ($data_arr as $data_key => $data_arr33)
+                    {
+
+                          $data21 = $data_arr33["u_UploadDoc"];
+                            $image_arr = array();
+                            $image_arr["image_name"] = $data21;
+                            $image_arr["ext"] = implode(",", $this->config->item("IMAGE_EXTENSION_ARR"));
+                            $image_arr["color"] = "FFFFFF";
+                            $image_arr["no_img"] = FALSE;
+                            $image_arr["path"] = "widsconnect/upload_doc";
+                            $data21 = $this->general->get_image_aws($image_arr);
+                            $result_arr44["u_UploadDoc"] = $data21;
+                    }
+                }
+
                 if ((!is_array($data) || count($data) == 0) && $params_arr['rmPopup'] != "true")
                 {
                     throw new Exception($this->general->processMessageLabel('ACTION_RECORDS_WHICH_YOU_ARE_TRYING_TO_ACCESS_ARE_NOT_AVAILABLE_C46_C46_C33'));
@@ -806,6 +826,7 @@ class Users_management extends Cit_Controller
                     {
                         $del_file = ($edit_access && $viewMode != TRUE && $func[$key] != 2) ? TRUE : FALSE;
                         $val['htmlID'] = $val['name'];
+
                         $img_html[$key] = $this->listing->parseFormFile($data[$key], $id, $data, $val, $this->module_config, "Form", $del_file);
                     }
                 }
@@ -884,6 +905,7 @@ class Users_management extends Cit_Controller
                 'mod_enc_mode' => $this->mod_enc_mode,
                 'extra_qstr' => $extra_qstr,
                 'extra_hstr' => $extra_hstr,
+                'u_UploadDoc_path' => $result_arr44["u_UploadDoc"],
                 'capabilities' => array()
             );
             $this->smarty->assign($render_arr);
@@ -959,6 +981,7 @@ class Users_management extends Cit_Controller
             $form_config = $this->users_management_model->getFormConfiguration();
             $params_arr = $this->_request_params();
             $u_profile_image = $params_arr["u_profile_image"];
+            $u_UploadDoc = $params_arr["u_UploadDoc"];
             $u_first_name = $params_arr["u_first_name"];
             $u_last_name = $params_arr["u_last_name"];
             $u_user_name = $params_arr["u_user_name"];
@@ -995,8 +1018,14 @@ class Users_management extends Cit_Controller
             $u_device_os = $params_arr["u_device_os"];
             $u_log_status_updated = $params_arr["u_log_status_updated"];
 
+            if(!empty($params_arr["current_status"]))
+            {
+                $u_current_status = $params_arr["current_status"]; 
+            }
+           
             $data = $save_data_arr = $file_data = array();
             $data["vProfileImage"] = $u_profile_image;
+            $data["vUploadDoc"] = $u_UploadDoc;
             $data["vFirstName"] = $u_first_name;
             $data["vLastName"] = $u_last_name;
             $data["vUserName"] = $u_user_name;
@@ -1033,6 +1062,7 @@ class Users_management extends Cit_Controller
             $data["vDeviceOS"] = $u_device_os;
             $data["eLogStatus"] = $u_log_status_updated;
 
+            $save_data_arr["u_UploadDoc"] = $data["vUploadDoc"];
             $save_data_arr["u_profile_image"] = $data["vProfileImage"];
             $save_data_arr["u_first_name"] = $data["vFirstName"];
             $save_data_arr["u_last_name"] = $data["vLastName"];
@@ -1088,6 +1118,18 @@ class Users_management extends Cit_Controller
             }
             elseif ($mode == 'Update')
             {
+                if(!empty($u_current_status) && !empty($u_status))
+                {
+                    if(($u_current_status != $u_status) && $u_status == "Active")
+                    {
+                  
+                        $input_params11["u_email"] = $u_email;
+                        $input_params11["email_user_name"] = $u_first_name." ".$u_last_name;
+
+                       $input_params22 = $this->email_notification($input_params11);
+                    }   
+                }
+               
                 $res = $this->users_management_model->update($data, intval($id));
                 if (intval($res) > 0)
                 {
@@ -1107,6 +1149,12 @@ class Users_management extends Cit_Controller
             $ret_arr['mode'] = $mode;
             $ret_arr['message'] = $msg;
             $ret_arr['success'] = 1;
+
+             $file_data["u_UploadDoc"]["file_name"] = $u_UploadDoc;
+            $file_data["u_UploadDoc"]["old_file_name"] = $params_arr["old_u_UploadDoc"];
+            $file_data["u_UploadDoc"]["unique_name"] = "u_UploadDoc";
+            $file_data["u_UploadDoc"]["primary_key"] = "iUserId";
+
 
             $file_data["u_profile_image"]["file_name"] = $u_profile_image;
             $file_data["u_profile_image"]["old_file_name"] = $params_arr["old_u_profile_image"];

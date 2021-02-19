@@ -59,12 +59,16 @@ public function ActiveUserInlineEdition($field_name = '', $value = '', $id = '')
     
 }
 public function ActiveUserAfterChangeStatus($mode = '', $id = '', $parID = ''){
+
      if($mode=='Active'){
       $count=count($id);
        if($count==1){
            $params = array("user_id" => $id);
-           
-           
+
+           $input_params = $this->users_management_model->getData(intval($id));
+
+           $input_params = $this->email_notification($input_params[0]);
+
            $resp_arr	= $this->cit_api_model->callAPI('admin_update_user_status_in_listing',$params);
        
            if($resp_arr['settings']['success']==1){
@@ -78,6 +82,11 @@ public function ActiveUserAfterChangeStatus($mode = '', $id = '', $parID = ''){
         }
         else if($count>1){
             foreach($id as $key=>$value){
+
+              $input_params = $this->users_management_model->getData(intval($value));
+
+            $input_params22 = $this->email_notification($input_params[0]);
+
                $params = array("user_id" => $value);
                $resp_arr	= $this->cit_api_model->callAPI('admin_update_user_status_in_listing',$params);
                if($resp_arr['settings']['success']==1){
@@ -154,24 +163,77 @@ public function ActiveUserAfterChangeStatus($mode = '', $id = '', $parID = ''){
     return $ret_arr;
     
 }
-public function updateDeletedAt($mode = '', $id = '', $parID = ''){
-    $data=$this->input->post();
-    if($data['u_status']=='Archived'){
-        $data=array(
-                        'dtDeletedAt' => date('Y-m-d H:i:s')
-                    );
-        $this->db->where('iUserId', $id);
-        $this->db->update('users', $data);
-        $ret_arr['success'] = true;
-    }else{
-        $data=array(
-                        'dtDeletedAt' => ''
-                    );
-        $this->db->where('iUserId', $id);
-        $this->db->update('users', $data);
-        $ret_arr['success'] = true;
+  public function updateDeletedAt($mode = '', $id = '', $parID = ''){
+      $data=$this->input->post();
+      if($data['u_status']=='Archived'){
+          $data=array(
+                          'dtDeletedAt' => date('Y-m-d H:i:s')
+                      );
+          $this->db->where('iUserId', $id);
+          $this->db->update('users', $data);
+          $ret_arr['success'] = true;
+      }else{
+          $data=array(
+                          'dtDeletedAt' => ''
+                      );
+          $this->db->where('iUserId', $id);
+          $this->db->update('users', $data);
+          $ret_arr['success'] = true;
+      }
+      return $ret_arr;
+     
+  }
+
+  /**
+     * email_notification method is used to process email notification.
+     * @created priyanka chillakuru | 12.09.2019
+     * @modified priyanka chillakuru | 12.09.2019
+     * @param array $input_params input_params array to process loop flow.
+     * @return array $input_params returns modfied input_params array.
+     */
+    public function email_notification($input_params = array())
+    {
+
+        $this->block_result = array();
+        try
+        {
+  
+            $email_arr["vEmail"] = $input_params["u_email"];
+
+            $email_arr["vUsername"] = $input_params["email_user_name"];
+
+            $success = $this->general->sendMail($email_arr, "USER_ACTIVATED", $input_params);
+         
+            $log_arr = array();
+            $log_arr['eEntityType'] = 'General';
+            $log_arr['vReceiver'] = is_array($email_arr["vEmail"]) ? implode(",", $email_arr["vEmail"]) : $email_arr["vEmail"];
+            $log_arr['eNotificationType'] = "EmailNotify";
+            $log_arr['vSubject'] = $this->general->getEmailOutput("subject");
+            $log_arr['tContent'] = $this->general->getEmailOutput("content");
+            if (!$success)
+            {
+                $log_arr['tError'] = $this->general->getNotifyErrorOutput();
+            }
+            $log_arr['dtSendDateTime'] = date('Y-m-d H:i:s');
+            $log_arr['eStatus'] = ($success) ? "Executed" : "Failed";
+            $this->general->insertExecutedNotify($log_arr);
+            if (!$success)
+            {
+                throw new Exception("Failure in sending mail.");
+            }
+            $success = 1;
+            $message = "Email notification send successfully.";
+        }
+        catch(Exception $e)
+        {
+            $success = 0;
+            $message = $e->getMessage();
+        }
+        $this->block_result["success"] = $success;
+        $this->block_result["message"] = $message;
+        $input_params["email_notification"] = $this->block_result["success"];
+
+        return $input_params;
     }
-    return $ret_arr;
-   
-}
+
 }

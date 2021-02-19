@@ -880,7 +880,12 @@ class Interests_management extends Cit_Controller
             $save_data_arr["i_interests_name"] = $data["vInterestsName"];
             $save_data_arr["i_interests_status"] = $data["eStatus"];
             $save_data_arr["i_added_at"] = $data["dtAddedAt"];
-            $strCheck = $this->checkUniqueInterest($id);
+            $strCheck = 0;
+            if($id > 0)
+            {
+                $strCheck = $this->checkUniqueInterest($id);
+            }
+           
             if ($mode == 'Add')
             {
               
