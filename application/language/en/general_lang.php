@@ -1074,6 +1074,7 @@ $lang["USERS_MANAGEMENT_LAST_NAME"] = "Last Name" ;
 $lang["USERS_MANAGEMENT_EMAIL"] = "Email" ;
 $lang["USERS_MANAGEMENT_PASSWORD"] = "Password" ;
 $lang["USERS_MANAGEMENT_UPLOAD_DOC"] = "Uploaded Document" ;
+$lang["USERS_MANAGEMENT_CERTIFICATE_DOC_URL"] = "Obituary Link" ;
 $lang["USERS_MANAGEMENT_PROFILE_IMAGE"] = "Profile Image" ;
 $lang["USERS_MANAGEMENT_ADDRESS"] = "Address" ;
 $lang["USERS_MANAGEMENT_CITY"] = "City" ;
@@ -1276,8 +1277,34 @@ $lang["RELIGION_MANAGEMENT_ACTIVE"] = "Active" ;
 $lang["RELIGION_MANAGEMENT_INACTIVE"] = "Inactive" ;
 $lang["ACTION_NO_RELIGION_MANAGEMENT_DATA_FOUND_C46_C46_C33"] = "No Religion Type Management data found..!" ;
 
+$lang["GENERIC_EDUCATION_MANAGEMENT"] = "Education Management";
+$lang["EDUCATION_MANAGEMENT_EDUCATION_MANAGEMENT"] = "Education Management";
+$lang["EDUCATION_MANAGEMENT_IMAGE"] = "Education Type Image";
+$lang["EDUCATION_MANAGEMENT_NAME"] = "Education";
+$lang["EDUCATION_MANAGEMENT_ADDED_AT"] = "Added At";
+$lang["EDUCATION_MANAGEMENT_UPDATED_AT"] = "Updated At";
+$lang["EDUCATION_MANAGEMENT_DELETED_AT"] = "Deleted At";
+$lang["EDUCATION_MANAGEMENT_STATUS"] = "Status";
+$lang["EDUCATION_MANAGEMENT_ACTIVE"] = "Active" ;
+$lang["EDUCATION_MAMAGEMENT_INACTIVE"] = "Inactive" ;
+$lang["ACTION_NO_EDUCATION_MANAGEMENT_DATA_FOUND_C46_C46_C33"] = "No Education Management data found..!" ;
+
+
+$lang["GENERIC_INCOME_TYPE_MANAGEMENT"] = "Income Type Management";
+$lang["INCOME_TYPE_MANAGEMENT_INCOME_TYPE_MANAGEMENT"] = "Income Type Management";
+$lang["INCOME_TYPE_MANAGEMENT_IMAGE"] = "Income Type Image";
+$lang["INCOME_TYPE_MANAGEMENT_NAME"] = "Income";
+$lang["INCOME_TYPE_MANAGEMENT_ADDED_AT"] = "Added At";
+$lang["INCOME_TYPE_MANAGEMENT_UPDATED_AT"] = "Updated At";
+$lang["INCOME_TYPE_MANAGEMENT_DELETED_AT"] = "Deleted At";
+$lang["INCOME_TYPE_MANAGEMENT_STATUS"] = "Status";
+$lang["INCOME_TYPE_MANAGEMENT_ACTIVE"] = "Active" ;
+$lang["INCOME_TYPE_MAMAGEMENT_INACTIVE"] = "Inactive" ;
+$lang["ACTION_NO_INCOME_TYPE_MANAGEMENT_DATA_FOUND_C46_C46_C33"] = "No Income Type Management data found..!" ;
+
 $lang["API_ACCESS_LOGS_API_ACCESS_LOGS"] = "API access logs" ;
 $lang["API_ACCESS_LOGS_API_NAME"] = "API Name" ;
+$lang["API_ACCESS_LOGS_API_METHOD"] = "Method" ;
 $lang["API_ACCESS_LOGS_ACCESS_DATE"] = "Access Date" ;
 $lang["API_ACCESS_LOGS_PLATFORM"] = "Platform" ;
 $lang["API_ACCESS_LOGS_BROWSER"] = "Browser" ;

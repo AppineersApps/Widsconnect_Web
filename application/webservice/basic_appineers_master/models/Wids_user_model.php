@@ -229,7 +229,7 @@ public function get_users_list_details($arrParams = '')
 * @param string $insert_id insert_id is used to process query block.
 * @return array $return_arr returns response of query block.
 */
-public function get_users_connection_details($user_id = '',$connection_id='',$other_user_id='')
+public function get_users_connection_details($user_id = '',$connection_id='',$app_section='')
 {
 	try
 	{
@@ -240,13 +240,11 @@ public function get_users_connection_details($user_id = '',$connection_id='',$ot
 		"SELECT '' AS connection_type,
 		(SELECT eConnectionType
 		FROM users_connections
-		WHERE iUserId=".$user_id." AND iConnectionUserId = ".$connection_id.") AS connection_type_by_logged_user,
+		WHERE iUserId=".$user_id." AND iConnectionUserId = ".$connection_id." AND app_section=".$app_section.") AS connection_type_by_logged_user,
 		(SELECT eConnectionType
 		FROM users_connections
-		WHERE iUserId=".$connection_id." AND iConnectionUserId = ".$user_id.") AS connection_type_by_receiver_user
+		WHERE iUserId=".$connection_id." AND iConnectionUserId = ".$user_id." AND app_section=".$app_section.") AS connection_type_by_receiver_user
 		FROM users_connections LIMIT 1";
-
-
 
 		$result_obj = $this->db->query($strSql);
 		//echo $this->db->last_query();exit;

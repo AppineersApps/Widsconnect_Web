@@ -642,6 +642,7 @@ class Users_management extends Cit_Controller
             {
                 $ctrl_flow = $this->ci_local->read($this->general->getMD5EncryptString("FlowEdit", "users_management"), $this->session->userdata('iAdminId'));
                 $data_arr = $this->users_management_model->getData(intval($id));
+
                 $data = $orgi = $data_arr[0];
                 $result_arr44 = [];
 
@@ -946,6 +947,7 @@ class Users_management extends Cit_Controller
     public function addAction()
     {
         $params_arr = $this->params_arr;
+
         $mode = ($params_arr['mode'] == "Update") ? "Update" : "Add";
         $id = $params_arr['id'];
         try
@@ -1055,8 +1057,7 @@ class Users_management extends Cit_Controller
             $data["vSocialLoginId"] = $u_social_login_id;
             $data["eDeviceType"] = $u_device_type;
             $data["vDeviceToken"] = $u_device_token;
-            $data["dtAddedAt"] = $this->filter->formatActionData($u_added_at, $form_config["u_added_at"]);
-            $data["dtUpdatedAt"] = $this->filter->formatActionData($u_updated_at, $form_config["u_updated_at"]);
+            
             $data["eOneTimeTransaction"] = $u_one_time_transaction;
             $data["vDeviceModel"] = $u_device_model;
             $data["vDeviceOS"] = $u_device_os;
@@ -1093,14 +1094,19 @@ class Users_management extends Cit_Controller
             $save_data_arr["u_social_login_id"] = $data["vSocialLoginId"];
             $save_data_arr["u_device_type"] = $data["eDeviceType"];
             $save_data_arr["u_device_token"] = $data["vDeviceToken"];
-            $save_data_arr["u_added_at"] = $data["dtAddedAt"];
-            $save_data_arr["u_updated_at"] = $data["dtUpdatedAt"];
+            
+           
             $save_data_arr["u_one_time_transaction"] = $data["eOneTimeTransaction"];
             $save_data_arr["u_device_model"] = $data["vDeviceModel"];
             $save_data_arr["u_device_os"] = $data["vDeviceOS"];
             $save_data_arr["u_log_status_updated"] = $data["eLogStatus"];
             if ($mode == 'Add')
             {
+
+                $data["dtAddedAt"] = $this->filter->formatActionData($u_added_at, $form_config["u_added_at"]);
+
+                $save_data_arr["u_added_at"] = $data["dtAddedAt"];
+
                 $id = $this->users_management_model->insert($data);
                 if (intval($id) > 0)
                 {
@@ -1118,6 +1124,11 @@ class Users_management extends Cit_Controller
             }
             elseif ($mode == 'Update')
             {
+
+                $data["dtUpdatedAt"] = $this->filter->formatActionData($u_updated_at, $form_config["u_updated_at"]);
+
+                 $save_data_arr["u_updated_at"] = $data["dtUpdatedAt"];
+
                 if(!empty($u_current_status) && !empty($u_status))
                 {
                     if(($u_current_status != $u_status) && $u_status == "Active")

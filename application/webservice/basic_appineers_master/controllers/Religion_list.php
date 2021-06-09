@@ -240,10 +240,7 @@ class Religion_list extends Cit_Controller
             'get_religion_type_list_v1',
         );
         $ouput_aliases = array(
-            "get_religion_type_list_v1" => "get_religion_type_list",
-            "iReligionId" => "religion_id",
-            "vReligionName" => "religion_image",
-
+            "get_religion_type_list_v1" => "get_religion_type_list"
         );
 
         $output_array["settings"] = $setting_fields;

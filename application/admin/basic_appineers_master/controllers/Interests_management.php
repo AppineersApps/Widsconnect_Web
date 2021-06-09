@@ -1002,6 +1002,8 @@ class Interests_management extends Cit_Controller
         $extra_cond = '';
         $search_mode = $search_join = $search_alias = 'No';
         $strCheck = $this->checkUniqueInterest($primary_ids);
+
+     //  echo "str--".$strCheck; exit;
         if ($all_row_selected == "true" && in_array($operartor, array("del", "status")) && false==$strCheck)
         {
             $search_mode = ($operartor == "del") ? "Delete" : "Update";
@@ -1054,6 +1056,7 @@ class Interests_management extends Cit_Controller
         $data_arr = $save_data_arr = array();
         try
         {
+
             switch ($operartor)
             {
                 case 'del':
@@ -1197,9 +1200,13 @@ class Interests_management extends Cit_Controller
                         $field_name = $status_field;
                     }
                     $data_arr[$field_name] = $params_arr['status'];
+                    /*print_r($data_arr);
+                    echo $strCheck."----";
+                    print_r($primary_ids); 
+*/
                     if(false==$strCheck)
                     {
-                      $success = $this->interests_management_model->update($data_arr, intval($primary_ids));
+                      $success = $this->interests_management_model->update($data_arr, $primary_ids);
                     }else{
                         $success = 1;                       
                     }

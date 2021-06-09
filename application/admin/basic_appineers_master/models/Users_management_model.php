@@ -485,6 +485,7 @@ class Users_management_model extends CI_Model
         $this->db->select("u.eStatus AS u_status");
         $this->db->select("u.dtUpdatedAt AS u_updated_at");
         $this->db->select("u.vUploadDoc AS u_UploadDoc");
+        $this->db->select("u.vDocumentUrl AS u_upload_doc_url");
         $this->db->select("(concat(u.vFirstName,' ',u.vLastName)) AS email_user_name", FALSE);
         
         } else {
@@ -525,6 +526,7 @@ class Users_management_model extends CI_Model
             $this->db->select("u.vDeviceOS AS u_device_os");
             $this->db->select("u.eLogStatus AS u_log_status_updated");
             $this->db->select("u.vUploadDoc AS u_UploadDoc");
+            $this->db->select("u.vDocumentUrl AS u_upload_doc_url");
             $this->db->select("(concat(u.vFirstName,' ',u.vLastName)) AS email_user_name", FALSE);
         }
         
@@ -943,7 +945,7 @@ class Users_management_model extends CI_Model
                 "entry_type" => "Table",
                 "data_type" => "datetime",
                 "show_in" => "Both",
-                "type" => "date",
+                "type" => "date_and_time",
                 "align" => "left",
                 "label" => "Created On",
                 "lang_code" => "USERS_MANAGEMENT_CREATED_ON",
@@ -955,7 +957,7 @@ class Users_management_model extends CI_Model
                 "addable" => "No",
                 "editable" => "No",
                 "viewedit" => "No",
-                "format" => $this->general->getAdminPHPFormats('date')
+                "format" => $this->general->getAdminPHPFormats('date_and_time')
             ),
                 "u_status" => array(
                 "name" => "u_status",
@@ -1074,7 +1076,20 @@ class Users_management_model extends CI_Model
                 "file_size" => "102400",
                 "file_label" => "Yes"
             ),
-                "u_first_name" => array(
+                "u_upload_doc_url" => array(
+                "name" => "u_upload_doc_url",
+                "table_name" => "users",
+                "table_alias" => "u",
+                "field_name" => "vDocumentUrl",
+                "entry_type" => "Table",
+                "data_type" => "varchar",
+                "show_input" => "Both",
+                "type" => "href",
+                "label" => "Certificate Url",
+                "lang_code" => "USERS_MANAGEMENT_CERTIFICATE_DOC_URL",
+                "label_lang" => $this->lang->line('USERS_MANAGEMENT_CERTIFICATE_DOC_URL')
+            ),
+              "u_first_name" => array(
                 "name" => "u_first_name",
                 "table_name" => "users",
                 "table_alias" => "u",
@@ -1239,14 +1254,28 @@ class Users_management_model extends CI_Model
                 "entry_type" => "Table",
                 "data_type" => "datetime",
                 "show_input" => "Both",
-                "type" => "date",
+                "type" => "date_and_time",
                 "label" => "Deleted At",
                 "lang_code" => "USERS_MANAGEMENT_DELETED_AT",
                 "label_lang" => $this->lang->line('USERS_MANAGEMENT_DELETED_AT'),
-                "format" => $this->general->getAdminPHPFormats('date')
+                "format" => $this->general->getAdminPHPFormats('date_and_time')
             ),
                 "u_status" => array(
                 "name" => "u_status",
+                "table_name" => "users",
+                "table_alias" => "u",
+                "field_name" => "eStatus",
+                "entry_type" => "Table",
+                "data_type" => "enum",
+                "show_input" => "Both",
+                "type" => "dropdown",
+                "label" => "Status",
+                "lang_code" => "USERS_MANAGEMENT_STATUS",
+                "label_lang" => $this->lang->line('USERS_MANAGEMENT_STATUS')
+            ),
+
+                "current_status" => array(
+                "name" => "current_status",
                 "table_name" => "users",
                 "table_alias" => "u",
                 "field_name" => "eStatus",
@@ -1439,11 +1468,11 @@ class Users_management_model extends CI_Model
                 "entry_type" => "Table",
                 "data_type" => "datetime",
                 "show_input" => "Hidden",
-                "type" => "date",
+                "type" => "date_and_time",
                 "label" => "Added At",
                 "lang_code" => "USERS_MANAGEMENT_ADDED_AT",
                 "label_lang" => $this->lang->line('USERS_MANAGEMENT_ADDED_AT'),
-                "format" => $this->general->getAdminPHPFormats('date')
+                "format" => $this->general->getAdminPHPFormats('date_and_time')
             ),
                 "u_updated_at" => array(
                 "name" => "u_updated_at",

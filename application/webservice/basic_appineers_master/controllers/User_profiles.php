@@ -84,6 +84,13 @@ class User_profiles extends Cit_Controller
                     "value" => TRUE,
                     "message" => "longitude_required",
                 )
+            ),
+           "app_section" => array(
+                array(
+                    "rule" => "required",
+                    "value" => TRUE,
+                    "message" => "app_section_required",
+                )
             )
         );
         $valid_res = $this->wsresponse->validateInputParams($valid_arr, $request_arr, "user_profiles");
@@ -206,62 +213,6 @@ class User_profiles extends Cit_Controller
                         $result_arr[$data_key]["u_images"][$key]["image_url"] = (false == empty($data1))?$data1:"";
                     }
                     
-
-                    /*$data1 = $data_arr["u_Image1"];
-                    $image_arr = array();
-                    $image_arr["image_name"] = $data1;
-                     $image_arr["ext"] = implode(",", $this->config->item("IMAGE_EXTENSION_ARR"));
-                        $image_arr["color"] = "FFFFFF";
-                        $image_arr["no_img"] = FALSE;
-                    $image_arr["path"] ="widsconnect/personal_images";
-                    $data1 = $this->general->get_image_aws($image_arr);
-                    
-                    $result_arr[$data_key]["u_Image1"] = (false == empty($data1))?$data1:"";
-
-
-
-                     $data = $data_arr["u_Image2"];
-                    $image_arr = array();
-                    $image_arr["image_name"] = $data;
-                    $image_arr["ext"] = implode(",", $this->config->item("IMAGE_EXTENSION_ARR"));
-                    $image_arr["color"] = "FFFFFF";
-                    $image_arr["no_img"] = FALSE;
-                    $image_arr["path"] = "widsconnect/personal_images";
-                    $data = $this->general->get_image_aws($image_arr);
-                    $result_arr[$data_key]["u_Image2"] = $data;
-
-
-                     $data = $data_arr["u_Image3"];
-                    $image_arr = array();
-                    $image_arr["image_name"] = $data;
-                    $image_arr["ext"] = implode(",", $this->config->item("IMAGE_EXTENSION_ARR"));
-                    $image_arr["color"] = "FFFFFF";
-                    $image_arr["no_img"] = FALSE;
-                    $image_arr["path"] = "widsconnect/personal_images";
-                    $data = $this->general->get_image_aws($image_arr);
-                    $result_arr[$data_key]["u_Image3"] = $data;
-
-                     $data = $data_arr["u_Image4"];
-                    $image_arr = array();
-                    $image_arr["image_name"] = $data;
-                    $image_arr["ext"] = implode(",", $this->config->item("IMAGE_EXTENSION_ARR"));
-                    $image_arr["color"] = "FFFFFF";
-                    $image_arr["no_img"] = FALSE;
-                    $image_arr["path"] = "widsconnect/personal_images";
-                    $data = $this->general->get_image_aws($image_arr);
-                    $result_arr[$data_key]["u_Image4"] = $data; 
-
-                    $data = $data_arr["u_Image5"];
-                    $image_arr = array();
-                    $image_arr["image_name"] = $data;
-                    $image_arr["ext"] = implode(",", $this->config->item("IMAGE_EXTENSION_ARR"));
-                    $image_arr["color"] = "FFFFFF";
-                    $image_arr["no_img"] = FALSE;
-                    $image_arr["path"] = "widsconnect/personal_images";
-                    $data = $this->general->get_image_aws($image_arr);
-                    $result_arr[$data_key]["u_Image5"] = $data;*/
-
-
                     $age = "";
                     $currYear = date("Y");
                     $dobYear = $data_arr["dob_year"];
@@ -487,10 +438,12 @@ class User_profiles extends Cit_Controller
             'u_status',
             'u_log_status_updated',
             'u_gender',
+            'u_sexual_prefrence',
             'age',
             'u_app_section',
             'u_images',
             'connection_type_by_receiver_user',
+            'miles',
            /* "u_Image1",
             "u_Image2",
             "u_Image3",
@@ -522,10 +475,12 @@ class User_profiles extends Cit_Controller
            
             "u_log_status_updated" => "log_status_updated",
             "u_gender" => "gender",
+            "u_sexual_prefrence" => "sexual_preference",
             "age" => "age",
             "u_app_section" => "app_section",
             "u_images"=>"user_images",
             "connection_type_by_receiver_user"=>"connection_type_by_receiver_user",
+            "miles"=>"miles",
            /* "u_Image1"=>"image1",
             "u_Image2"=>"image2",
             "u_Image3"=>"image3",

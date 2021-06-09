@@ -532,6 +532,11 @@ class User_sign_up_email extends Cit_Controller
             {
                 $params_arr["profession"] = $input_params["profession"];
             }
+
+            if (isset($input_params["upload_doc_url"]))
+            {
+                $params_arr["upload_doc_url"] = $input_params["upload_doc_url"];
+            }
             
             $params_arr["_eemailverified"] = "No";
             if (isset($input_params["email_confirmation_code"]))

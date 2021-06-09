@@ -25,18 +25,26 @@ Class Cit_Interests_management extends Interests_management {
     parent::__construct();
       $this->load->model('cit_api_model');
 }
-public function checkUniqueInterest($value = ''){
+public function checkUniqueInterest($variable = array()){
 
-    $return_arr='1';
-    if(false == empty($value)){
-      $this->db->select('iInterestsId');
-      $this->db->from('user_interest');
-      $this->db->where_in('iInterestsId', $value);
-      $arrInterestData=$this->db->get()->result_array();
-     if(true == empty($arrInterestData)){
-         $return_arr = "0";
-         return  $return_arr;
-      }     
+    $return_arr='0';
+    if(false == empty($variable)){
+
+      foreach ($variable as $key => $value) {
+
+        //print_r($value);
+          $this->db->select('iInterestsId');
+          $this->db->from('user_interest');
+          $this->db->where_in('iInterestsId', $value);
+          $arrInterestData=$this->db->get()->result_array();
+
+         if(false == empty($arrInterestData)){
+             $return_arr = "1";
+
+             break;
+          }
+      }
+
     } 
    return  $return_arr; 
     
@@ -49,6 +57,7 @@ public function showStatusButton($id='',$arr=array())
 }
 public function ActiveUserInlineEdition($field_name = '', $value = '', $id = ''){
 
+      //echo "--inline--".$value; exit;
             if($value=='Active'){
                 $data = array(
                         'eEmailVerified' => 'Yes',
@@ -81,6 +90,9 @@ public function ActiveUserInlineEdition($field_name = '', $value = '', $id = '')
     
 }
 public function ActiveUserAfterChangeStatus($mode = '', $id = '', $parID = ''){
+
+     //  echo "--form--".$mode; exit;
+
      if($mode=='Active'){
       $count=count($id);
        if($count==1){

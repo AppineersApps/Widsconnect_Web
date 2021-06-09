@@ -140,6 +140,7 @@ class Interests_management_model extends CI_Model
      */
     public function update($data = array(), $where = '', $alias = "No", $join = "No")
     {
+
         if ($alias == "Yes")
         {
             if ($join == "Yes")
@@ -157,7 +158,13 @@ class Interests_management_model extends CI_Model
                 {
                     $extra_cond = " WHERE ".$this->db->protect($this->table_alias.".".$this->primary_key)." = ".$this->db->escape($where);
                 }
-                elseif ($where)
+                else if (is_array($where))
+                {
+                    $whr = implode(",", $where);
+
+                    $extra_cond = " WHERE ".$this->db->protect($this->table_alias.".".$this->primary_key)." IN (".$this->db->escape($whr).")";
+                }
+                else if ($where)
                 {
                     $extra_cond = " WHERE ".$where;
                 }
@@ -174,6 +181,10 @@ class Interests_management_model extends CI_Model
                 {
                     $this->db->where($this->table_alias.".".$this->primary_key, $where);
                 }
+                 else if (is_array($where) ==1)
+                {
+                    $this->db->where_in($where);
+                }
                 elseif ($where)
                 {
                     $this->db->where($where, FALSE, FALSE);
@@ -187,7 +198,12 @@ class Interests_management_model extends CI_Model
         }
         else
         {
-            if (is_numeric($where))
+
+            if(is_array($where) == 1)
+            {
+               $this->db->where_in($this->primary_key, $where);
+            }
+            else if(is_numeric($where))
             {
                 $this->db->where($this->primary_key, $where);
             }
@@ -202,6 +218,8 @@ class Interests_management_model extends CI_Model
             $res = $this->db->update($this->table_name, $data);
            
         }
+
+        //echo $this->db->last_query();        exit;
         return $res;
     }
 

@@ -173,19 +173,27 @@ class Update_personal_info extends Cit_Controller
             {
                 $sent_file2 = "";
             }
+
+            //echo "file checking---". $sent_file2;
+
             if (!empty($sent_file2))
             {
+                
                 list($file_name, $ext) = $this->general->get_file_attributes($sent_file2);
                 $images_arr["upload_doc"]["ext"] = implode(',', $this->config->item('IMAGE_EXTENSION_ARR'));
                 $images_arr["upload_doc"]["size"] = "102400";
                 if ($this->general->validateFileFormat($images_arr["upload_doc"]["ext"], $_FILES["upload_doc"]["name"]))
                 {
+
                     if ($this->general->validateFileSize($images_arr["upload_doc"]["size"], $_FILES["upload_doc"]["size"]))
                     {
                         $images_arr["upload_doc"]["name"] = $file_name;
                     }
+                   
                 }
             }
+
+            
             //*******upload doc *******************
 
             $path="widsconnect/personal_images";
@@ -399,7 +407,7 @@ class Update_personal_info extends Cit_Controller
             {
                 $params_arr["income"] = $input_params["income"];
             }
-            if (isset($input_params["interest"]))
+            if (isset($input_params["interest"])) //!empty($input_params["interest"]) &&
             {
                 $params_arr["intrest"] = $input_params["interest"];
             }
@@ -458,7 +466,7 @@ class Update_personal_info extends Cit_Controller
                 if ($upload_arr[0] == "")
                 {
                     //file upload failed
-
+                   // echo "file uploaderror msg--";
                 }
             }
             //***** doc upload *********
@@ -836,7 +844,7 @@ class Update_personal_info extends Cit_Controller
 
         return $responce_arr;
     }
-
+    
     /**
      * users_finish_success_3 method is used to process finish flow.
      * @created priyanka chillakuru | 25.09.2019

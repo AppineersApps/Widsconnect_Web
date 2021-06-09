@@ -102,7 +102,14 @@ class Connections extends Cit_Controller
                     "value" => TRUE,
                     "message" => "connection_type_required",
                 )
-            )
+            ),
+             /*"app_section" => array(
+                array(
+                    "rule" => "required",
+                    "value" => TRUE,
+                    "message" => "app_section_required",
+                )
+            )*/
         );
         $valid_res = $this->wsresponse->validateInputParams($valid_arr, $request_arr, "connections");
 
@@ -128,6 +135,8 @@ class Connections extends Cit_Controller
             $output_response = array();
             $input_params = $validation_res['input_params'];
             $output_array = $func_array = array();
+
+
 
              $input_params = $this->get_config_params($input_params);
 
@@ -281,7 +290,8 @@ class Connections extends Cit_Controller
            // 'first_name',
            // 'last_name',
             'user_image',
-            'date_time'
+            'date_time',
+            'app_section'
            // 'age',
             //'connection_type'
         );
@@ -293,8 +303,9 @@ class Connections extends Cit_Controller
             "user_name" => "user_name",
             // "first_name" => "first_name",
              // "last_name" => "last_name",
-            "user_image" => "user_image",
+            "user_image" => "profile_image",
             "date_time" => "date",
+            "app_section" =>"app_section",
             // "connection_type" => "connection_type",
             // "age" => "age",
         );
@@ -369,6 +380,14 @@ class Connections extends Cit_Controller
                     "message" => "connection_type_required",
                 )
             ),
+
+             "app_section" => array(
+                array(
+                    "rule" => "required",
+                    "value" => TRUE,
+                    "message" => "app_section_required",
+                )
+            )
         );
         $valid_res = $this->wsresponse->validateInputParams($valid_arr, $request_arr, "connections");
 
@@ -394,7 +413,12 @@ class Connections extends Cit_Controller
             }
             $input_params = $validation_res['input_params'];
 
-                
+            if($input_params['app_section'] == 0)
+            {
+                $output_response = $this->connection_app_section_error($input_params);
+                return $output_response;
+            }
+        
                 $input_params = $this->check_eligibility_of_liking($input_params);
                 
                 $condition_res = $this->condition_2($input_params);
@@ -404,7 +428,8 @@ class Connections extends Cit_Controller
 
                    $input_params = $this->get_liked_user_details($input_params);
 
-                    $condition_res3 = $this->condition_3($input_params);
+                   // $condition_res3 = $this->condition_3($input_params);
+                    $condition_res3["success"] = 1;
 
                     if ($condition_res3["success"])
                     {
@@ -419,12 +444,19 @@ class Connections extends Cit_Controller
                     //check match user condition like and like or superlike and like or like and Superlike
                            if(($input_params['connection_type_by_logged_user']=='Like') && ($input_params['connection_type_by_receiver_user']=='Like'))
                             {
-                                 $input_params = $this->like_count_management($input_params);
+                                $input_params = $this->like_count_management($input_params);
 
+                                $input_params = $this->delete_old_records($input_params);
+
+                                $input_params = $this->self_entry_for_match($input_params);
                                 $input_params = $this->entry_for_match($input_params);
 
-                                if ($input_params["u_device_token"]!=''){
+                           //     $input_params = $this->delete_old_records($input_params);
+
+                                if ($input_params["u_device_token"]!='')
+                                {
                                     $input_params = $this->push_notification_1($input_params);
+
                                     $output_response = $this->connection_add_finish_success($input_params);
                                    return $output_response;
                                 }
@@ -473,7 +505,11 @@ class Connections extends Cit_Controller
 
                                 else
                                 {
-
+                                    if (($input_params["connection_type"]=='Dislike') )
+                                    {
+                                     $input_params = $this->delete_old_notifications($input_params);
+                                    }
+                                    
                                     $output_response = $this->connection_add_finish_success($input_params);
                                                     return $output_response;
                                 }
@@ -508,6 +544,7 @@ class Connections extends Cit_Controller
         $this->block_result = array();
         try
         {
+          //  print_r($input_params);
 
             $params_arr = $where_arr = array();
             if (isset($input_params["user_id"]))
@@ -576,11 +613,16 @@ class Connections extends Cit_Controller
         try
         {
 
-            $user_id = isset($input_params["user_id"]) ? $input_params["user_id"] : "";
-            $this->block_result = $this->connections_model->check_eligibility_of_liking($user_id);
-            if (!$this->block_result["success"])
+            $this->block_result["data"]["success"] = 1;
+
+            if($input_params['connection_type'] == "Like" || $input_params['connection_type'] == "like")
             {
-                throw new Exception("No records found.");
+                $user_id = isset($input_params["user_id"]) ? $input_params["user_id"] : "";
+                $this->block_result = $this->connections_model->check_eligibility_of_liking($user_id);
+                if (!$this->block_result["success"])
+                {
+                    throw new Exception("No records found.");
+                }
             }
         }
         catch(Exception $e)
@@ -646,8 +688,6 @@ class Connections extends Cit_Controller
 
             $cc_lo_0 = (isset($input_params["app_section"]) ? $input_params["app_section"] : 0);
             $cc_ro_0 = (isset($input_params["app_section_1"]) ? $input_params["app_section_1"] : 0);
-
-            //echo $cc_lo_0."---next--".$cc_ro_0; exit();
 
             $cc_fr_0 = ($cc_lo_0 == $cc_ro_0) ? TRUE : FALSE;
             if (!$cc_fr_0)
@@ -730,6 +770,68 @@ class Connections extends Cit_Controller
         return $input_params;
     }
 
+     /**
+     * delete_old_notifications method is used to process query block.
+     * @created Chetan Dvs | 13.05.2019
+     * @modified Devangi Nirmal | 05.06.2019
+     * @param array $input_params input_params array to process loop flow.
+     * @return array $input_params returns modfied input_params array.
+     */
+    public function delete_old_notifications($input_params = array())
+    {
+
+        $this->block_result = array();
+        try
+        {
+
+            $user_id = isset($input_params["user_id"]) ? $input_params["user_id"] : "";
+            $liked_id = isset($input_params["connection_user_id"]) ? $input_params["connection_user_id"] : "";
+            $app_section = isset($input_params["app_section"]) ? $input_params["app_section"] : "";
+
+            $this->block_result = $this->connections_model->delete_old_notifications($user_id, $liked_id, $app_section);
+        }
+        catch(Exception $e)
+        {
+            $success = 0;
+            $this->block_result["data"] = array();
+        }
+        $input_params["delete_record"] = $this->block_result["data"];
+        $input_params = $this->wsresponse->assignSingleRecord($input_params, $this->block_result["data"]);
+
+        return $input_params;
+    }
+
+    /**
+     * delete_old_records method is used to process query block.
+     * @created Chetan Dvs | 13.05.2019
+     * @modified Devangi Nirmal | 05.06.2019
+     * @param array $input_params input_params array to process loop flow.
+     * @return array $input_params returns modfied input_params array.
+     */
+    public function delete_old_records($input_params = array())
+    {
+
+        $this->block_result = array();
+        try
+        {
+
+            $user_id = isset($input_params["user_id"]) ? $input_params["user_id"] : "";
+            $liked_id = isset($input_params["connection_user_id"]) ? $input_params["connection_user_id"] : "";
+            $app_section = isset($input_params["app_section"]) ? $input_params["app_section"] : "";
+
+            $this->block_result = $this->connections_model->delete_old_notifications_connections($user_id, $liked_id, $app_section);
+        }
+        catch(Exception $e)
+        {
+            $success = 0;
+            $this->block_result["data"] = array();
+        }
+        $input_params["delete_record"] = $this->block_result["data"];
+        $input_params = $this->wsresponse->assignSingleRecord($input_params, $this->block_result["data"]);
+
+        return $input_params;
+    }
+
 
      public function set_connection_status($input_params = array())
     {
@@ -738,7 +840,7 @@ class Connections extends Cit_Controller
         try
         {
             $params_arr = array();
-            
+
             if (isset($input_params["timestamp"]))
             {
                 $params_arr["_dtaddedat"] = $input_params["timestamp"];
@@ -825,13 +927,19 @@ class Connections extends Cit_Controller
                 
                     if((false == empty($data_arr["user_id"])) &&(false == empty($input_params['user_id'])) ){
 
+                        if(false == empty($input_params['app_section']))
+                        {
+                            $result_arr[$data_key]["app_section"] = $input_params['app_section'];
+                        }
+
                        
                     $strConnectionType  ='';
                    
                         $data_arr["user_id"] = $input_params['user_id'];
                          $data_arr["connection_id"] = $input_params['connection_user_id'];
+                         $data_arr["app_section"] = $input_params['app_section'];
 
-                    $arrConnectionType = $this->get_users_connection_details($data_arr["user_id"], $data_arr["connection_id"]);
+                    $arrConnectionType = $this->get_users_connection_details($data_arr["user_id"], $data_arr["connection_id"],$data_arr["app_section"]);
                   
                     if(false == empty($arrConnectionType['0']['connection_type'])){
 
@@ -876,14 +984,14 @@ class Connections extends Cit_Controller
         return $input_params;
     }
 
-    public function get_users_connection_details($user_id = '',$connection_id='')
+    public function get_users_connection_details($user_id = '',$connection_id='', $app_section = '')
     {
 
         $this->block_result = array();
         try
         {
             
-            $this->block_result = $this->wids_user_model->get_users_connection_details($user_id,$connection_id);
+            $this->block_result = $this->wids_user_model->get_users_connection_details($user_id,$connection_id,$app_section);
             
             if (!$this->block_result["success"])
             {
@@ -900,6 +1008,52 @@ class Connections extends Cit_Controller
     }
 
      /**
+     * self_entry_for_match method is used to process query block.
+     * @created Devangi Nirmal | 05.06.2019
+     * @modified Devangi Nirmal | 21.06.2019
+     * @param array $input_params input_params array to process loop flow.
+     * @return array $input_params returns modfied input_params array.
+     */
+    public function self_entry_for_match($input_params = array())
+    {
+
+        $this->block_result = array();
+        try
+        {
+
+            $params_arr = array();
+            $params_arr["_vmessage"] = "'Your profile is matched with ".$input_params["connection_user_name"].".'";
+            if (isset($input_params["connection_user_id"]))
+            {
+                $params_arr["user_id"] = $input_params["connection_user_id"];
+            }
+
+            if (isset($input_params["app_section"]))
+            {
+                $params_arr["app_section"] = $input_params["app_section"];
+            }
+            
+            $params_arr["_enotificationtype"] = "Match";
+            $params_arr["_dtaddedat"] = "NOW()";
+            $params_arr["_estatus"] = "active";
+            if (isset($input_params["user_id"]))
+            {
+                $params_arr["liked_id"] = $input_params["user_id"];
+            }
+            $this->block_result = $this->connections_model->entry_for_match($params_arr);
+        }
+        catch(Exception $e)
+        {
+            $success = 0;
+            $this->block_result["data"] = array();
+        }
+        $input_params["entry_for_match"] = $this->block_result["data"];
+        $input_params = $this->wsresponse->assignSingleRecord($input_params, $this->block_result["data"]);
+
+        return $input_params;
+    }
+
+ /**
      * entry_for_match method is used to process query block.
      * @created Devangi Nirmal | 05.06.2019
      * @modified Devangi Nirmal | 21.06.2019
@@ -1021,7 +1175,12 @@ class Connections extends Cit_Controller
                     "key" => "user_id",
                     "value" => $input_params["user_id"],
                     "send" => "Yes",
-                )
+                ),
+                 array(
+                    "key" => "app_section",
+                    "value" => $input_params["app_section"],
+                    "send" => "Yes",
+                ),
             );
             $push_msg = "Your profile is matched with ".$input_params["user_name"].".";
             $push_msg = $this->general->getReplacedInputParams($push_msg, $input_params);
@@ -1077,13 +1236,39 @@ class Connections extends Cit_Controller
             $badge = "";
             $title = "";
             $send_vars = array(
+                 array(
+                    "key" => "type",
+                    "value" => "Like",
+                    "send" => "Yes",
+                ),
                 array(
                     "key" => "profile_id",
                     "value" => $input_params["user_id"],
                     "send" => "Yes",
-                )
+                ),
+                array(
+                    "key" => "app_section",
+                    "value" => $input_params["app_section"],
+                    "send" => "Yes",
+                ),
+                
             );
-            $push_msg = "".$input_params["user_name"]." ".$input_params["connection_type"]." your profile.";
+
+            //if($input_params["connection_type"] = "Like")
+            //{
+                 $push_msg = "".$input_params["user_name"]." liked your profile ";
+            //}
+
+                 if($input_params["app_section"] == 1)
+                 {
+                    $push_msg .= "for Dating.";
+                 }
+
+                 if($input_params["app_section"] == 2)
+                 {
+                    $push_msg .= "for Friendship.";
+                 }
+
             $push_msg = $this->general->getReplacedInputParams($push_msg, $input_params);
             $send_mode = "runtime";
 
@@ -1193,6 +1378,31 @@ class Connections extends Cit_Controller
         $setting_fields = array(
             "success" => "0",
             "message" => "connection_add_finish_success_2",
+        );
+
+        $output_fields = array();
+
+        $output_array["settings"] = $setting_fields;
+        $output_array["settings"]["fields"] = $output_fields;
+        $output_array["data"] = $input_params;
+
+        $func_array["function"]["name"] = "connections";
+        $func_array["function"]["single_keys"] = $this->single_keys;
+        $func_array["function"]["multiple_keys"] = $this->multiple_keys;
+
+        $this->wsresponse->setResponseStatus(200);
+
+        $responce_arr = $this->wsresponse->outputResponse($output_array, $func_array);
+
+        return $responce_arr;
+    }
+
+    public function connection_app_section_error($input_params = array())
+    {
+
+        $setting_fields = array(
+            "success" => "0",
+            "message" => "Please enter value for app section field. ",
         );
 
         $output_fields = array();

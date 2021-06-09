@@ -138,7 +138,9 @@ class Delete_image extends Cit_Controller
 
  	         
          
-		          $input_params = $this->delete_user_media_image($request_arr);
+		          $input_params = $this->get_user_media_image($input_params);
+
+                  $input_params = $this->delete_user_media_image($input_params);
 
                  // print_r($input_params);
 
@@ -160,6 +162,43 @@ class Delete_image extends Cit_Controller
             $message = $e->getMessage();
         }
         return $output_response;
+    }
+
+    public function get_user_media_image($input_params = array())
+    {
+
+        $this->block_result = array();
+        try
+        {
+
+            
+            $where_arr['user_id']  = isset($input_params["user_id"]) ? $input_params["user_id"] : ""; 
+
+            if(isset($input_params["image_id"]) && $input_params["image_id"] > 0)
+            {
+                $where_arr['image_id']  = $input_params["image_id"];
+            
+
+                $this->block_result = $this->users_model->get_user_personal_images($where_arr);
+                if (!$this->block_result["success"])
+                {
+                    throw new Exception("No records found.");
+                }
+                $result_arr = $this->block_result["data"];
+
+                    $data1 = $result_arr["image_url"];
+                    $this->block_result["data"] = $data1;
+            }
+        }
+        catch(Exception $e)
+        {
+            $success = 0;
+            $this->block_result["data"] = array();
+        }
+        $input_params["image_name"] = $this->block_result["data"];
+        $input_params = $this->wsresponse->assignSingleRecord($input_params, $this->block_result["data"]);
+
+        return $input_params;
     }
 
      /**
@@ -185,13 +224,20 @@ class Delete_image extends Cit_Controller
                 $arrResult['image_id']  = $input_params["image_id"];
             }
 
-
             $this->block_result = $this->users_model->delete_user_media_image($where_arr,$arrResult);
 
             if (!$this->block_result["success"])
             {
                 throw new Exception("No records found.");
             }
+
+            if(isset($input_params["image_name"]))
+            {
+                $image_name  = $input_params["image_name"];
+
+                 $data11 = $this->general->deleteAWSFileData($folder_name = "widsconnect/personal_images", $image_name);
+            }
+
             $result_arr = $this->block_result["data"];
         }
         catch(Exception $e)

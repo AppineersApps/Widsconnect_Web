@@ -165,6 +165,14 @@ class User_login_email extends Cit_Controller
                     else
                     {
 
+                        $condition_res = $this->is_deleted($input_params);
+                        if ($condition_res["success"])
+                        {
+
+                            $output_response = $this->users_finish_success_6($input_params);
+                            return $output_response;
+                        }
+
                         $condition_res = $this->is_archieved($input_params);
                         if ($condition_res["success"])
                         {
@@ -172,7 +180,6 @@ class User_login_email extends Cit_Controller
                             $output_response = $this->users_finish_success_5($input_params);
                             return $output_response;
                         }
-
                         else
                         {
 
@@ -345,6 +352,18 @@ class User_login_email extends Cit_Controller
                     
                     $result_arr[$data_key]["u_profile_image"] = (false == empty($data))?$data:"";
 
+                    $data = $data_arr["u_UploadDoc"];
+                    $image_arr = array();
+                    $image_arr["image_name"] = $data;
+                    $image_arr["ext"] = implode(",", $this->config->item("IMAGE_EXTENSION_ARR"));
+                    $image_arr["color"] = "FFFFFF";
+                    $image_arr["no_img"] = FALSE;
+                    $image_arr["path"] = "widsconnect/upload_doc";
+                    //$image_arr["path"] = $this->general->getImageNestedFolders($dest_path);
+                    $data = $this->general->get_image_aws($image_arr);
+                    //print_r($data); exit;
+                    $result_arr[$data_key]["u_UploadDoc"] = (false == empty($data)) ? $data : "";
+                    
 
                     //****************************
                    /* $data1 = $data_arr["u_Image1"];
@@ -397,6 +416,8 @@ class User_login_email extends Cit_Controller
             $this->block_result["data"] = array();
         }
         $input_params["get_user_login_details"] = $this->block_result["data"];
+        //print_r($input_params);
+
         $input_params = $this->wsresponse->assignSingleRecord($input_params, $this->block_result["data"]);
 
         return $input_params;
@@ -626,10 +647,13 @@ class User_login_email extends Cit_Controller
             'u_Education',
             'u_Profession',
             'u_Income',
-            'u_Intrest',
+            //'u_Intrest',
             'u_MarriageStatus',
             'u_Tatoos',
             'u_TravaledPlaces',
+            'u_tTravalToPlaces',
+            //'u_IsSubscribed',
+            'subscription',
             'u_Triggers',
             'u_AboutYou',
             'u_AboutLatePerson',
@@ -680,26 +704,29 @@ class User_login_email extends Cit_Controller
 
 
             'u_Smoke' => 'smoke',
-            'u_UploadDoc' => 'uploadDoc',
+            'u_UploadDoc' => 'upload_doc',
             'u_Drink'=>'drink',
             'u_420Friendly'=>'420friendly',
             'u_Height'=>'height',
             'u_Kids'=>'kids',
-            'u_BodyType'=>'bodytype',
+            'u_BodyType'=>'body_type',
             'u_Gender'=>'gender',
             'u_Sign'=>'sign',
             'u_Religion'=>'religion',
-            'u_SexualPrefrence'=>'sexualprefrence',
+            'u_SexualPrefrence'=>'sexual_preference',
             'u_Education'=>'education',
             'u_Profession'=>'profession',
             'u_Income'=>'income',
-            'u_Intrest'=>'intrest',
-            'u_MarriageStatus'=>'marriagestatus',
-            'u_Tatoos'=>'tatoos',
-            'u_TravaledPlaces'=>'travaledplaces',
+            //'u_Intrest'=>'interest',
+            'u_MarriageStatus'=>'marriage_status',
+            'u_Tatoos'=>'tattoos',
+            'u_TravaledPlaces'=>'traveled_places',
+            "u_tTravalToPlaces"=>"places_want_to_travel",
             'u_Triggers'=>'triggers',
-            'u_AboutYou'=>'aboutyou',
-            'u_AboutLatePerson'=>'aboutlateperson',
+            'u_AboutYou'=>'about_you',
+            'u_AboutLatePerson'=>'about_late_person',
+            'subscription'=>'subscription',
+            //'u_IsSubscribed'=>'is_subscribed',
            /* 'u_Image1'=> 'image1',
             'u_Image2'=>'image2',
             'u_Image3'=> 'image3',
@@ -789,6 +816,41 @@ class User_login_email extends Cit_Controller
         $this->block_result["message"] = $message;
         return $this->block_result;
     }
+   
+    /**
+     * is_deleted method is used to process conditions.
+     * @created priyanka chillakuru | 01.10.2019
+     * @modified priyanka chillakuru | 01.10.2019
+     * @param array $input_params input_params array to process condition flow.
+     * @return array $block_result returns result of condition block as array.
+     */
+    public function is_deleted($input_params = array())
+    {
+
+        $this->block_result = array();
+        try
+        {
+
+            $cc_lo_0 = $input_params["u_status"];
+            $cc_ro_0 = "Pending_delete";
+
+            $cc_fr_0 = ($cc_lo_0 == $cc_ro_0) ? TRUE : FALSE;
+            if (!$cc_fr_0)
+            {
+                throw new Exception("Some conditions does not match.");
+            }
+            $success = 1;
+            $message = "Conditions matched.";
+        }
+        catch(Exception $e)
+        {
+            $success = 0;
+            $message = $e->getMessage();
+        }
+        $this->block_result["success"] = $success;
+        $this->block_result["message"] = $message;
+        return $this->block_result;
+    }
 
     /**
      * users_finish_success_5 method is used to process finish flow.
@@ -803,6 +865,37 @@ class User_login_email extends Cit_Controller
         $setting_fields = array(
             "success" => "0",
             "message" => "users_finish_success_5",
+        );
+        $output_fields = array();
+
+        $output_array["settings"] = $setting_fields;
+        $output_array["settings"]["fields"] = $output_fields;
+        $output_array["data"] = $input_params;
+
+        $func_array["function"]["name"] = "user_login_email";
+        $func_array["function"]["single_keys"] = $this->single_keys;
+        $func_array["function"]["multiple_keys"] = $this->multiple_keys;
+
+        $this->wsresponse->setResponseStatus(200);
+
+        $responce_arr = $this->wsresponse->outputResponse($output_array, $func_array);
+
+        return $responce_arr;
+    }
+
+    /**
+     * users_finish_success_6 method is used to process finish flow.
+     * @created priyanka chillakuru | 01.10.2019
+     * @modified priyanka chillakuru | 12.02.2020
+     * @param array $input_params input_params array to process loop flow.
+     * @return array $responce_arr returns responce array of api.
+     */
+    public function users_finish_success_6($input_params = array())
+    {
+
+        $setting_fields = array(
+            "success" => "0",
+            "message" => "users_finish_success_6",
         );
         $output_fields = array();
 

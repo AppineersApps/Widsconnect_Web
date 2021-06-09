@@ -342,14 +342,18 @@ class Edit_profile extends Cit_Controller
                 list($file_name, $ext) = $this->general->get_file_attributes($sent_file2);
                 $images_arr["upload_doc"]["ext"] = implode(',', $this->config->item('IMAGE_EXTENSION_ARR'));
                 $images_arr["upload_doc"]["size"] = "102400";
+                
                 if ($this->general->validateFileFormat($images_arr["upload_doc"]["ext"], $_FILES["upload_doc"]["name"]))
                 {
                     if ($this->general->validateFileSize($images_arr["upload_doc"]["size"], $_FILES["upload_doc"]["size"]))
                     {
                         $images_arr["upload_doc"]["name"] = $file_name;
                     }
+                    
                 }
             }
+
+           
             //*******upload doc *******************
 
             $path="widsconnect/personal_images";
@@ -804,50 +808,6 @@ class Edit_profile extends Cit_Controller
                         $result_arr[$data_key]["u_images"][$key]["image_url"] = (false == empty($data1))?$data1:"";
                     }
                     
-
-
-                    /*
-                     $data = $data_arr["u_Image2"];
-                    $image_arr = array();
-                    $image_arr["image_name"] = $data;
-                    $image_arr["ext"] = implode(",", $this->config->item("IMAGE_EXTENSION_ARR"));
-                    $image_arr["color"] = "FFFFFF";
-                    $image_arr["no_img"] = FALSE;
-                    $image_arr["path"] = "widsconnect/personal_images";
-                    $data = $this->general->get_image_aws($image_arr);
-                    $result_arr[$data_key]["u_Image2"] = $data;
-
-
-                     $data = $data_arr["u_Image3"];
-                    $image_arr = array();
-                    $image_arr["image_name"] = $data;
-                    $image_arr["ext"] = implode(",", $this->config->item("IMAGE_EXTENSION_ARR"));
-                    $image_arr["color"] = "FFFFFF";
-                    $image_arr["no_img"] = FALSE;
-                    $image_arr["path"] = "widsconnect/personal_images";
-                    $data = $this->general->get_image_aws($image_arr);
-                    $result_arr[$data_key]["u_Image3"] = $data;
-
-                     $data = $data_arr["u_Image4"];
-                    $image_arr = array();
-                    $image_arr["image_name"] = $data;
-                    $image_arr["ext"] = implode(",", $this->config->item("IMAGE_EXTENSION_ARR"));
-                    $image_arr["color"] = "FFFFFF";
-                    $image_arr["no_img"] = FALSE;
-                    $image_arr["path"] = "widsconnect/personal_images";
-                    $data = $this->general->get_image_aws($image_arr);
-                    $result_arr[$data_key]["u_Image4"] = $data; 
-
-                    $data = $data_arr["u_Image5"];
-                    $image_arr = array();
-                    $image_arr["image_name"] = $data;
-                    $image_arr["ext"] = implode(",", $this->config->item("IMAGE_EXTENSION_ARR"));
-                    $image_arr["color"] = "FFFFFF";
-                    $image_arr["no_img"] = FALSE;
-                    $image_arr["path"] = "widsconnect/personal_images";
-                    $data = $this->general->get_image_aws($image_arr);
-                    $result_arr[$data_key]["u_Image5"] = $data;
-                    */
                     $i++;
                 }
 
@@ -976,6 +936,9 @@ class Edit_profile extends Cit_Controller
             "u_AboutYou",
             "u_AboutLatePerson",
             "u_images",
+            "u_section_id",
+            "subscription",
+           // "u_IsSubscribed"
         );
         $output_keys = array(
             'get_updated_details',
@@ -1043,7 +1006,9 @@ class Edit_profile extends Cit_Controller
             "u_Triggers"=>"triggers",
             "u_AboutYou"=>"about_you",
             "u_AboutLatePerson"=>"about_late_person",
-            "u_images" => "user_images"
+            "subscription"=>"subscription",
+            "u_images" => "user_images",
+            "u_section_id" => "app_section"
         );
 
         $output_array["settings"] = $setting_fields;
@@ -1124,6 +1089,7 @@ class Edit_profile extends Cit_Controller
 
         return $responce_arr;
     }
+    
 
     /**
      * users_finish_success_3 method is used to process finish flow.

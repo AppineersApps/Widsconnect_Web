@@ -408,7 +408,8 @@ class Notification extends Cit_Controller
             'user_name',
             'user_image',
             'request_id',
-            'user_status'
+            'user_status',
+            'blocked_user_id'
         );
         $output_keys = array(
             'get_notification_details',

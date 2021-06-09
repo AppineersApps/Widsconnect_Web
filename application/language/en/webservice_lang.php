@@ -75,7 +75,7 @@
     $lang["user_sign_up_email"]["device_os_required"] = "Please enter a value for the device_os field." ;
     $lang["user_sign_up_email"]["finish_success_1"] = "#message# " ;
     $lang["user_sign_up_email"]["users_finish_success_1"] = "Problem while sign up. Please try again.!" ;
-    $lang["user_sign_up_email"]["users_finish_success"] = "You have successfully registered. Please check your email and confirm your registration." ;
+    $lang["user_sign_up_email"]["users_finish_success"] = "You have successfully registered. We will notify you once your account is approved." ;
 
 //User Sign Up Phone Messages
     $lang["user_sign_up_phone"]["first_name_minlength"] = "Please enter minimum 1 character for the first name field." ;
@@ -121,7 +121,7 @@
     $lang["social_sign_up"]["social_login_id_required"] = "Please enter a value for the social_login_id field." ;
     $lang["social_sign_up"]["users_finish_success_1"] = "Problem while sign up. Please try again.!" ;
     $lang["social_sign_up"]["finish_success_1"] = "#message# " ;
-    $lang["social_sign_up"]["users_finish_success"] = "You have successfully registered." ;
+    $lang["social_sign_up"]["users_finish_success"] = "You have successfully registered. We will notify you once your account is approved." ;
 
 //Check Unique User Messages
     $lang["check_unique_user"]["type_required"] = "Please enter a value for the type field." ;
@@ -150,11 +150,14 @@
     $lang["user_login_email"]["device_os_required"] = "Please enter a value for the device_os field." ;
     $lang["user_login_email"]["finish_success"] = "#message# " ;
     $lang["user_login_email"]["users_finish_success"] = "Please provide valid login credentials." ;
-    $lang["user_login_email"]["users_finish_success_1"] = "Your account is not yet active. Please activate your account through verification email." ;
+    $lang["user_login_email"]["users_finish_success_1"] = "Your account is pending for approval. Please contact admin ({%SYSTEM.EMAIL_ADMIN%}) to activate it." ;
     $lang["user_login_email"]["users_finish_success_4"] = "Error logging in.Please try again later on." ;
-    $lang["user_login_email"]["users_finish_success_2"] = "Your account is inactive. Contact your administrator ({%SYSTEM.EMAIL_ADMIN%}) to activate it." ;
+    $lang["user_login_email"]["users_finish_success_2"] = "Your account is pending for approval. Please contact admin ({%SYSTEM.EMAIL_ADMIN%}) to activate it." ;
+    //$lang["user_login_email"]["users_finish_success_2"] = "Your account is inactive. Contact your administrator ({%SYSTEM.EMAIL_ADMIN%}) to activate it." ;
     $lang["user_login_email"]["users_finish_success_3"] = "You've successfully logged in." ;
     $lang["user_login_email"]["users_finish_success_5"] = "Your account is no longer available. Please contact administrator ('{%SYSTEM.EMAIL_ADMIN%}')." ;
+
+    $lang["user_login_email"]["users_finish_success_6"] = "Your account is deleted." ;
 
 //User Login Phone Messages
     $lang["user_login_phone"]["mobile_number_number"] = "Please enter valid number for the mobile_number field." ;
@@ -175,7 +178,7 @@
     $lang["social_login"]["users_finish_success_4"] = "Error logging in.Please try again later on." ;
     $lang["social_login"]["finish_success"] = "#message# " ;
     $lang["social_login"]["users_finish_success"] = "Please provide valid login credentials." ;
-    $lang["social_login"]["users_finish_success_2"] = "Your account is inactive.Contact your administrator ({%SYSTEM.EMAIL_ADMIN%}) to activate it." ;
+    $lang["social_login"]["users_finish_success_2"] = "Your account is pending for approval. Please contact admin ({%SYSTEM.EMAIL_ADMIN%}) to activate it." ;
     $lang["social_login"]["users_finish_success_3"] = "You've successfully logged in." ;
     $lang["social_login"]["users_finish_success_1"] = "Your account is no longer available. Please contact administrator ('{%SYSTEM.EMAIL_ADMIN%}')." ;
 
@@ -248,6 +251,7 @@
     $lang["edit_profile"]["users_finish_success_1"] = "Invalid user." ;
     $lang["edit_profile"]["users_finish_success_3"] = "#message# " ;
     $lang["edit_profile"]["users_finish_success_2"] = "Profile updated successfully." ;
+    $lang["edit_profile"]["users_finish_file_upload_success"] = "File size is not valid. Maximum upload file size is 20MB." ;
 
 //Admin Update User status In Listing Messages
     $lang["admin_update_user_status_in_listing"]["user_id_required"] = "Please enter a value for the user_id field." ;

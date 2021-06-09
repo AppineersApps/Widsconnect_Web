@@ -52,7 +52,7 @@ public function helperPrepareWhere(&$input_params=array())
 
                    // print_r($data);
 
-                    if (isset($input_params['radius']) && $input_params['radius'] != "")
+                    if (isset($input_params['radius']) && $input_params['radius'] != "" && $input_params['radius'] < 1000)
                     {
                         $where[]= "FLOOR(".$input_params['distance'].") <='".$input_params['radius']."' ";
                     }
@@ -81,7 +81,9 @@ public function helperPrepareWhere(&$input_params=array())
 
                    // if(isset($input_params['app_section']) && $input_params['app_section'] != ""){
 
-                        $where[]="app_section='".$data[0]['app_section']."'";
+                        //$where[]="app_section='".$data[0]['app_section']."'";
+                      $where[] = "app_section in ('".$input_params['app_section']."',3)";
+                      
                     //}
 
                 }

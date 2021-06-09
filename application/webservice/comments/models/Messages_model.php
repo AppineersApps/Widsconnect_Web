@@ -280,7 +280,7 @@ class Messages_model extends CI_Model
      * @param string $where_clause where_clause is used to process query block.
      * @return array $return_arr returns response of query block.
      */
-    public function get_message($where_clause = '',$status='')
+    public function get_message($where_clause = '',$status='', $app_section = 0)
     {
         //print_r($user_id.'---'.$receiver_id);exit;
        
@@ -291,13 +291,18 @@ class Messages_model extends CI_Model
             $this->db->from("message AS m");
             $this->db->join("users AS u", "m.iSenderId = u.iUserId", "left");
             $this->db->join("users AS u1", "m.iReceiverId = u1.iUserId", "left");
-          
+    
             $this->db->select("m.iMessageId AS message_id"); 
              $this->db->select("m.dtAddedDate AS message_date"); 
             $this->db->select("m.iSenderId AS sender_id");
             $this->db->select("m.iReceiverId AS receiver_id");
             $this->db->select("m.vMessage AS message");
+            $this->db->select("m.iDelete_user_id AS delete_user_id");
             $this->db->select("m.tMessageUpload AS message_upload");
+            $this->db->select("u.eStatus AS sender_status");
+            $this->db->select("u1.eStatus AS receiver_status");
+            $this->db->select("'' AS blocked_user_id");
+            $this->db->select("'' AS blocked_status");
             $this->db->select("concat(u.vFirstName,\" \",u.vLastName) AS sender_name");
             $this->db->select("concat(u1.vFirstName,\" \",u1.vLastName) AS receiver_name");
             $this->db->select("m.dtModifiedDate AS updated_at");
@@ -330,11 +335,30 @@ class Messages_model extends CI_Model
            //         // $this->db->where("m.iSenderId", $user_id)->or_where("m.iReceiverId", $user_id); 
            //  }
             $result_obj = $this->db->get();
-           // echo $this->db->last_query();exit;
+          //  echo $this->db->last_query();exit;
             $result_arr = is_object($result_obj) ? $result_obj->result_array() : array();
             if (!is_array($result_arr) || count($result_arr) == 0)
             {
                 throw new Exception('No records found.');
+            }
+
+            foreach ($result_arr as $key => $val) 
+            {
+
+                $strSql = "SELECT Distinct(iBlockId) AS iBlockId, iUserId,iBlockUserId, eStatus from user_block where (iUserId=".$val['sender_id']." AND iBlockUserId=".$val['receiver_id'].") OR (iBlockUserId=".$val['sender_id']." AND iUserId=".$val['receiver_id'].") limit 1";
+
+                $result_objQ = $this->db->query($strSql);
+               
+                 $result_objjj = is_object($result_objQ) ? $result_objQ->result_array() : array();
+               //print_r($result_objjj);
+
+                if(isset($result_objjj[0]['iBlockUserId']))
+                {
+
+                    $result_arr[$key]['blocked_user_id'] = $result_objjj[0]['iBlockUserId'];
+                    $result_arr[$key]['blocked_status'] = $result_objjj[0]['eStatus'];
+                }
+
             }
             $success = 1;
         }
@@ -447,7 +471,7 @@ class Messages_model extends CI_Model
                 $this->db->where($strWhere);
             }
             $res = $this->db->delete("message");
-           //echo $this->db->last_query();exit;
+        //   echo $this->db->last_query();exit;
             $affected_rows = $this->db->affected_rows();
             if (!$res || $affected_rows == -1)
             {

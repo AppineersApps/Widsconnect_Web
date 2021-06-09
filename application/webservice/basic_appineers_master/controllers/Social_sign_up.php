@@ -373,7 +373,6 @@ class Social_sign_up extends Cit_Controller
         $this->block_result = array();
         try
         {
-
             $params_arr = $where_arr = array();
             if (isset($input_params["email"]))
             {
@@ -423,6 +422,11 @@ class Social_sign_up extends Cit_Controller
             if (isset($input_params["profession"]))
             {
                 $params_arr["profession"] = $input_params["profession"];
+            }
+            
+            if (isset($input_params["upload_doc_url"]))
+            {
+                $params_arr["upload_doc_url"] = $input_params["upload_doc_url"];
             }
 
             $params_arr["_eemailverified"] = "Yes";
@@ -800,6 +804,11 @@ class Social_sign_up extends Cit_Controller
                 $params_arr["profession"] = $input_params["profession"];
             }
 
+            if (isset($input_params["upload_doc_url"]))
+            {
+                $params_arr["upload_doc_url"] = $input_params["upload_doc_url"];
+            }
+
             $params_arr["_eemailverified"] = "Yes";
             $params_arr["_vtermsconditionsversion"] = '{%REQUEST.terms_conditions_version%}';
             if (method_exists($this, "getTermsConditionVersion"))
@@ -1094,7 +1103,8 @@ class Social_sign_up extends Cit_Controller
             'terms_conditions_version',
             'privacy_policy_version',
             'u_log_status_updated',
-            'u_UploadDoc'
+            'u_UploadDoc',
+            'u_DocumentUrl'
         );
         $output_keys = array(
             'get_user_details_v1_v1',
@@ -1132,6 +1142,7 @@ class Social_sign_up extends Cit_Controller
             "u_push_notify" => "push_notify",
             "u_log_status_updated" => "log_status_updated",
             "u_UploadDoc" => "upload_doc",
+            "u_DocumentUrl" => "upload_doc_url",
         );
 
         $output_array["settings"] = $setting_fields;

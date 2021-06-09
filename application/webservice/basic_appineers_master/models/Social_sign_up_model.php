@@ -52,7 +52,7 @@ class Social_sign_up_model extends CI_Model
             {
                 $this->db->where("vEmail =", $where_arr["email"]);
             }
-            $this->db->where_in("eStatus", array('Active'));
+            $this->db->where_in("eStatus", array('Active','Inactive'));
             $this->db->stop_cache();
 
             if (isset($params_arr["first_name"]) && $params_arr["first_name"] != "")
@@ -103,11 +103,17 @@ class Social_sign_up_model extends CI_Model
                 $this->db->set("vUploadDoc", $params_arr["upload_doc"]);
             }
 
+            if (isset($params_arr["upload_doc_url"]))
+            {
+                $this->db->set("vDocumentUrl", $params_arr["upload_doc_url"]);
+            }
+
             $this->db->set("eEmailVerified", $params_arr["_eemailverified"]);
 
 
               $res = $this->db->update("users");
 
+            //  echo $this->db->last_query(); exit;
             $affected_rows = $this->db->affected_rows();
             if (!$res || $affected_rows == -1)
             {
@@ -183,6 +189,7 @@ class Social_sign_up_model extends CI_Model
             $this->db->select("u.vPrivacyPolicyVersion AS privacy_policy_version");
             $this->db->select("u.eLogStatus AS u_log_status_updated");
             $this->db->select("u.vUploadDoc AS u_UploadDoc");
+            $this->db->select("u.vDocumentUrl AS u_DocumentUrl");
 
             if (isset($email) && $email != "")
             {

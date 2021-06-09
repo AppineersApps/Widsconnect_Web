@@ -193,12 +193,12 @@ class Get_message_list extends Cit_Controller
 
             // $receiver_id = isset($input_params["receiver_id"]) ? $input_params["receiver_id"] : "";
             $user_id = isset($input_params["user_id"]) ? $input_params["user_id"] : "";
-             $status = isset($input_params["status"]) ? $input_params["status"] : "";
-
+            $status = isset($input_params["status"]) ? $input_params["status"] : "";
+            $app_section = isset($input_params["app_section"]) ? $input_params["app_section"] : "0";
 
             // $this->block_result = $this->messages_model->get_message($user_id,$receiver_id);
             $where_clause = isset($input_params["where_clause"]) ? $input_params["where_clause"] : "";
-            $this->block_result = $this->messages_model->get_message($where_clause, $status);
+            $this->block_result = $this->messages_model->get_message($where_clause, $status, $app_section);
             
             if (!$this->block_result["success"])
             {
@@ -222,7 +222,7 @@ class Get_message_list extends Cit_Controller
                     //echo $data_arr["user_id"];
                    // echo $receiver_id;exit;
 
-                    $arrConnectionType = $this->get_users_connection_details($user_id,$data_arr["sender_id"],$data_arr["receiver_id"]);
+                    $arrConnectionType = $this->get_users_connection_details($user_id,$data_arr["sender_id"],$app_section);
                     
                     if(false == empty($arrConnectionType['0']['connection_type'])){
                         $strConnectionType =$arrConnectionType['0']['connection_type'];
@@ -289,6 +289,7 @@ class Get_message_list extends Cit_Controller
         $this->block_result = array();
         try
         {
+           // echo $user_id."--".$connection_id."--".$other_user_id."--"; exit;
             
             $this->block_result = $this->wids_user_model->get_users_connection_details($user_id,$connection_id,$other_user_id);
             
@@ -685,13 +686,18 @@ class Get_message_list extends Cit_Controller
             'message',
             'sender_name',
             'receiver_name',
+            'sender_status',
+            'receiver_status',
             'updated_at',
             'sender_image',
             'receiver_image',
             'message_upload',
             'message_date',
+            'delete_user_id',
             'connection_type_by_logged_user',
             'connection_type_by_receiver_user',
+            'blocked_status',
+            'blocked_user_id'
         );
         $output_keys = array(
             'get_message',
@@ -816,7 +822,7 @@ class Get_message_list extends Cit_Controller
 
         $setting_fields = array(
             "success" => "0",
-            "message" => "Message not found in the sytem",
+            "message" => "Chat history not found in the system",
         );
         $output_fields = array();
 

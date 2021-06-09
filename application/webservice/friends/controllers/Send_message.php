@@ -359,7 +359,7 @@ class Send_message extends Cit_Controller
      */
     public function update_message($input_params = array())
     {
-        //print_r($input_params);exit;
+
         $this->block_result = array();
         try
         {
@@ -698,7 +698,7 @@ class Send_message extends Cit_Controller
                     $image_arr["ext"] = implode(",", $this->config->item("IMAGE_EXTENSION_ARR"));
                     $image_arr["color"] = "FFFFFF";
                     $image_arr["no_img"] = FALSE;
-                    $image_arr["path"] = "fern/user_profile";
+                    $image_arr["path"] = "widsconnect/user_profile";
                     $data = $this->general->get_image_aws($image_arr);
 
                     $result_arr[$data_key]["u_image"] = $data;
@@ -787,6 +787,11 @@ class Send_message extends Cit_Controller
                 array(
                     "key" => "user_id",
                     "value" => $input_params["s_users_id"],
+                    "send" => "Yes",
+                ),
+                 array(
+                    "key" => "app_section",
+                    "value" => $input_params["app_section"],
                     "send" => "Yes",
                 ),
                 array(

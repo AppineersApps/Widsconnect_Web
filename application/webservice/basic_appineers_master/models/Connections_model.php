@@ -68,6 +68,7 @@ class Connections_model extends CI_Model
              $this->db->select("u.iUserId AS user_id");
              $this->db->select("(concat(u.vFirstName,' ',u.vLastName)) AS user_name", FALSE);
              $this->db->select("u.vProfileImage AS user_image"); 
+             $this->db->select("u.vProfileImage AS profile_image"); 
              $this->db->select("us1.eConnectionType AS connection_type"); 
              $this->db->select("us1.dtTimeStamp AS date_time"); 
            //  $this->db->select("u.iAge AS age");
@@ -88,7 +89,7 @@ class Connections_model extends CI_Model
             if (isset($params_arr['user_id']) && $params_arr['user_id'] != "")
             {
               
-                $strwher="(us2.eConnectionType = 'Like' AND u.eStatus = 'Active') AND us2.iConnectionUserId = '".$params_arr['user_id']."'";
+                $strwher="(us2.eConnectionType = 'Like' AND u.eStatus = 'Active') AND us2.iConnectionUserId = '".$params_arr['user_id']."' AND us1.app_section = us2.app_section";
                 $this->db->where($strwher);
             }
 
@@ -104,23 +105,25 @@ class Connections_model extends CI_Model
               }*/
 
              $result_obj = $this->db->get();
-             //  echo $this->db->last_query();exit;
+               //echo $this->db->last_query();exit;
                 $result_arr = is_object($result_obj) ? $result_obj->result_array() : array();
     
             }
             else if($params_arr['connection_type']=="Like"  || $params_arr['connection_type']=="Maybe"){
                 $result_arr = array();
                 $this->db->from("users_connections AS usc");            
-                $this->db->join("users AS u", "u.iUserId = usc.iConnectionUserId AND u.eStatus = 'Active'", "left");
+                $this->db->join("users AS u", "u.iUserId = usc.iConnectionUserId", "left");
                 $this->db->select("u.iUserId AS user_id");
                 $this->db->select("(concat(u.vFirstName,' ',u.vLastName)) AS user_name", FALSE);
                 $this->db->select("u.vProfileImage AS user_image"); 
+                $this->db->select("u.vProfileImage AS profile_image"); 
               //  $this->db->select("u.iAge AS age");
                 $this->db->select("usc.eConnectionType AS connection_type");
                 $this->db->select("usc.dtTimeStamp AS date_time"); 
+                $this->db->select("usc.app_section AS app_section"); 
                 //$this->db->where("usc.eStatus", 'Active');
 
-                $strwher="(usc.eConnectionType = '".$params_arr['connection_type']."' OR usc.eConnectionType='Superlike') AND usc.iUserId = '".$params_arr['user_id']."'";
+                $strwher="usc.eConnectionType = '".$params_arr['connection_type']."' AND usc.iUserId = '".$params_arr['user_id']."' AND u.eStatus = 'Active'";
 
                  $this->db->where($strwher);
 
@@ -133,7 +136,7 @@ class Connections_model extends CI_Model
                 $this->db->order_by("usc.dtAddedAt","DESC");
                 $this->db->limit($end_offset,$start_offset);
                 $result_obj = $this->db->get();
-               //echo $this->db->last_query();exit;
+               //echo $this->db->last_query();//exit;
                 $result_arr = is_object($result_obj) ? $result_obj->result_array() : array();
             
                 
@@ -142,10 +145,11 @@ class Connections_model extends CI_Model
             else if($params_arr['connection_type']=="Likeme"){
                 $result_arr = array();
                  $this->db->from("users_connections AS usc");            
-                $this->db->join("users AS u", "u.iUserId = usc.iUserId AND u.eStatus = 'Active'", "left");
+                $this->db->join("users AS u", "u.iUserId = usc.iUserId", "left");
                 $this->db->select("u.iUserId AS user_id");
                 $this->db->select("(concat(u.vFirstName,' ',u.vLastName)) AS user_name", FALSE);
                 $this->db->select("u.vProfileImage AS user_image");
+                $this->db->select("u.vProfileImage AS profile_image");
               //  $this->db->select("u.iAge AS age");
                 $this->db->select("usc.eConnectionType AS connection_type");
                 $this->db->select("usc.dtTimeStamp AS date_time"); 
@@ -156,7 +160,7 @@ class Connections_model extends CI_Model
                     $this->db->where("usc.app_section =", $params_arr['app_section']);
                 }
                 
-                $strwher="usc.eConnectionType = 'Like' AND usc.iConnectionUserId = '".$params_arr['user_id']."' ";
+                $strwher="usc.eConnectionType = 'Like' AND usc.iConnectionUserId = '".$params_arr['user_id']."' AND u.eStatus = 'Active'";
                 
                 $this->db->where($strwher);
                 $this->db->order_by("usc.dtAddedAt","DESC");
@@ -174,6 +178,7 @@ class Connections_model extends CI_Model
                 $this->db->select("u.iUserId AS user_id");
                 $this->db->select("(concat(u.vFirstName,' ',u.vLastName)) AS user_name", FALSE);
                 $this->db->select("u.vProfileImage AS user_image");
+                $this->db->select("u.vProfileImage AS profile_image");
                 $this->db->select("usb.dtAddedAt AS date_time");
                 $this->db->where("usb.eStatus", 'Active');
                 $this->db->where("usb.iUserId", $params_arr['user_id']);
@@ -221,6 +226,8 @@ class Connections_model extends CI_Model
             $this->db->from("users AS u");
 
             $this->db->select("u.iUserId AS u_users_id,u.eIsSubscribed AS u_is_subscribed_1,u.app_section as app_section_1");
+            $this->db->select("(concat(u.vFirstName,' ',u.vLastName)) AS connection_user_name", FALSE);
+            $this->db->select("u.vEmail AS connection_user_email");
 
             if(isset($liked_id) && $liked_id != ""){ 
                 $this->db->where("u.iUserId =", $liked_id);
@@ -262,27 +269,55 @@ class Connections_model extends CI_Model
     {
         try {
             $result_arr = array();
+
+            
+                $current_timezone = date_default_timezone_get();
+                // convert the current timezone to UTC
+                date_default_timezone_set('UTC');
+                $current_date = date("Y-m-d H:i:s");
+                // Again coverting into local timezone
+                date_default_timezone_set($current_timezone);
+            
                                 
             $this->db->from("users AS u");
-            
-            $this->db->select("u.eIsSubscribed AS u_is_subscribed,u.app_section,u.iLikesPerDay,u.iUserId AS u_users_id_1");
+            $this->db->join("user_subscription AS us","u.iUserId = us.iUserId","LEFT");
+            $this->db->select("us.dLatestExpiryDate AS dLatestExpiryDate,u.iLikesPerDay,u.iUserId AS u_users_id_1"); //u.app_section,
 
             if(isset($user_id) && $user_id != ""){ 
                 $this->db->where("u.iUserId =", $user_id);
             }
-            
-            
-            
-            $this->db->limit(1);
-            
+   
             $result_obj = $this->db->get();
+
+           // echo $this->db->last_query(); 
+      
             $result_arr = is_object($result_obj) ? $result_obj->result_array() : array();
             
             if(!is_array($result_arr) || count($result_arr) == 0){
                 throw new Exception('No records found.');
             }
 
-            if($result_arr[0]["u_is_subscribed"] == "" || $result_arr[0]["u_is_subscribed"] == null)
+            foreach($result_arr as $k => $v)
+            {
+                
+                $expire_date = $v["dLatestExpiryDate"]; 
+                $iLikesPerDay = $v["iLikesPerDay"]; 
+
+                if(strtotime($expire_date) > strtotime($current_date) || $expire_date == "0000-00-00 00:00:00")
+                {
+                    $u_is_subscribed = 1;
+                    break;
+
+                }else
+                {
+                    $u_is_subscribed = 0;
+                }
+            }
+
+            //echo "--u_is_subscribed--". $u_is_subscribed;exit;
+            
+
+            if($u_is_subscribed == 0)
             {
 
                 $LikesAllowed = $this->config->item("LIKES_WITHOUT_SUBSCRIPTION");
@@ -305,7 +340,7 @@ class Connections_model extends CI_Model
                   */
               //echo  $LikesAllowed."---".$result_arr2[0]["LikesCount"];
 
-                  if($result_arr[0]["iLikesPerDay"] > $LikesAllowed)
+                  if($iLikesPerDay >= $LikesAllowed)
                   {
                      $success = 0;
                      throw new Exception('Please buy subscription to continue with us!');
@@ -375,6 +410,27 @@ class Connections_model extends CI_Model
         try
         {
             $result_arr = array();
+
+              //********************* delete old notifications ***********************
+             if (isset($user_id) && $user_id != "")
+            {
+                $this->db->where("iSenderId =", $user_id);
+            }
+            if (isset($liked_id) && $liked_id != "")
+            {
+                $this->db->where("iReceiverId =", $liked_id);
+            }
+
+            /*if (isset($app_section) && $app_section != "")
+            {
+                $this->db->where("app_section =", $app_section);
+            }*/
+
+            $res31 = $this->db->delete("notification");
+
+
+            //********************* delete old connections ***********************
+
             if (isset($user_id) && $user_id != "")
             {
                 $this->db->where("iUserId =", $user_id);
@@ -413,6 +469,168 @@ class Connections_model extends CI_Model
         return $return_arr;
     }
 
+
+  /**
+     * delete_old_notifications_connections method is used to execute database queries for Like User Profile API.
+     * @created Chetan Dvs | 13.05.2019
+     * @modified Devangi Nirmal | 05.06.2019
+     * @param string $user_id user_id is used to process query block.
+     * @param string $liked_id liked_id is used to process query block.
+     * @return array $return_arr returns response of query block.
+     */
+    public function delete_old_notifications_connections($user_id = '', $liked_id = '', $app_section ='')
+    {
+        try
+        {
+            $result_arr = array();
+
+            //********************* delete old notifications ***********************
+             if (isset($user_id) && $user_id != "")
+            {
+                $this->db->where("iSenderId =", $user_id);
+            }
+            if (isset($liked_id) && $liked_id != "")
+            {
+                $this->db->where("iReceiverId =", $liked_id);
+            }
+
+            /*if (isset($app_section) && $app_section != "")
+            {
+                $this->db->where("app_section =", $app_section);
+            }*/
+
+            $res3 = $this->db->delete("notification");
+
+
+            if (isset($user_id) && $user_id != "")
+            {
+                $this->db->where("iReceiverId =", $user_id);
+            }
+            if (isset($liked_id) && $liked_id != "")
+            {
+                $this->db->where("iSenderId =", $liked_id);
+            }
+
+            /*if (isset($app_section) && $app_section != "")
+            {
+                $this->db->where("app_section =", $app_section);
+            }*/
+
+            $res3 = $this->db->delete("notification");
+
+            //********************* delete old notifications ***********************
+            //********************* delete old connections ***********************
+
+            if (isset($user_id) && $user_id != "")
+            {
+                $this->db->where("iConnectionUserId =", $user_id);
+            }
+            if (isset($liked_id) && $liked_id != "")
+            {
+                $this->db->where("iUserId =", $liked_id);
+            }
+
+            if (isset($app_section) && $app_section != "")
+            {
+                $this->db->where("app_section !=", $app_section);
+            }
+
+            $res = $this->db->delete("users_connections");
+
+             if (isset($user_id) && $user_id != "")
+            {
+                $this->db->where("iUserId =", $user_id);
+            }
+            if (isset($liked_id) && $liked_id != "")
+            {
+                $this->db->where("iConnectionUserId =", $liked_id);
+            }
+
+            if (isset($app_section) && $app_section != "")
+            {
+                $this->db->where("app_section !=", $app_section);
+            }
+
+            $res = $this->db->delete("users_connections");
+
+          //  echo $this->db->last_query(); exit;
+
+            if (!$res)
+            {
+                throw new Exception("Failure in deletion.");
+            }
+            $affected_rows = $this->db->affected_rows();
+            $result_param = "affected_rows";
+            $result_arr[0][$result_param] = $affected_rows;
+            $success = 1;
+        }
+        catch(Exception $e)
+        {
+            $success = 0;
+            $message = $e->getMessage();
+        }
+
+        $this->db->_reset_all();
+        //echo $this->db->last_query();
+        $return_arr["success"] = $success;
+        $return_arr["message"] = $message;
+        $return_arr["data"] = $result_arr;
+        return $return_arr;
+    }
+
+ /**
+     * delete_old_notifications method is used to execute database queries for Like User Profile API.
+     * @created Chetan Dvs | 13.05.2019
+     * @modified Devangi Nirmal | 05.06.2019
+     * @param string $user_id user_id is used to process query block.
+     * @param string $liked_id liked_id is used to process query block.
+     * @return array $return_arr returns response of query block.
+     */
+    public function delete_old_notifications($user_id = '', $liked_id = '', $app_section ='')
+    {
+        try
+        {
+            $result_arr = array();
+
+              //********************* delete old notifications ***********************
+             if (isset($user_id) && $user_id != "")
+            {
+                $this->db->where("iSenderId =", $user_id);
+            }
+            if (isset($liked_id) && $liked_id != "")
+            {
+                $this->db->where("iReceiverId =", $liked_id);
+            }
+
+            if (isset($app_section) && $app_section != "")
+            {
+                $this->db->where("app_section =", $app_section);
+            }
+
+            $res = $this->db->delete("notification");
+
+            if (!$res)
+            {
+                throw new Exception("Failure in deletion.");
+            }
+            $affected_rows = $this->db->affected_rows();
+            $result_param = "affected_rows";
+            $result_arr[0][$result_param] = $affected_rows;
+            $success = 1;
+        }
+        catch(Exception $e)
+        {
+            $success = 0;
+            $message = $e->getMessage();
+        }
+
+        $this->db->_reset_all();
+        //echo $this->db->last_query();
+        $return_arr["success"] = $success;
+        $return_arr["message"] = $message;
+        $return_arr["data"] = $result_arr;
+        return $return_arr;
+    }
     /**
      * get_user_device_token method is used to execute database queries for Like User Profile API.
      * @created Devangi Nirmal | 05.06.2019

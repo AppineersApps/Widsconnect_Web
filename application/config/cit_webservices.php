@@ -794,6 +794,30 @@ $config["delete_image"] = array(
     ),
     "target" => ""
 );
+
+$config["education_list"] = array(
+    "title" => "education List",
+    "folder" => "basic_appineers_master",
+    "method" => "GET_POST",
+    "params" => array(
+    ),
+    "token" => "",
+    "payload" => array(
+    ),
+    "target" => ""
+);
+
+$config["income_type_list"] = array(
+    "title" => "Income Type List",
+    "folder" => "basic_appineers_master",
+    "method" => "GET_POST",
+    "params" => array(
+    ),
+    "token" => "",
+    "payload" => array(
+    ),
+    "target" => ""
+);
 #####GENERATED_CONFIG_SETTINGS_END#####
 
 /* End of file cit_webservices.php */

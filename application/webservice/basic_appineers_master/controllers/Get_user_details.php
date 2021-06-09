@@ -109,9 +109,13 @@ class Get_user_details extends Cit_Controller
             $output_response = array();
             $input_params = $validation_res['input_params'];
             $output_array = $func_array = array();
-           	//print_r($input_params); //exit;
+         
+            $input_params = $this->get_user_details($input_params);
 
-               $input_params = $this->get_user_login_details($input_params['user_id'],$input_params['other_user_id']);
+          //  echo $input_params['user_latitude']."-----------";
+           // print_r($input_params); exit;
+
+               $input_params = $this->get_user_login_details($input_params);
 
              //  print_r($input_params); exit;
  
@@ -183,14 +187,20 @@ class Get_user_details extends Cit_Controller
      * @param array $input_params input_params array to process loop flow.
      * @return array $input_params returns modfied input_params array.
      */
-    public function get_user_login_details($user_id,$other_user_id)
+    public function get_user_login_details($input_params = array())
     {
+
+       $user_id= isset($input_params['user_id']) ? $input_params['user_id'] : "";
+       $other_user_id= isset($input_params['other_user_id']) ? $input_params['other_user_id'] : "";
+       $lat= isset($input_params['user_latitude']) ? $input_params['user_latitude'] : "";
+       $lon= isset($input_params['user_longitude']) ? $input_params['user_longitude'] : "";
+       $app_section = isset($input_params['app_section']) ? $input_params['app_section'] :"0";
 
         $this->block_result = array();
         try
         {
 
-            $this->block_result = $this->users_model->get_user_personal_details($user_id,$other_user_id);
+            $this->block_result = $this->users_model->get_user_personal_details($user_id,$other_user_id,$lat,$lon,$app_section);
 
             if (!$this->block_result["success"])
             {
@@ -307,28 +317,49 @@ class Get_user_details extends Cit_Controller
         return $input_params;
     }
 
-     public function get_users_connection_details($user_id = '',$connection_id='')
+    public function get_user_details($input_params = array())
     {
 
         $this->block_result = array();
         try
         {
-            
-            $this->block_result = $this->wids_user_model->get_users_connection_details($user_id,$connection_id);
-            
+
+            $this->block_result = $this->users_model->get_user_details($input_params['user_id']);
+
             if (!$this->block_result["success"])
             {
                 throw new Exception("No records found.");
             }
             $result_arr = $this->block_result["data"];
+
+            if (is_array($result_arr) && count($result_arr) > 0)
+            {
+                $i = 0;
+                foreach ($result_arr as $data_key => $data_arr)
+                {
+                    //****************************
+                    $input_params["user_latitude"] = $data_arr["u_latitude"];
+                    $input_params["user_longitude"] = $data_arr["u_longitude"];
+                }
+  
+          //  $this->block_result["data"] = $data1;
             }
+            
+        }
         catch(Exception $e)
         {
             $success = 0;
-            $this->block_result["data"] = array();
+            //$this->block_result["data"] = array();
         }
-        return $result_arr;
+
+       // print_r($input_params); exit();
+
+        //$input_params["get_user_details"] = $this->block_result["data"];
+        $input_params = $this->wsresponse->assignSingleRecord($input_params, $this->block_result["data"]);
+
+        return $input_params;
     }
+
 
     /**
      * check_user_exists method is used to process conditions.
@@ -426,6 +457,7 @@ class Get_user_details extends Cit_Controller
             'u_Profession',
             'u_Income',
             'u_Intrest',
+            'u_Intrest_name',
             'u_MarriageStatus',
             'u_Tatoos',
             'u_TravaledPlaces',
@@ -438,6 +470,8 @@ class Get_user_details extends Cit_Controller
             'connection_type_by_logged_user',
             'connection_type_by_receiver_user',
             'age',
+            'miles',
+            'block_status'
            /* 'u_Image2',
             'u_Image3',
             'u_Image4',
@@ -493,6 +527,7 @@ class Get_user_details extends Cit_Controller
             'u_Profession'=>'profession',
             'u_Income'=>'income',
             'u_Intrest'=>'interest',
+            'u_Intrest_name'=>'interest_names',
             'u_MarriageStatus'=>'marriage_status',
             'u_Tatoos'=>'tattoos',
             'u_TravaledPlaces'=>'traveled_places',
@@ -505,6 +540,8 @@ class Get_user_details extends Cit_Controller
              'connection_type_by_logged_user' => 'connection_type_by_logged_user',
             'connection_type_by_receiver_user' => 'connection_type_by_receiver_user',
             'age' => 'age',
+            'miles' => 'miles',
+            'block_status' => 'blocked_status'
             /*'u_Image2'=>'image2',
             'u_Image3'=> 'image3',
             'u_Image4'=>'image4',

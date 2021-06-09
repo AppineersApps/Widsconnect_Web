@@ -111,6 +111,7 @@
 </div>
 <div class="error-msg-form "><label class='error' id='u_first_nameErr'></label></div>
 </div>
+
 <div class="form-row row-fluid " id="cc_sh_u_last_name">
 <label class="form-label span3 ">
 <%$form_config['u_last_name']['label_lang']%>
@@ -131,6 +132,8 @@
 </div>
 <div class="error-msg-form "><label class='error' id='u_last_nameErr'></label></div>
 </div>
+
+
 <div class="form-row row-fluid " id="cc_sh_u_user_name">
 <label class="form-label span3 ">
 <%$form_config['u_email']['label_lang']%>
@@ -388,6 +391,28 @@
                             </div>
 
 
+                            <div class="form-row row-fluid " id="cc_sh_u_upload_doc_url">
+                                <label class="form-label span3 ">
+                                <%$form_config['u_upload_doc_url']['label_lang']%>
+                                </label> 
+                                <div class="form-right-div  <%if $mode eq 'Update'%>frm-elements-div<%/if%> ">
+                                <%if $mode eq "Update"%>
+                                <input type="hidden" class="ignore-valid" name="u_upload_doc_url" id="u_upload_doc_url" value="<%$data['u_upload_doc_url']|@htmlentities%>" />
+                                <span class="frm-data-label">
+                                <strong>
+                                    <%if $data['u_upload_doc_url'] neq ""%>
+                                     
+                                        <a href="<%$data['u_upload_doc_url']%>" target="_blank"><%$data['u_upload_doc_url']%></a>  
+                                   
+                                    <%else%>
+                                    <%/if%>
+                                </strong></span>
+                                <%else%>
+                                <input type="text" placeholder="" value="<%$data['u_upload_doc_url']|@htmlentities%>" name="u_upload_doc_url" id="u_upload_doc_url" title="<%$this->lang->line('USERS_MANAGEMENT_CERTIFICATE_DOC_URL')%>"  data-ctrl-type='textbox'  class='frm-size-medium'  />
+                                <%/if%>
+                                </div>
+                                <div class="error-msg-form "><label class='error' id='u_upload_doc_urlErr'></label></div>
+                            </div>
 
                             <div class="form-row row-fluid " id="cc_sh_u_UploadDoc">
                                 <label class="form-label span3 ">

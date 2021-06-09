@@ -61,6 +61,7 @@ class Notification_model extends CI_Model
             $this->db->start_cache();
             $this->db->from("notification AS n");
             $this->db->join("users AS u", "n.iSenderId = u.iUserId", "left");
+            //$this->db->join("user_block as ub","n.iSenderId = ub.iBlockUserId","left");
             $this->db->select("n.iNotificationId AS notification_id");
              $this->db->select("n.dtAddedAt AS notification_date");
              $this->db->select("n.app_section");
@@ -71,6 +72,12 @@ class Notification_model extends CI_Model
             $this->db->select("concat(u.vFirstName,' ',u.vLastName) AS user_name");
             $this->db->select("u.vProfileImage AS user_image");
             $this->db->select("u.eStatus AS user_status");
+            $this->db->select("(SELECT iBlockUserId FROM user_block AS ub WHERE ub.iUserId=".$user_id." AND ub.iBlockUserId=n.iSenderId) AS blocked_user_id");
+
+            $this->db->where("u.eStatus !=",'Archived');
+            $this->db->where("u.eStatus !=",'Inactive');
+
+
             if (isset($user_id) && $user_id != "")
             {
                 $this->db->where("n.iReceiverId =", $user_id);
@@ -88,7 +95,7 @@ class Notification_model extends CI_Model
             $this->db->limit($end_offset,$start_offset);
            
             $result_obj = $this->db->get();
-            //echo $this->db->last_query();exit;
+          //  echo $this->db->last_query();exit;
             $result_arr = is_object($result_obj) ? $result_obj->result_array() : array();
             $this->db->flush_cache();
             if (!is_array($result_arr) || count($result_arr) == 0)
