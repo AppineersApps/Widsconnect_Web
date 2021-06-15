@@ -50,7 +50,7 @@ class Education_list_model extends CI_Model
             $this->db->select('iEducationId AS education_id');
             $this->db->select('vEducationName AS education_name');
             $this->db->where("eStatus", 'Active');
-            $this->db->order_by("vEducationName", "asc");
+            $this->db->order_by("iOrderNumber", "asc");
 
 
             $result_obj = $this->db->get();

@@ -1178,6 +1178,7 @@ $lang["ACTION_PLEASE_SELECT_ANY_RECORD"] = "Please select any record";
 $lang["ACTION_ARE_YOU_SURE_WANT_TO_DELETE_THIS_RECORD_C63"] = "Are you sure want to delete this record";
 $lang["ACTION_PLEASE_SELECT_ANY_RECORD_TO__C35STATUS_C35"] = "Please select any record to #STATUS# ";
 $lang["ACTION_ARE_YOU_SURE_WANT_TO__C35STATUS_C35_THIS_RECORDS_C63"] = "Are you sure you want to #STATUS# status";
+$lang["ACTION_ARE_YOU_SURE_WANT_TO__C35STATUS_C45_THIS_RECORDS_C68"] = "Are you sure you want to reorder the sequence number of all records";
 $lang["ACTION_NO_ABUSIVE_REPORTS_FOR_REVIEWS_DATA_FOUND_C46_C46_C33"] = "data not found";
 $lang["GENERIC_ICETYPE"] = "icetype";
 $lang["ABUSIVE_REPORTS_FOR_REVIEWS_REVIEW"] = "Reviews Id";
@@ -1287,7 +1288,9 @@ $lang["EDUCATION_MANAGEMENT_DELETED_AT"] = "Deleted At";
 $lang["EDUCATION_MANAGEMENT_STATUS"] = "Status";
 $lang["EDUCATION_MANAGEMENT_ACTIVE"] = "Active" ;
 $lang["EDUCATION_MAMAGEMENT_INACTIVE"] = "Inactive" ;
+$lang["EDUCATION_MAMAGEMENT_SERIAL_NUMBER"] = "Serial Number" ;
 $lang["ACTION_NO_EDUCATION_MANAGEMENT_DATA_FOUND_C46_C46_C33"] = "No Education Management data found..!" ;
+$lang["GENERIC_PLEASE_ENTER_A_VALUE_FOR_THE__C35FIELD_C35_FIELD_C47"] = "Please enter Serial Number!" ;
 
 
 $lang["GENERIC_INCOME_TYPE_MANAGEMENT"] = "Income Type Management";

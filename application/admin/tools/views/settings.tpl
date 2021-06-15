@@ -250,6 +250,7 @@
 <%/javascript%>
 
 <%$this->js->add_js('admin/admin/js_settings_page.js')%>
+<%$this->js->add_js('admin/admin/js_settings.js')%>
 
 <%if $this->input->is_ajax_request()%>
     <%$this->js->js_src()%>

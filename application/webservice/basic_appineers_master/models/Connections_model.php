@@ -31,6 +31,7 @@ class Connections_model extends CI_Model
     public function __construct()
     {
         parent::__construct();
+        $this->load->model("basic_appineers_master/users_model");
     }
     
     /**
@@ -297,20 +298,20 @@ class Connections_model extends CI_Model
                 throw new Exception('No records found.');
             }
 
+            $u_is_subscribed = 0;
+
             foreach($result_arr as $k => $v)
             {
                 
                 $expire_date = $v["dLatestExpiryDate"]; 
                 $iLikesPerDay = $v["iLikesPerDay"]; 
 
-                if(strtotime($expire_date) > strtotime($current_date) || $expire_date == "0000-00-00 00:00:00")
-                {
-                    $u_is_subscribed = 1;
-                    break;
+                $u_is_subscribed = $this->users_model->get_subscription_status($expire_date);
 
-                }else
+
+                if($u_is_subscribed > 0)
                 {
-                    $u_is_subscribed = 0;
+                    break;
                 }
             }
 
@@ -322,28 +323,9 @@ class Connections_model extends CI_Model
 
                 $LikesAllowed = $this->config->item("LIKES_WITHOUT_SUBSCRIPTION");
 
-                  /*$this->db->from("users_connections AS uc");
-            
-                  $this->db->select("count(uc.iConnectionId) as LikesCount");
-  
-                  if(isset($user_id) && $user_id != ""){ 
-                      $this->db->where("uc.iUserId =", $user_id);
-                      $this->db->where("uc.eConnectionType =", "Like");
-                  }
-
-                  
-                  $this->db->limit(1);
-                  
-                  $result_obj2 = $this->db->get();
-
-                  $result_arr2 = is_object($result_obj2) ? $result_obj2->result_array() : array();
-                  */
-              //echo  $LikesAllowed."---".$result_arr2[0]["LikesCount"];
-
                   if($iLikesPerDay >= $LikesAllowed)
                   {
-                     $success = 0;
-                     throw new Exception('Please buy subscription to continue with us!');
+                    throw new Exception('Please buy subscription to continue with us!');
                   }
             }
           

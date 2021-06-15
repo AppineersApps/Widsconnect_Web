@@ -138,15 +138,15 @@ class Subscription_purchase_model extends CI_Model
                 $this->db->where("vOrginalTransactionId =", $where_arr["original_transaction_id"]);
             }
 
-            $this->db->set("eDeviceType", $params_arr["receipt_type"]);
+             $this->db->set("eDeviceType", $params_arr["_ereceipttype"]);
             if (isset($params_arr["receipt_data_v1"]))
             {
                 $this->db->set("lReceiptData", $params_arr["receipt_data_v1"]);
             }
 
-             if (isset($params_arr["expiry_date_v1"]))
+             if (isset($params_arr["expiry_date"]))
             {
-                $this->db->set("dLatestExpiryDate", $params_arr["expiry_date_v1"]);
+                $this->db->set("dLatestExpiryDate", $params_arr["expiry_date"]);
             }
             if (isset($params_arr["product_id"]))
             {
@@ -412,7 +412,7 @@ class Subscription_purchase_model extends CI_Model
         {
             $result_arr = array();
 
-            $this->db->select('vProductId as product_id,"1" as subscription_status, lReceiptData as purchase_token');
+            $this->db->select('vProductId as product_id,"1" as subscription_status');
             
             $this->db->from('user_subscription');
 

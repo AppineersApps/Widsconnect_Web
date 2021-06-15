@@ -541,6 +541,9 @@ class Education_management extends Cit_Controller
             }
 
             $data = $orgi = $func = $elem = array();
+            $data_arr22 = $this->education_management_model->getLastOrderNumber(); 
+            $LastOrderNumber = $data_arr22[0]["i_order_number"];
+            
             if ($mode == 'Update')
             {
                 $ctrl_flow = $this->ci_local->read($this->general->getMD5EncryptString("FlowEdit", "education_management"), $this->session->userdata('iAdminId'));
@@ -787,6 +790,7 @@ class Education_management extends Cit_Controller
                 'mod_enc_mode' => $this->mod_enc_mode,
                 'extra_qstr' => $extra_qstr,
                 'extra_hstr' => $extra_hstr,
+                'LastOrderNumber' => $LastOrderNumber,
             );
             $this->smarty->assign($render_arr);
             if (!empty($render_arr['overwrite_view']))
@@ -865,6 +869,9 @@ class Education_management extends Cit_Controller
 
             $i_education_name = $params_arr["i_education_name"];
             $i_education_status = $params_arr["i_education_status"];
+            $i_order_number = $params_arr["i_order_number"];
+            $current_order_number = $params_arr["current_order_number"];
+            $last_order_number = $params_arr["last_order_number"];
             //$i_added_at = "NOW()";
             $i_added_at =$params_arr["i_added_at"];
 
@@ -872,11 +879,15 @@ class Education_management extends Cit_Controller
  
             $data["vEducationName"] = $i_education_name;
             $data["eStatus"] = $i_education_status;
-
+            $data["iOrderNumber"] = $i_order_number;
+            $data["current_order_number"] = $current_order_number;
+            $data["last_order_number"] = $last_order_number;
+            
             $data["dtAddedAt"] = $this->filter->formatActionData($i_added_at, $form_config["i_added_at"]);
 
             $save_data_arr["i_education_name"] = $data["vEducationName"];
             $save_data_arr["i_education_status"] = $data["eStatus"];
+            $save_data_arr["i_order_number"] = $data["iOrderNumber"];
             $save_data_arr["i_added_at"] = $data["dtAddedAt"];
             $strCheck = 0;
             if($id > 0)

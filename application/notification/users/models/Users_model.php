@@ -96,7 +96,7 @@ class Users_model extends CI_Model
             $this->db->select("us.vOrginalTransactionId AS u_transaction_id");
             $this->db->select("us.dLatestExpiryDate AS u_expiry_date");
             $this->db->select("us.lReceiptData AS u_receipt_data");
-            $this->db->where("us.eAutoRenewal", 1);
+           // $this->db->where("us.eAutoRenewal", 1);
             $this->db->where("u.eStatus", 'Active');
 
             $result_obj = $this->db->get();

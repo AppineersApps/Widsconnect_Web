@@ -43,7 +43,8 @@
                                                         <input type="text" placeholder="" value="<%$data['i_education_name']|@htmlentities%>" name="i_education_name" id="i_education_name" title="<%$this->lang->line('EDUCATION_MANAGEMENT_NAME')%>"  data-ctrl-type='textbox'  class='frm-size-medium'  />
                                                 </div>
                                                 <div class="error-msg-form "><label class='error' id='i_education_nameErr'></label></div>
-                                            </div>            
+                                            </div> 
+
                                             <div class="form-row row-fluid " id="cc_sh_i_education_status">
                                                 <label class="form-label span3 ">
                                                     <%$form_config['i_education_status']['label_lang']%> <em>*</em> 
@@ -54,6 +55,34 @@
                                                 </div>
                                                 <div class="error-msg-form "><label class='error' id='i_education_statuErr'></label></div>
                                             </div>
+
+                                           
+                                            <div class="form-row row-fluid " id="cc_sh_i_order_number">
+                                                <label class="form-label span3 ">
+                                                <%$form_config['i_order_number']['label_lang']%>
+                                                </label>  
+                                                <div class="form-right-div  <%if $mode eq 'Update'%>frm-elements-div<%/if%> ">
+                                                <%if $mode eq "Update"%>
+                                                <input type="hidden" class="ignore-valid" name="last_order_number" id="last_order_number" value="<%$LastOrderNumber|@htmlentities%>" />
+                                                <input type="hidden" class="ignore-valid" name="current_order_number" id="current_order_number" value="<%$data['i_order_number']|@htmlentities%>" />
+                                                <input type="text" placeholder=""  value="<%$data['i_order_number']|@htmlentities%>" name="i_order_number" id="i_order_number" title="<%$this->lang->line('EDUCATION_MAMAGEMENT_SERIAL_NUMBER')%>"  data-ctrl-type='textbox'  class='frm-size-medium' />
+
+                                                <%else%>
+                                                <input type="hidden" readonly class="ignore-valid" name="i_order_number" id="i_order_number" value="<%$LastOrderNumber|@htmlentities%>" />
+                                                <span class="frm-data-label">
+                                                <strong>
+                                                <%if $LastOrderNumber neq ""%>
+                                                    <%$LastOrderNumber%>
+                                                <%else%>
+                                                <%/if%>
+                                                </strong></span>
+                                                <%/if%>
+                                                </div>
+                                                <div class="error-msg-form "><label class='error' id='i_order_numberErr'></label></div>
+                                                
+                                            </div>
+                                            
+
                                         </div>
                                     </div>
                                 </div>

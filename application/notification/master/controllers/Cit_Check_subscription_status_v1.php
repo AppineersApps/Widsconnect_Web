@@ -136,7 +136,7 @@ public function checkSubscription($input_params = array()){
                             if($issubscribe==1)
                             {
 
-                                $array = array('dLatestExpiryDate'=>$expiry_date_curr,'lReceiptData'=>$new_receipt_data,'eAutoRenewal'=>$auto_renewal,'auto_renew_product_id' => $auto_renew_product_id);
+                                $array = array('dLatestExpiryDate'=>$expiry_date_curr,'lReceiptData'=>$new_receipt_data,'eAutoRenewal'=>$auto_renewal,'auto_renew_product_id' => $auto_renew_product_id, 'vProductId' => $product_id);
                                 $this->db->where('iUserId',$data['u_user_id']);
                                 $this->db->where('vOrginalTransactionId',$data['u_transaction_id']);
 

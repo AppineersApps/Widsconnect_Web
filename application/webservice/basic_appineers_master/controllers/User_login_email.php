@@ -416,8 +416,6 @@ class User_login_email extends Cit_Controller
             $this->block_result["data"] = array();
         }
         $input_params["get_user_login_details"] = $this->block_result["data"];
-        //print_r($input_params);
-
         $input_params = $this->wsresponse->assignSingleRecord($input_params, $this->block_result["data"]);
 
         return $input_params;

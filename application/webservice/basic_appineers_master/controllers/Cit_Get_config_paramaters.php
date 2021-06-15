@@ -23,6 +23,8 @@ Class Cit_Get_config_paramaters extends Get_config_paramaters {
         public function __construct()
 {
     parent::__construct();
+
+    $this->load->model("basic_appineers_master/users_model");
 }
 public function returnConfigParams(&$input_params=array())
     {
@@ -90,19 +92,8 @@ public function returnConfigParams(&$input_params=array())
                 $expire_date = $value['dLatestExpiryDate']; 
 
                 unset($value['dLatestExpiryDate']);
-                //latest expire date is greater than current date
-
-                //$expire_date = "2021-04-24 13:56:52";
-                //echo strtotime($expire_date)."---".strtotime($current_date);
-
-                if(strtotime($expire_date) > strtotime($current_date) || $expire_date == "0000-00-00 00:00:00")
-                {
-                    $value['subscription_status'] = 1;
-
-                }else
-                {
-                    $value['subscription_status'] = 0;
-                }
+   
+                $value['subscription_status'] = $this->users_model->get_subscription_status($expire_date);
 
                 $subscription[] = $value; 
 

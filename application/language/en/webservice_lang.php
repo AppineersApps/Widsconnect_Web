@@ -359,7 +359,7 @@
     $lang["connections"]["connection_add_finish_success_4"] = "Please subscribe to get more matches or delete one match";
 
      $lang["connections"]["connection_add_finish_success_2"] = "Device token is empty";
-     $lang["connections"]["connection_add_finish_success_1"] = "Please buy subscription to continue with us"; 
+     $lang["connections"]["connection_add_finish_success_1"] = "You have exceeded maximum likes for today. To like more people please buy subscription."; 
      $lang["connections"]["connection_add_finish_success"] = "Connection added successfully";
      $lang["connections"]["connection_add_finish_success_3"] = "Both users app section is not matched";
 

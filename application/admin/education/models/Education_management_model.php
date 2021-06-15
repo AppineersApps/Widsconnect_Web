@@ -74,6 +74,7 @@ class Education_management_model extends CI_Model
         $this->physical_data_remove = "Yes";
         $this->grid_fields = array(
             //"i_education_image",
+            "i_order_number",
             "i_education_name",
             "i_education_status",
             "i_added_at",
@@ -107,6 +108,7 @@ class Education_management_model extends CI_Model
      */
     public function insert($data = array())
     {
+        unset($data['current_order_number']);
 
         $this->db->insert($this->table_name, $data);
         $insert_id = $this->db->insert_id();
@@ -140,6 +142,34 @@ class Education_management_model extends CI_Model
      */
     public function update($data = array(), $where = '', $alias = "No", $join = "No")
     {
+      //  echo "---curr ord---".  $data['current_order_number']. "--".  $data['iOrderNumber'];
+
+        if($data['iOrderNumber'] > $data['last_order_number'] && $data['iOrderNumber'] > 0)
+        {
+            return false;
+        }
+
+        if($data['iOrderNumber'] != $data['current_order_number'] && $data['iOrderNumber'] > 0)
+        {
+        
+            $new_oreder_no = $data['iOrderNumber'];
+            $old_oreder_no = $data['current_order_number'];
+
+            if($new_oreder_no < $old_oreder_no)
+            {
+                $this->db->query("UPDATE education SET iOrderNumber = iOrderNumber + 1 WHERE iOrderNumber >= $new_oreder_no and iOrderNumber < $old_oreder_no");
+            }
+
+            if($new_oreder_no > $old_oreder_no)
+            {
+                $this->db->query("UPDATE education SET iOrderNumber = iOrderNumber - 1 WHERE iOrderNumber > $old_oreder_no and iOrderNumber <= $new_oreder_no");
+            }
+            
+        }
+
+        unset($data['current_order_number']);
+        unset($data['last_order_number']);
+
         if ($alias == "Yes")
         {
             if ($join == "Yes")
@@ -373,8 +403,10 @@ class Education_management_model extends CI_Model
             $this->db->select("i.vEducationName AS i_education_name");
          //   $this->db->select("i.vEducationImage AS i_education_image");
             $this->db->select("i.eStatus AS i_education_status");
+            $this->db->select("i.iOrderNumber AS i_order_number");
             $this->db->select("i.dtAddedAt AS i_added_at");
             $this->db->select("('view') AS sys_custom_field_1", FALSE);
+            $this->db->order_by("i.iOrderNumber");
         }
         else
         {
@@ -384,7 +416,9 @@ class Education_management_model extends CI_Model
             $this->db->select("i.vEducationName AS i_education_name");
        //      $this->db->select("i.vEducationImage AS i_education_image");
             $this->db->select("i.eStatus AS i_education_status");
+            $this->db->select("i.iOrderNumber AS i_order_number");
             $this->db->select("i.dtAddedAt AS i_added_at");
+            $this->db->order_by("i.iOrderNumber");
         }
 
         $this->db->from($this->table_name." AS ".$this->table_alias);
@@ -436,7 +470,33 @@ class Education_management_model extends CI_Model
         }
         $data_obj = $this->db->get();
         $data_arr = is_object($data_obj) ? $data_obj->result_array() : array();
-        #echo $this->db->last_query();
+        #echo $this->db->last_query(); 
+        return $data_arr;
+    }
+
+    
+    /**
+     * getLastOrderNumber method is used to get last serial number.
+     * @param string $extra_cond extra_cond is the query condition for getting filtered data.
+     * @param string $fields fields are either array or string.
+     * @param string $order_by order_by is to append order by condition.
+     * @param string $group_by group_by is to append group by condition.
+     * @param string $limit limit is to append limit condition.
+     * @param string $join join is to make joins with relation tables.
+     * @param boolean $having_cond having cond is the query condition for getting conditional data.
+     * @param boolean $list list is to differ listing fields or form fields.
+     * @return array $data_arr returns data records array.
+     */
+    public function getLastOrderNumber()
+    {
+  
+        $this->db->select("(SELECT MAX(e2.iOrderNumber) FROM education AS e2)+1 AS i_order_number");
+          
+        $this->db->from($this->table_name." AS ".$this->table_alias);
+        $this->db->limit(1);
+        $data_obj = $this->db->get();
+        $data_arr = is_object($data_obj) ? $data_obj->result_array() : array();
+        #echo $this->db->last_query(); 
         return $data_arr;
     }
 
@@ -528,8 +588,10 @@ class Education_management_model extends CI_Model
         $this->db->select("i.vEducationName AS i_education_name");
      //   $this->db->select("i.veducationImage AS i_education_image");
         $this->db->select("i.eStatus AS i_education_status");
+        $this->db->select("i.iOrderNumber AS i_order_number");
         $this->db->select("i.dtAddedAt AS i_added_at");
         $this->db->select("('view') AS sys_custom_field_1", FALSE);
+        $this->db->order_by("i.iOrderNumber");
         if ($sdef == "Yes" && is_array($order_by) && count($order_by) > 0)
         {
             foreach ($order_by as $orK => $orV)
@@ -550,7 +612,7 @@ class Education_management_model extends CI_Model
         $this->db->flush_cache();
         $listing_data = $this->listing->getDataForJqGrid($return_data, $filter_config, $page, $total_pages, $total_records);
         $this->listing_data = $return_data;
-        #echo $this->db->last_query();
+        //echo $this->db->last_query();
         return $listing_data;
     }
 
@@ -633,6 +695,7 @@ class Education_management_model extends CI_Model
         $this->db->select("i.vEducationName AS i_education_name");
       //  $this->db->select("i.veducationImage AS i_education_image");
         $this->db->select("i.eStatus AS i_education_status");
+        $this->db->select("i.iOrderNumber AS i_order_number");
         $this->db->select("i.dtAddedAt AS i_added_at");
          $this->db->select("('view') AS sys_custom_field_1", FALSE);
         if ($sdef == "Yes" && is_array($order_by) && count($order_by) > 0)
@@ -708,6 +771,30 @@ class Education_management_model extends CI_Model
                 "editable" => "Yes",
                 "viewedit" => "Yes",
             ),
+
+            "i_order_number" => array(
+                "name" => "i_order_number",
+                "table_name" => "education",
+                "table_alias" => "i",
+                "field_name" => "iOrderNumber",
+                "source_field" => "i_order_number",
+                "display_query" => "i.iOrderNumber",
+                "entry_type" => "Table",
+                "data_type" => "int",
+                "show_input" => "Both",
+                "type" => "textbox",
+                "align" => "left",
+                "label" => "Serial Number",
+                "lang_code" => "EDUCATION_MAMAGEMENT_SERIAL_NUMBER",
+                "label_lang" => $this->lang->line('EDUCATION_MAMAGEMENT_SERIAL_NUMBER'),
+                "width" => 80,
+                "search" => "Yes",
+                "export" => "Yes",
+                "sortable" => "Yes",
+                "addable" => "No",
+                "editable" => "No",
+                "viewedit" => "No",
+            ),
             
             "i_education_name" => array(
                 "name" => "i_education_name",
@@ -738,8 +825,9 @@ class Education_management_model extends CI_Model
                 "label" => "Status",
                 "lang_code" => "EDUCATION_MANAGEMENT_STATUS",
                 "label_lang" => $this->lang->line('EDUCATION_MANAGEMENT_STATUS'),
-                "width" => 90,
-            ),
+                "width" => 50,
+            ), 
+           
             "i_added_at" => array(
                 "name" => "i_added_at",
                 "table_name" => "education",
@@ -836,6 +924,20 @@ class Education_management_model extends CI_Model
                 "label_lang" =>"Education Id"
             ),
             
+            "i_order_number" => array(
+                "name" => "i_order_number",
+                "table_name" => "education",
+                "table_alias" => "i",
+                "field_name" => "iOrderNumber",
+                "entry_type" => "Table",
+                "data_type" => "int",
+                "show_input" => "Both",
+                "type" => "textbox",
+                "label" => "Serial Number",
+                "lang_code" => "EDUCATION_MAMAGEMENT_SERIAL_NUMBER",
+                "label_lang" => $this->lang->line('EDUCATION_MAMAGEMENT_SERIAL_NUMBER')
+            ),
+
             "i_education_name" => array(
                 "name" => "i_education_name",
                 "table_name" => "education",
@@ -863,7 +965,7 @@ class Education_management_model extends CI_Model
                 "lang_code" => "EDUCATION_MANAGEMENT_STATUS",
                 "label_lang" => $this->lang->line('EDUCATION_MANAGEMENT_STATUS')
             ),
-
+            
             "i_added_at" => array(
                 "name" => "i_added_at",
                 "table_name" => "education",

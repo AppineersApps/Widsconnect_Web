@@ -847,6 +847,7 @@ function adminAddNewRecord(module_url, jextra, is_popup, grid_id, size) {
 }
 // Status change
 function adminStatusChange(grid_id, status, ids, mod_edit_url, status_lang, callbacks, messages) {
+
     if (!$.isArray(ids) || !ids.length) {
         var alert_msg = js_lang_label.GENERIC_PLEASE_SELECT_REC_TO_CHANGE_STATUS;
         if ('status_alert' in messages && messages['status_alert'] != "") {

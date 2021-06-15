@@ -134,6 +134,10 @@
         "label": "<%$list_config['aa_request_uri']['label_lang']%>"
     },
     {
+        "name": "aa_request_method",
+        "label": "<%$list_config['aa_request_method']['label_lang']%>"
+    },
+    {
         "name": "aa_i_paddress",
         "label": "<%$list_config['aa_i_paddress']['label_lang']%>"
     },
@@ -274,6 +278,48 @@
         "default_value": "<%$list_config['aa_request_uri']['default']%>",
         "filterSopt": "bw"
     },
+
+    {
+        "name": "aa_request_method",
+        "index": "aa_request_method",
+        "label": "<%$list_config['aa_request_method']['label_lang']%>",
+        "labelClass": "header-align-left",
+        "resizable": true,
+        "width": "<%$list_config['aa_request_method']['width']%>",
+        "search": <%if $list_config['aa_request_method']['search'] eq 'No' %>false<%else%>true<%/if%>,
+        "export": <%if $list_config['aa_request_method']['export'] eq 'No' %>false<%else%>true<%/if%>,
+        "sortable": <%if $list_config['aa_request_method']['sortable'] eq 'No' %>false<%else%>true<%/if%>,
+        "hidden": <%if $list_config['aa_request_method']['hidden'] eq 'Yes' %>true<%else%>false<%/if%>,
+        "hideme": <%if $list_config['aa_request_method']['hideme'] eq 'Yes' %>true<%else%>false<%/if%>,
+        "addable": <%if $list_config['aa_request_method']['addable'] eq 'Yes' %>true<%else%>false<%/if%>,
+        "editable": <%if $list_config['aa_request_method']['editable'] eq 'Yes' %>true<%else%>false<%/if%>,
+        "align": "left",
+        "edittype": "text",
+        "editrules": {
+            "infoArr": []
+        },
+        "searchoptions": {
+            "attr": {
+                "aria-grid-id": el_tpl_settings.main_grid_id,
+                "aria-module-name": "api_access_logs",
+                "aria-unique-name": "aa_request_method",
+                "autocomplete": "off"
+            },
+            "sopt": strSearchOpts,
+            "searchhidden": <%if $list_config['aa_request_method']['search'] eq 'Yes' %>true<%else%>false<%/if%>
+        },
+        "editoptions": {
+            "aria-grid-id": el_tpl_settings.main_grid_id,
+            "aria-module-name": "api_access_logs",
+            "aria-unique-name": "aa_request_method",
+            "placeholder": "",
+            "class": "inline-edit-row "
+        },
+        "ctrl_type": "textbox",
+        "default_value": "<%$list_config['aa_request_method']['default']%>",
+        "filterSopt": "bw"
+    },
+
     {
         "name": "aa_i_paddress",
         "index": "aa_i_paddress",

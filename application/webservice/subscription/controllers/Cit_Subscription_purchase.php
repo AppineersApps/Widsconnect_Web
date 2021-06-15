@@ -91,11 +91,11 @@ public function validateReceiptCheck($input_params=array()){
     
     $applesharedsecret = $this->config->item("SUBSCRIPTION_PASSWORD");
 
-    if(isset($_ENV['debug_action']) && TRUE == $_ENV['debug_action']){
+   /*  if(isset($_ENV['debug_action']) && TRUE == $_ENV['debug_action']){
         $appleurl="https://sandbox.itunes.apple.com/verifyReceipt";
     }else{
         $appleurl="https://buy.itunes.apple.com/verifyReceipt";
-    }
+    } */
 
       $current_timezone = date_default_timezone_get();
                     // convert the current timezone to UTC
@@ -107,19 +107,46 @@ public function validateReceiptCheck($input_params=array()){
     //https://buy.itunes.apple.com/verifyReceipt //for production
 
 
-    $request = json_encode(array("receipt-data" => $sample_json,"password"=>$applesharedsecret,"exclude-old-transaction"=>true));
-    // setting up the curl
+      // live Url
+      $appleurl = "https://buy.itunes.apple.com/verifyReceipt";
+      $request = json_encode(array("receipt-data" => $sample_json, "password" => $applesharedsecret, "exclude-old-transaction" => true));
+      // setting up the curl
 
-    $ch = curl_init($appleurl);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $request);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
-    $jsonresult = curl_exec($ch);
-    
+      $ch = curl_init($appleurl);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+      curl_setopt($ch, CURLOPT_POST, true);
+      curl_setopt($ch, CURLOPT_POSTFIELDS, $request);
+      curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+      $jsonresult = curl_exec($ch);
 
-    $err = curl_error($ch);
-    curl_close($ch);
+
+      $err = curl_error($ch);
+      curl_close($ch);
+      $decoded_json = json_decode($jsonresult);
+      $return_arr = array();
+
+
+      if ($decoded_json->status == '21007') {
+
+          $appleurl = "https://sandbox.itunes.apple.com/verifyReceipt";
+          $request = json_encode(array("receipt-data" => $sample_json, "password" => $applesharedsecret, "exclude-old-transaction" => true));
+          // setting up the curl
+
+          $ch = curl_init($appleurl);
+          curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+          curl_setopt($ch, CURLOPT_POST, true);
+          curl_setopt($ch, CURLOPT_POSTFIELDS, $request);
+          curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+          $jsonresult = curl_exec($ch);
+
+
+          $err = curl_error($ch);
+          curl_close($ch);
+          $decoded_json = json_decode($jsonresult);
+
+          $return_arr = array();
+      }
+
     if($err){
         $return_arr[0]['original_transaction_id'] = '';
         $return_arr[0]['expiry_date']    = '';
@@ -161,7 +188,6 @@ public function validateReceiptCheck($input_params=array()){
                 array_multisort($expires_date, SORT_DESC, $decoded_json->receipt->in_app);
 
                    $gmt_date       = $decoded_json->receipt->in_app[0]->expires_date;
-
                    //divide date and time
                    $date1 = explode(' ',$gmt_date);
                    $expiry_date_temp= $date1[0]." ".$date1[1];

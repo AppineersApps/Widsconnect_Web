@@ -1366,7 +1366,6 @@ class Listing
                 }
             } else {
                 if (is_file($file_path)) {
-
                     $image_valid_ext = explode('.', $file_name);
                     if (in_array(strtolower(end($image_valid_ext)), $this->CI->config->item('IMAGE_EXTENSION_ARR'))) {
                         if ($this->CI->config->item('allowimageprocess') == 'Yes') {

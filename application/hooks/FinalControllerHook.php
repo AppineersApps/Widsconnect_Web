@@ -16,6 +16,7 @@ class FinalControllerHook
 
     public function final_controller_actions()
     {
+
         if (isset($_ENV['debug_action']) && $_ENV['debug_action'] == 1) {
             if (is_object($this->CI->db) && $this->CI->db->getErrorFound() === TRUE) {
                 $efile = $this->db_errors();

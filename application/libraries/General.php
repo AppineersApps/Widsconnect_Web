@@ -1172,6 +1172,7 @@ Class General
         $folder_name = rtrim(trim($folder_name), "/");
         $bucket_name = $this->CI->config->item('AWS_BUCKET_NAME');
         try {
+  
             $response = FALSE;
             if (trim($file_name) == "" || trim($bucket_name) == "" || trim($folder_name) == "") {
                 return $response;
@@ -3463,6 +3464,7 @@ Class General
     public function validateFileSize($permitted_file_size = '', $upload_size = '')
     {
         $upload_size_kb = ceil($upload_size / 1024);
+
         if ($permitted_file_size >= $upload_size_kb) {
             return TRUE;
         } else {

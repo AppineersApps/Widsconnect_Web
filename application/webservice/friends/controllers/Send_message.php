@@ -692,7 +692,7 @@ class Send_message extends Cit_Controller
                 {
 
                   $data =array();
-                    $data = $data_arr["u_image"];
+                    $data = $data_arr["ui_image"];
                     $image_arr = array();
                     $image_arr["image_name"] = $data;
                     $image_arr["ext"] = implode(",", $this->config->item("IMAGE_EXTENSION_ARR"));
@@ -701,7 +701,7 @@ class Send_message extends Cit_Controller
                     $image_arr["path"] = "widsconnect/user_profile";
                     $data = $this->general->get_image_aws($image_arr);
 
-                    $result_arr[$data_key]["u_image"] = $data;
+                    $result_arr[$data_key]["ui_image"] = $data;
 
                     $i++;
                 }

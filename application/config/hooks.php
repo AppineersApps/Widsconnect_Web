@@ -50,6 +50,14 @@ $hook['post_controller'][] = array(
     'filename' => 'FinalControllerHook.php',
     'filepath' => 'hooks'
 );
+
+/*$hook['post_controller'][] = array(
+    'class' => 'DeleteArchivedUsers',
+    'function' => 'delete_user_info',
+    'filename' => 'DeleteArchivedUsers.php',
+    'filepath' => 'hooks'
+);*/
+
 $hook['post_system'][] = array(
     'class' => 'FinalSystemHook',
     'function' => 'final_actions',
@@ -68,3 +76,6 @@ $hook['post_controller'][] = array(
     'filename' => 'ActivityLogHook.php',
     'filepath' => 'hooks'
 );
+
+
+

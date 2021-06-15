@@ -123,9 +123,14 @@
         "delete_popup" : "<%$this->general->processMessageLabel('ACTION_ARE_YOU_SURE_WANT_TO_DELETE_THIS_RECORD_C63')%>",
         "status_alert" : "<%$this->general->processMessageLabel('ACTION_PLEASE_SELECT_ANY_RECORD_TO__C35STATUS_C35')%>",
         "status_popup" : "<%$this->general->processMessageLabel('ACTION_ARE_YOU_SURE_WANT_TO__C35STATUS_C35_THIS_RECORDS_C63')%>",
+        "reorder_popup" : "<%$this->general->processMessageLabel('ACTION_ARE_YOU_SURE_WANT_TO__C35STATUS_C45_THIS_RECORDS_C68')%>",
     };
     
     js_col_name_json = [
+    {
+        "name": "i_order_number",
+        "label": "<%$list_config['i_order_number']['label_lang']%>"
+    },
     {
         "name": "i_education_name",
         "label": "<%$list_config['i_education_name']['label_lang']%>"
@@ -146,6 +151,54 @@
     ];
     
     js_col_model_json = [
+    {
+        "name": "i_order_number",
+        "index": "i_order_number",
+        "label": "<%$list_config['i_order_number']['label_lang']%>",
+        "labelClass": "header-align-left",
+        "resizable": true,
+        "width": "<%$list_config['i_order_number']['width']%>",
+        "search": <%if $list_config['i_order_number']['search'] eq 'No' %>false<%else%>true<%/if%>,
+        "export": <%if $list_config['i_order_number']['export'] eq 'No' %>false<%else%>true<%/if%>,
+        "sortable": <%if $list_config['i_order_number']['sortable'] eq 'No' %>false<%else%>true<%/if%>,
+        "hidden": <%if $list_config['i_order_number']['hidden'] eq 'Yes' %>true<%else%>false<%/if%>,
+        "hideme": <%if $list_config['i_order_number']['hideme'] eq 'Yes' %>true<%else%>false<%/if%>,
+        "addable": <%if $list_config['i_order_number']['addable'] eq 'Yes' %>true<%else%>false<%/if%>,
+        "editable": <%if $list_config['i_order_number']['editable'] eq 'Yes' %>true<%else%>false<%/if%>,
+        "align": "left",
+        "edittype": "text",
+        "editrules": {
+            "required": true,
+            "infoArr": {
+                "required": {
+                    "message": ci_js_validation_message(js_lang_label.GENERIC_PLEASE_ENTER_A_VALUE_FOR_THE__C35FIELD_C35_FIELD_C46 ,"#FIELD#",js_lang_label.EDUCATION_MAMAGEMENT_SERIAL_NUMBER)
+                }
+            }
+        },
+        "searchoptions": {
+            "attr": {
+                "aria-grid-id": el_tpl_settings.main_grid_id,
+                "aria-module-name": "education_management",
+                "aria-unique-name": "i_order_number",
+                "autocomplete": "off"
+            },
+            "sopt": strSearchOpts,
+            "searchhidden": <%if $list_config['i_order_number']['search'] eq 'Yes' %>true<%else%>false<%/if%>
+        },
+        "editoptions": {
+            "aria-grid-id": el_tpl_settings.main_grid_id,
+            "aria-module-name": "education_management",
+            "aria-unique-name": "i_order_number",
+            "placeholder": "",
+            "class": "inline-edit-row "
+        },
+        "ctrl_type": "textbox",
+        "default_value": "<%$list_config['i_order_number']['default']%>",
+        "filterSopt": "bw",
+        "formatter": formatAdminModuleEditLink,
+        "unformat": unformatAdminModuleEditLink
+    },
+
     {
         "name": "i_education_name",
         "index": "i_education_name",
@@ -250,6 +303,7 @@
         "filterSopt": "in",
         "stype": "select"
     },
+
     {
         "name": "i_added_at",
         "index": "i_added_at",

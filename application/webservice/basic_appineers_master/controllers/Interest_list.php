@@ -79,15 +79,14 @@ class Interest_list extends Cit_Controller
                     "rule" => "required",
                     "value" => TRUE,
                     "message" => "interest_id_required",
-                )
-            ),
+                ),
             "user_id" => array(
                 array(
                     "rule" => "required",
                     "value" => TRUE,
                     "message" => "user_id_required",
                  )
-                
+                )
             )
         );
         

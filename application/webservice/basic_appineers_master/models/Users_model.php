@@ -1883,15 +1883,7 @@ class Users_model extends CI_Model
                         $expire_date=$value['dLatestExpiryDate']; 
 
                         unset($value['dLatestExpiryDate']);
-                        //latest expire date is greater than current date
-                        if(strtotime($expire_date) > strtotime($current_date) || $expire_date == "0000-00-00 00:00:00")
-                        {
-                            $value['subscription_status'] = 1;
-
-                        }else
-                        {
-                            $value['subscription_status'] = 0;
-                        }
+                        $value['subscription_status'] = $this->get_subscription_status($expire_date);
 
                        // print_r($value);
 
@@ -2267,15 +2259,7 @@ class Users_model extends CI_Model
                         $expire_date=$value['dLatestExpiryDate']; 
 
                         unset($value['dLatestExpiryDate']);
-                        //latest expire date is greater than current date
-                        if(strtotime($expire_date) > strtotime($current_date) || $expire_date == "0000-00-00 00:00:00")
-                        {
-                            $value['subscription_status'] = 1;
-
-                        }else
-                        {
-                            $value['subscription_status'] = 0;
-                        }
+                        $value['subscription_status'] = $this->get_subscription_status($expire_date);
 
                         $subscription[] = $value; 
                         $subscription_plans[] = $value['product_id']; 
@@ -3159,15 +3143,7 @@ class Users_model extends CI_Model
                         $expire_date=$value['dLatestExpiryDate']; 
 
                         unset($value['dLatestExpiryDate']);
-                        //latest expire date is greater than current date
-                        if(strtotime($expire_date) > strtotime($current_date) || $expire_date == "0000-00-00 00:00:00")
-                        {
-                            $value['subscription_status'] = 1;
-
-                        }else
-                        {
-                            $value['subscription_status'] = 0;
-                        }
+                        $value['subscription_status'] = $this->get_subscription_status($expire_date);
 
                         $subscription[] = $value; 
                         $subscription_plans[] = $value['product_id']; 
@@ -3446,5 +3422,25 @@ class Users_model extends CI_Model
         return $return_arr;
     }
 
+    public function get_subscription_status($expire_date)
+    {
+        $current_timezone = date_default_timezone_get();
+        // convert the current timezone to UTC
+         date_default_timezone_set('UTC');
+        $current_date = date("Y-m-d H:i:s");
+        // Again coverting into local timezone
+        date_default_timezone_set($current_timezone);
+        
+         if(strtotime($expire_date) > strtotime($current_date) || $expire_date == "0000-00-00 00:00:00")
+        {
+            $subscription_status = 1;
+
+        }else
+        {
+            $subscription_status = 0;
+        } 
+
+        return $subscription_status;
+    }
 
 }
